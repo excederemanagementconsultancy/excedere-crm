@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excedere CRM</title>
+<link rel="icon" type="image/png" href="excedere-favicon.png">
+<link rel="apple-touch-icon" href="excedere-favicon.png">
+<style>
+:root{--bg:#050b12;--bg2:#07131d;--panel:#0a1620;--panel2:#0d1b27;--panel3:#102332;--line:#203341;--line2:#172a37;--text:#f4f5f7;--muted:#91a4b3;--gold:#e3b15d;--gold2:#f4d08a;--silver:#c9d5df;--blue:#61b7ff;--green:#4fce8b;--amber:#e4ad58;--red:#ee7373;--purple:#aa8cff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{color:var(--text);background:radial-gradient(circle at 78% -5%,rgba(40,108,145,.20),transparent 34%),radial-gradient(circle at 6% 96%,rgba(211,164,83,.09),transparent 30%),linear-gradient(145deg,var(--bg),var(--bg2));font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:250px minmax(0,1fr)}
+.sidebar{min-height:100vh;height:100vh;position:sticky;top:0;padding:24px 18px;border-right:1px solid var(--line);background:linear-gradient(180deg,rgba(4,13,20,.99),rgba(6,18,27,.98))}
+.brand{padding:4px 8px 26px;border-bottom:1px solid var(--line);margin-bottom:22px}.brand-top{display:flex;align-items:center;gap:12px}
+.brand-icon{width:54px;height:54px;border-radius:15px;object-fit:cover;box-shadow:0 0 24px rgba(226,177,93,.15)}
+.brand-word{font-family:Georgia,"Times New Roman",serif;font-size:20px;letter-spacing:.22em;background:linear-gradient(90deg,var(--gold2),#fff,var(--silver));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-sub{margin-top:4px;color:var(--silver);font-size:8px;letter-spacing:.20em}
+.nav{display:flex;flex-direction:column;gap:7px}
+.nav-btn{width:100%;min-height:48px;padding:0 14px;display:flex;align-items:center;gap:12px;border:1px solid transparent;border-radius:10px;background:transparent;color:#b6c4cf;text-align:left;font-weight:650}
+.nav-btn:hover{background:#0b1a25}.nav-btn.active{color:#fff;border-color:#253b4a;background:linear-gradient(90deg,rgba(226,177,93,.16),rgba(26,52,69,.42));box-shadow:inset 3px 0 0 var(--gold)}
+.nav-icon{width:22px;text-align:center;color:var(--gold)}
+.sidebar-footer{position:absolute;left:18px;right:18px;bottom:20px}
+.call-assist-link{width:100%;min-height:48px;border:1px solid #e4b864;border-radius:10px;color:#10141a;font-weight:850;background:linear-gradient(135deg,#f1cd84,#dca64e);box-shadow:0 10px 24px rgba(218,163,75,.12)}
+.sidebar-tagline{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);color:#7f93a3;font-family:Georgia,"Times New Roman",serif;font-size:9px;line-height:1.8;letter-spacing:.25em}
+.main{min-width:0}
+.topbar{min-height:78px;display:grid;grid-template-columns:1fr minmax(330px,520px);gap:22px;align-items:center;padding:11px 28px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;background:rgba(5,13,20,.92);backdrop-filter:blur(14px)}
+.page-title{font-size:28px;font-weight:780}.page-subtitle{margin-top:4px;color:var(--muted);font-size:11px}
+.search-wrap{position:relative}.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold)}
+.search{width:100%;height:44px;padding:0 14px 0 42px;border:1px solid #2b4252;border-radius:10px;outline:none;background:#08141d;color:var(--text)}.search:focus{border-color:var(--gold)}
+.content{padding:24px 28px 42px}.view{display:none}.view.active{display:block}
+.card{border:1px solid var(--line);border-radius:12px;background:linear-gradient(155deg,rgba(12,28,39,.94),rgba(7,19,28,.96));box-shadow:0 18px 38px rgba(0,0,0,.12)}
+.empty{padding:28px;color:var(--muted);text-align:center}
+.stat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.stat-card{padding:16px 17px;display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;background:linear-gradient(145deg,#0a1823,#0c1e2b)}
+.stat-icon{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(226,177,93,.55);border-radius:10px;color:var(--gold);background:rgba(226,177,93,.07);font-size:18px}
+.stat-label{color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.11em}.stat-number{margin-top:3px;font-size:27px;font-weight:850}.stat-number.gold{color:var(--gold2)}.stat-number.red{color:var(--red)}.stat-number.blue{color:var(--blue)}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(330px,.8fr);gap:14px;margin-bottom:14px}
+.card-header{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800}.card-header span{color:var(--gold)}
+.card-body{padding:10px 16px 14px}
+.activity-row{padding:11px 0;display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:11px;align-items:center;border-bottom:1px solid var(--line2)}.activity-row:last-child{border-bottom:0}
+.activity-icon{width:35px;height:35px;display:grid;place-items:center;border-radius:50%;background:#132737;color:var(--silver);border:1px solid #294354}
+.activity-title{font-size:11px;font-weight:750}.activity-subtitle{margin-top:3px;color:var(--muted);font-size:9px}.activity-time{color:#8294a2;font-size:8px}
+.follow-row{padding:11px 0;display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:12px;border-bottom:1px solid var(--line2)}.follow-row:last-child{border-bottom:0}
+.follow-name{font-size:11px;font-weight:800}.follow-company{margin-top:2px;color:var(--muted);font-size:9px}.follow-action{margin-top:5px;font-size:9px}.follow-date{text-align:right;font-size:9px}
+.status-badge{display:inline-block;margin-top:4px;padding:4px 8px;border-radius:999px;font-size:8px;font-weight:850}
+.status-new{color:var(--silver);border:1px solid #536776;background:#162631}.status-current{color:var(--green);border:1px solid rgba(79,206,139,.55);background:rgba(79,206,139,.08)}.status-due{color:var(--gold2);border:1px solid rgba(226,177,93,.55);background:rgba(226,177,93,.09)}.status-overdue{color:var(--red);border:1px solid rgba(238,115,115,.55);background:rgba(238,115,115,.08)}
+.section-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:13px}.section-heading h2{margin:0;font-size:19px}.section-heading p{margin:4px 0 0;color:var(--muted);font-size:10px}
+.contacts-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:14px}.contact-list{overflow:hidden}
+.contact-head,.contact-row{display:grid;grid-template-columns:1.1fr 1.3fr 1.2fr .85fr .72fr;gap:10px}
+.contact-head{padding:10px 14px;border-bottom:1px solid var(--line);color:#8296a5;font-size:8px;font-weight:800;letter-spacing:.08em}
+.contact-row{width:100%;align-items:center;padding:12px 14px;border:0;border-bottom:1px solid var(--line2);background:transparent;color:var(--text);text-align:left}
+.contact-row:hover{background:#0c1d29}.contact-row.selected{background:linear-gradient(90deg,rgba(226,177,93,.11),rgba(23,48,66,.34))}
+.contact-name{font-size:11px;font-weight:800}.contact-sub{margin-top:3px;color:var(--muted);font-size:8px}.contact-cell{font-size:9px;line-height:1.45}
+.detail-panel{height:fit-content;position:sticky;top:102px}
+.detail-top{padding:18px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(226,177,93,.07),transparent)}
+.detail-avatar{width:48px;height:48px;margin-bottom:11px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--gold);color:#15181c;font-weight:850;background:linear-gradient(135deg,#f1cf8b,#b98138)}
+.detail-name{font-size:22px;font-weight:850}.detail-company{margin-top:4px;color:var(--muted);font-size:11px}
+.detail-body{padding:13px 17px 18px}.detail-item{padding:9px 0;border-bottom:1px solid var(--line2)}.detail-label{margin-bottom:4px;color:#7f95a5;font-size:7px;font-weight:800;letter-spacing:.11em}.detail-value{font-size:10px;line-height:1.45}.detail-gold{color:var(--gold2)}
+.pipeline-select{width:100%;height:38px;padding:0 9px;border:1px solid #2d4656;border-radius:8px;outline:none;background:#07151f;color:var(--text)}
+.detail-actions{display:grid;grid-template-columns:1.1fr .9fr;gap:7px;margin-top:13px}.detail-btn{min-height:41px;border:1px solid #2d4656;border-radius:8px;background:#0d1f2c;color:var(--text);font-weight:750}.detail-btn.primary{border:0;background:linear-gradient(135deg,#f0cc80,#d9a34a);color:#101318}
+.history-title{margin:17px 0 7px;color:var(--gold);font-size:8px;font-weight:850;letter-spacing:.12em}.history-entry{padding:8px 0;border-bottom:1px solid var(--line2)}.history-date{color:var(--muted);font-size:7px}.history-main{margin-top:3px;font-size:9px;font-weight:750}.history-sub{margin-top:2px;color:var(--muted);font-size:8px}
+.pipeline-board{display:grid;grid-template-columns:repeat(8,minmax(220px,1fr));gap:10px;overflow-x:auto;padding-bottom:10px}
+.pipeline-column{min-height:500px;border:1px solid var(--line);border-radius:11px;background:rgba(7,20,29,.84)}.pipeline-column.lost{border-color:rgba(238,115,115,.32)}
+.pipeline-head{padding:11px 12px;display:flex;justify-content:space-between;border-bottom:1px solid var(--line)}.pipeline-title{font-size:9px;font-weight:850;color:var(--gold2)}.pipeline-column.lost .pipeline-title{color:var(--red)}.pipeline-count{color:var(--muted);font-size:9px}
+.pipeline-body{padding:8px}.pipeline-card{margin-bottom:8px;padding:11px;border:1px solid #263d4c;border-radius:8px;background:#0a1822}.pipeline-card-name{font-size:10px;font-weight:800}.pipeline-card-company{margin-top:3px;color:var(--muted);font-size:8px}.pipeline-card-action{margin-top:8px;color:#c4d0d9;font-size:8px}
+@media(max-width:1250px){.stat-grid{grid-template-columns:repeat(3,1fr)}.contacts-layout{grid-template-columns:1fr}.detail-panel{position:static}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-top">
+      <img class="brand-icon" src="excedere-favicon.png" alt="Excedere">
+      <div><div class="brand-word">EXCEDERE</div><div class="brand-sub">MANAGEMENT CONSULTANCY</div></div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" data-view="dashboard" onclick="switchView('dashboard',this)"><span class="nav-icon">⌂</span>Dashboard</button>
+    <button class="nav-btn" data-view="contacts" onclick="switchView('contacts',this)"><span class="nav-icon">●</span>Contacts</button>
+    <button class="nav-btn" data-view="pipeline" onclick="switchView('pipeline',this)"><span class="nav-icon">▥</span>Pipeline</button>
+    <button class="nav-btn" data-view="followups" onclick="switchView('followups',this)"><span class="nav-icon">▣</span>Follow-Ups</button>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="call-assist-link" onclick="openCallAssist()">☎ &nbsp; Open Call Assist</button>
+    <div class="sidebar-tagline">PEOPLE.<br>PROCESS.<br>PERFORMANCE.</div>
+  </div>
+</aside>
+
+<section class="main">
+<header class="topbar">
+  <div><div id="pageTitle" class="page-title">Dashboard</div><div id="pageSubtitle" class="page-subtitle">Your Excedere sales activity at a glance.</div></div>
+  <div class="search-wrap"><span class="search-icon">⌕</span><input id="globalSearch" class="search" type="search" placeholder="Search prospects, company, phone, email or role..."></div>
+</header>
+
+<div class="content">
+<section id="dashboardView" class="view active">
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-icon">♙</div><div><div class="stat-label">TOTAL PROSPECTS</div><div id="statProspects" class="stat-number">0</div></div></div>
+    <div class="stat-card"><div class="stat-icon">▣</div><div><div class="stat-label">FOLLOW-UPS DUE</div><div id="statDue" class="stat-number gold">0</div></div></div>
+    <div class="stat-card"><div class="stat-icon">◷</div><div><div class="stat-label">OVERDUE</div><div id="statOverdue" class="stat-number red">0</div></div></div>
+    <div class="stat-card"><div class="stat-icon">✓</div><div><div class="stat-label">MEETINGS BOOKED</div><div id="statMeetings" class="stat-number gold">0</div></div></div>
+    <div class="stat-card"><div class="stat-icon">☎</div><div><div class="stat-label">CALLS LOGGED</div><div id="statCalls" class="stat-number blue">0</div></div></div>
+  </div>
+  <div class="dashboard-grid">
+    <div class="card"><div class="card-header"><div>Recent Activity</div><span>LIVE</span></div><div id="recentActivity" class="card-body"></div></div>
+    <div class="card"><div class="card-header"><div>Next Follow-Ups</div><span>UPCOMING</span></div><div id="dashboardFollowups" class="card-body"></div></div>
+  </div>
+</section>
+
+<section id="contactsView" class="view">
+  <div class="section-heading"><div><h2>Contacts</h2><p>Prospects and customers in the Excedere database.</p></div></div>
+  <div class="contacts-layout">
+    <div class="card contact-list">
+      <div class="contact-head"><div>CONTACT</div><div>COMPANY / ROLE</div><div>CONTACT DETAILS</div><div>FOLLOW-UP</div><div>STATUS</div></div>
+      <div id="contactsList"></div>
+    </div>
+    <div id="contactDetail" class="card detail-panel"><div class="empty">Select a contact to view the record.</div></div>
+  </div>
+</section>
+
+<section id="pipelineView" class="view">
+  <div class="section-heading"><div><h2>Pipeline</h2><p>Track each prospect from first contact through to customer.</p></div></div>
+  <div id="pipelineBoard" class="pipeline-board"></div>
+</section>
+
+<section id="followupsView" class="view">
+  <div class="section-heading"><div><h2>Follow-Ups</h2><p>Prospects requiring your attention.</p></div></div>
+  <div class="card"><div id="followupList" class="card-body"></div></div>
+</section>
+</div>
+</section>
+</div>
+
+<script>
+const LEAD_STORAGE_KEY="excedereCallAssistLeads";
+const CALL_ASSIST_URL="https://excederemanagementconsultancy.github.io/excedere-call-assist/";
+const PIPELINE_STAGES=["New","Contacted","Follow-Up","Interested","Meeting Booked","Proposal","Won","Lost"];
+let leads=[],selectedLeadId=null,currentSearch="";
+
+function cleanLeadEmail(value){
+  const email=String(value||"").trim();
+  if(!email)return "";
+  const bad=["not publicly listed","not provided","not available","n/a","na","none","null","unknown","-","--"];
+  if(bad.includes(email.toLowerCase()))return "";
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return "";
+  return email;
+}
+function loadLeads(){
+  try{
+    const raw=localStorage.getItem(LEAD_STORAGE_KEY); if(!raw)return [];
+    const parsed=JSON.parse(raw); if(!Array.isArray(parsed))return [];
+    let changed=false;
+    const cleaned=parsed.map(lead=>{
+      lead.pipelineStage ||= "New"; lead.callHistory ??=[]; lead.emailHistory ??=[]; lead.callCount ??=0;
+      lead.lastOutcome ??=""; lead.nextAction ??=""; lead.nextFollowUpDate ??="";
+      const validEmail=cleanLeadEmail(lead.email);
+      if(validEmail!==String(lead.email||"")){lead.email=validEmail;changed=true}
+      return lead;
+    });
+    if(changed)localStorage.setItem(LEAD_STORAGE_KEY,JSON.stringify(cleaned));
+    return cleaned;
+  }catch(error){console.error(error);return []}
+}
+function saveLeads(){localStorage.setItem(LEAD_STORAGE_KEY,JSON.stringify(leads))}
+function escapeHtml(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function getLeadById(id){return leads.find(lead=>lead.id===id)}
+function setText(id,value){document.getElementById(id).textContent=value}
+function formatDateTime(value){if(!value)return "";try{return new Date(value).toLocaleString()}catch{return value}}
+function daysFromToday(dateString){if(!dateString)return null;const today=new Date();today.setHours(0,0,0,0);const date=new Date(`${dateString}T00:00:00`);return Math.ceil((date-today)/86400000)}
+function getLeadStatus(lead){
+  if(!lead.lastCalled&&!lead.nextFollowUpDate)return {label:"NEW",className:"status-new"};
+  if(lead.nextFollowUpDate){const d=daysFromToday(lead.nextFollowUpDate);if(d<0)return {label:"OVERDUE",className:"status-overdue"};if(d<=2)return {label:"DUE SOON",className:"status-due"}}
+  return {label:"CURRENT",className:"status-current"};
+}
+function getLocalTime(lead){
+  try{const tz=lead.timezone||"America/Los_Angeles";const time=new Intl.DateTimeFormat("en-US",{timeZone:tz,hour:"numeric",minute:"2-digit"}).format(new Date());return time+(lead.timezoneLabel?` ${lead.timezoneLabel}`:"")}
+  catch{return "Time unavailable"}
+}
+function filteredLeads(){
+  if(!currentSearch)return leads;const q=currentSearch.toLowerCase();
+  return leads.filter(lead=>[lead.firstName,lead.title,lead.company,lead.role,lead.location,lead.phone,lead.directPhone,cleanLeadEmail(lead.email),lead.lastOutcome,lead.nextAction,lead.pipelineStage].join(" ").toLowerCase().includes(q));
+}
+function switchView(view,button){
+  document.querySelectorAll(".view").forEach(el=>el.classList.remove("active"));document.querySelectorAll(".nav-btn").forEach(el=>el.classList.remove("active"));
+  document.getElementById(`${view}View`).classList.add("active");button.classList.add("active");
+  const titles={dashboard:["Dashboard","Your Excedere sales activity at a glance."],contacts:["Contacts","Manage prospects, communication and follow-ups."],pipeline:["Pipeline","Track prospects through the sales process."],followups:["Follow-Ups","See who needs your attention next."]};
+  setText("pageTitle",titles[view][0]);setText("pageSubtitle",titles[view][1]);renderAll();
+}
+function renderDashboard(){
+  let due=0,overdue=0,meetings=0,calls=0;
+  leads.forEach(lead=>{const s=getLeadStatus(lead);if(s.label==="DUE SOON")due++;if(s.label==="OVERDUE")overdue++;if(lead.lastOutcome==="Appointment booked"||lead.pipelineStage==="Meeting Booked")meetings++;calls+=Number(lead.callCount||0)});
+  setText("statProspects",leads.length);setText("statDue",due);setText("statOverdue",overdue);setText("statMeetings",meetings);setText("statCalls",calls);renderRecentActivity();renderDashboardFollowups();
+}
+function renderRecentActivity(){
+  const area=document.getElementById("recentActivity"),activity=[];
+  leads.forEach(lead=>{(lead.callHistory||[]).forEach(entry=>activity.push({type:"call",timestamp:entry.timestamp,lead,entry}));(lead.emailHistory||[]).forEach(entry=>activity.push({type:"email",timestamp:entry.timestamp,lead,entry}))});
+  activity.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));const latest=activity.slice(0,7);
+  if(!latest.length){area.innerHTML='<div class="empty">No call or email activity has been recorded yet.</div>';return}
+  area.innerHTML=latest.map(item=>item.type==="email"
+    ? `<div class="activity-row"><div class="activity-icon">✉</div><div><div class="activity-title">Email sent to ${escapeHtml(item.lead.firstName||item.lead.company)}</div><div class="activity-subtitle">${escapeHtml(item.entry.subject||"Email")}</div></div><div class="activity-time">${escapeHtml(formatDateTime(item.timestamp))}</div></div>`
+    : `<div class="activity-row"><div class="activity-icon">☎</div><div><div class="activity-title">Call with ${escapeHtml(item.lead.firstName||item.lead.company)}</div><div class="activity-subtitle">${escapeHtml(item.entry.outcome||"Call logged")}</div></div><div class="activity-time">${escapeHtml(formatDateTime(item.timestamp))}</div></div>`).join("");
+}
+function renderDashboardFollowups(){
+  const area=document.getElementById("dashboardFollowups"),items=leads.filter(l=>l.nextFollowUpDate).sort((a,b)=>new Date(a.nextFollowUpDate)-new Date(b.nextFollowUpDate)).slice(0,7);
+  if(!items.length){area.innerHTML='<div class="empty">No follow-ups scheduled.</div>';return}
+  area.innerHTML=items.map(lead=>{const s=getLeadStatus(lead);return `<div class="follow-row"><div><div class="follow-name">${escapeHtml(lead.firstName||"Unknown")}</div><div class="follow-company">${escapeHtml(lead.company||"")}</div><div class="follow-action">${escapeHtml(lead.nextAction||"Follow up")}</div></div><div class="follow-date">${escapeHtml(lead.nextFollowUpDate)}<br><span class="status-badge ${s.className}">${s.label}</span></div></div>`}).join("");
+}
+function renderContacts(){
+  const area=document.getElementById("contactsList"),items=filteredLeads();
+  if(!items.length){area.innerHTML='<div class="empty">No matching contacts found.</div>';renderSelectedContact();return}
+  area.innerHTML=items.map(lead=>{const s=getLeadStatus(lead),email=cleanLeadEmail(lead.email);return `<button class="contact-row ${selectedLeadId===lead.id?"selected":""}" onclick="selectContact('${lead.id}')"><div><div class="contact-name">${escapeHtml(lead.firstName||"Unknown")}</div><div class="contact-sub">${escapeHtml(lead.title||"")}</div></div><div><div class="contact-cell">${escapeHtml(lead.company||"")}</div><div class="contact-sub">${escapeHtml(lead.role||"")}</div></div><div><div class="contact-cell">${escapeHtml(lead.phone||lead.directPhone||"No phone")}</div><div class="contact-sub">${escapeHtml(email||"No email")}</div></div><div><div class="contact-cell">${escapeHtml(lead.nextFollowUpDate||"None")}</div><div class="contact-sub">${escapeHtml(lead.nextAction||"")}</div></div><div><span class="status-badge ${s.className}">${s.label}</span></div></button>`}).join("");
+  renderSelectedContact();
+}
+function selectContact(id){selectedLeadId=id;renderContacts()}
+function initials(lead){const source=String(lead.firstName||lead.company||"EX").trim();const parts=source.split(/\s+/).filter(Boolean);return ((parts[0]?.[0]||"E")+(parts[1]?.[0]||parts[0]?.[1]||"X")).toUpperCase()}
+function buildLeadActivity(lead){const a=[];(lead.callHistory||[]).forEach(entry=>a.push({type:"call",timestamp:entry.timestamp,entry}));(lead.emailHistory||[]).forEach(entry=>a.push({type:"email",timestamp:entry.timestamp,entry}));a.sort((x,y)=>new Date(y.timestamp)-new Date(x.timestamp));return a}
+function renderSelectedContact(){
+  const panel=document.getElementById("contactDetail");if(!selectedLeadId){panel.innerHTML='<div class="empty">Select a contact to view the record.</div>';return}
+  const lead=getLeadById(selectedLeadId);if(!lead){panel.innerHTML='<div class="empty">Contact could not be found.</div>';return}
+  const s=getLeadStatus(lead),activities=buildLeadActivity(lead),email=cleanLeadEmail(lead.email);
+  panel.innerHTML=`<div class="detail-top"><div class="detail-avatar">${escapeHtml(initials(lead))}</div><div class="detail-name">${escapeHtml(lead.firstName||"Unknown")}</div><div class="detail-company">${escapeHtml(lead.title||"")}${lead.title&&lead.company?" · ":""}${escapeHtml(lead.company||"")}</div></div>
+  <div class="detail-body">
+    <div class="detail-item"><div class="detail-label">LOCAL TIME</div><div class="detail-value detail-gold">${escapeHtml(getLocalTime(lead))}</div></div>
+    <div class="detail-item"><div class="detail-label">ROLE</div><div class="detail-value">${escapeHtml(lead.role||"Not provided")}</div></div>
+    <div class="detail-item"><div class="detail-label">PHONE</div><div class="detail-value">${escapeHtml(lead.phone||lead.directPhone||"Not provided")}</div></div>
+    <div class="detail-item"><div class="detail-label">EMAIL</div><div class="detail-value">${escapeHtml(email||"Not provided")}</div></div>
+    <div class="detail-item"><div class="detail-label">LAST OUTCOME</div><div class="detail-value">${escapeHtml(lead.lastOutcome||"None")}</div></div>
+    <div class="detail-item"><div class="detail-label">NEXT ACTION</div><div class="detail-value">${escapeHtml(lead.nextAction||"None")}</div></div>
+    <div class="detail-item"><div class="detail-label">FOLLOW-UP</div><div class="detail-value">${escapeHtml(lead.nextFollowUpDate||"None")} &nbsp;<span class="status-badge ${s.className}">${s.label}</span></div></div>
+    <div class="detail-item"><div class="detail-label">PIPELINE STAGE</div><select class="pipeline-select" onchange="updatePipelineStage('${lead.id}',this.value)">${PIPELINE_STAGES.map(stage=>`<option value="${escapeHtml(stage)}" ${(lead.pipelineStage||"New")===stage?"selected":""}>${escapeHtml(stage)}</option>`).join("")}</select></div>
+    <div class="detail-actions"><button class="detail-btn primary" onclick="openLeadInCallAssist('${lead.id}')">☎ Open in Call Assist</button><button class="detail-btn" onclick="emailLead('${lead.id}')">✉ Send Email</button></div>
+    <div class="history-title">ACTIVITY HISTORY</div>
+    ${activities.length?activities.slice(0,8).map(item=>item.type==="email"?`<div class="history-entry"><div class="history-date">${escapeHtml(formatDateTime(item.timestamp))}</div><div class="history-main">✉ Email sent</div><div class="history-sub">${escapeHtml(item.entry.subject||"Email")}</div></div>`:`<div class="history-entry"><div class="history-date">${escapeHtml(formatDateTime(item.timestamp))}</div><div class="history-main">☎ ${escapeHtml(item.entry.outcome||"Call")}</div><div class="history-sub">${escapeHtml(item.entry.nextAction||"")}</div></div>`).join(""):'<div class="history-sub">No activity recorded yet.</div>'}
+  </div>`;
+}
+function renderPipeline(){
+  const board=document.getElementById("pipelineBoard");
+  board.innerHTML=PIPELINE_STAGES.map(stage=>{const items=filteredLeads().filter(lead=>(lead.pipelineStage||"New")===stage);return `<div class="pipeline-column ${stage==="Lost"?"lost":""}"><div class="pipeline-head"><div class="pipeline-title">${escapeHtml(stage)}</div><div class="pipeline-count">${items.length}</div></div><div class="pipeline-body">${items.length?items.map(lead=>`<div class="pipeline-card"><div class="pipeline-card-name">${escapeHtml(lead.firstName||"Unknown")}</div><div class="pipeline-card-company">${escapeHtml(lead.company||"")}</div><div class="pipeline-card-action">${escapeHtml(lead.nextAction||lead.role||"")}</div></div>`).join(""):'<div class="history-sub">No prospects</div>'}</div></div>`}).join("");
+}
+function renderFollowups(){
+  const area=document.getElementById("followupList"),items=filteredLeads().filter(l=>l.nextFollowUpDate).sort((a,b)=>new Date(a.nextFollowUpDate)-new Date(b.nextFollowUpDate));
+  if(!items.length){area.innerHTML='<div class="empty">No follow-ups currently scheduled.</div>';return}
+  area.innerHTML=items.map(lead=>{const s=getLeadStatus(lead);return `<div class="follow-row"><div><div class="follow-name">${escapeHtml(lead.firstName||"Unknown")}</div><div class="follow-company">${escapeHtml(lead.company||"")} · ${escapeHtml(lead.role||"")}</div><div class="follow-action">${escapeHtml(lead.nextAction||"Follow up")}</div></div><div class="follow-date">${escapeHtml(lead.nextFollowUpDate)}<br><span class="status-badge ${s.className}">${s.label}</span></div></div>`}).join("");
+}
+function updatePipelineStage(id,stage){const lead=getLeadById(id);if(!lead)return;lead.pipelineStage=stage;saveLeads();renderAll()}
+function openCallAssist(){window.open(CALL_ASSIST_URL,"_blank")}
+function openLeadInCallAssist(id){const lead=getLeadById(id);if(!lead)return;localStorage.setItem("excedereSelectedLeadId",id);window.open(CALL_ASSIST_URL,"_blank")}
+function emailLead(id){const lead=getLeadById(id);if(!lead)return;const params=new URLSearchParams({leadId:lead.id||"",name:lead.firstName||"",company:lead.company||"",email:cleanLeadEmail(lead.email)});window.open(`${CALL_ASSIST_URL}email.html?${params.toString()}`,"_blank")}
+document.getElementById("globalSearch").addEventListener("input",event=>{currentSearch=event.target.value.trim();renderAll()});
+function renderAll(){renderDashboard();renderContacts();renderPipeline();renderFollowups()}
+window.addEventListener("storage",event=>{if(event.key===LEAD_STORAGE_KEY){leads=loadLeads();if(selectedLeadId&&!getLeadById(selectedLeadId))selectedLeadId=leads[0]?.id||null;renderAll()}});
+window.addEventListener("load",()=>{leads=loadLeads();if(leads.length)selectedLeadId=leads[0].id;renderAll()});
+</script>
+</body>
+</html>
