@@ -128,7 +128,7 @@ a{
 
 .nav-btn{
  width:100%;
- min-height:48px;
+ min-height:46px;
  padding:0 14px;
  display:flex;
  align-items:center;
@@ -424,7 +424,7 @@ a{
 
 .stat-grid{
  display:grid;
- grid-template-columns:repeat(5,1fr);
+ grid-template-columns:repeat(6,1fr);
  gap:12px;
  margin-bottom:16px;
 }
@@ -468,6 +468,7 @@ a{
 .gold{color:var(--gold2)}
 .red{color:var(--red)}
 .blue{color:var(--blue)}
+.green{color:var(--green)}
 
 .dashboard-grid{
  display:grid;
@@ -554,7 +555,7 @@ a{
 }
 
 /* =====================================================
-   CONTACT / COMPANY LISTS
+   CONTACTS / COMPANIES
 ===================================================== */
 
 .contacts-layout,
@@ -621,7 +622,7 @@ a{
 }
 
 /* =====================================================
-   DETAIL PANEL
+   DETAIL
 ===================================================== */
 
 .detail-panel{
@@ -876,6 +877,170 @@ a{
 }
 
 /* =====================================================
+   TASKS
+===================================================== */
+
+.task-toolbar{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+ margin-bottom:13px;
+}
+
+.task-filters{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+}
+
+.filter-btn{
+ min-height:34px;
+ padding:0 12px;
+ border:1px solid #2b4353;
+ border-radius:8px;
+ background:#0b1b27;
+ color:#9eb0bd;
+ font-size:9px;
+ font-weight:800;
+}
+
+.filter-btn.active{
+ color:#161b20;
+ border-color:var(--gold);
+ background:linear-gradient(135deg,#f1ce83,#d8a34b);
+}
+
+.task-list{
+ overflow:hidden;
+}
+
+.task-head,
+.task-row{
+ display:grid;
+ grid-template-columns:minmax(240px,1.5fr) 1fr .8fr .8fr .8fr 220px;
+ gap:12px;
+ align-items:center;
+}
+
+.task-head{
+ padding:11px 14px;
+ border-bottom:1px solid var(--line);
+ color:#8296a5;
+ font-size:8px;
+ font-weight:800;
+}
+
+.task-row{
+ padding:13px 14px;
+ border-bottom:1px solid var(--line2);
+}
+
+.task-row.overdue{
+ background:rgba(238,115,115,.035);
+}
+
+.task-title{
+ font-size:11px;
+ font-weight:850;
+}
+
+.task-description{
+ margin-top:3px;
+ color:var(--muted);
+ font-size:9px;
+}
+
+.task-target{
+ border:0;
+ background:transparent;
+ color:var(--blue);
+ padding:0;
+ text-align:left;
+ font-size:9px;
+ font-weight:750;
+}
+
+.task-target:hover{
+ text-decoration:underline;
+}
+
+.priority{
+ display:inline-block;
+ padding:4px 8px;
+ border-radius:999px;
+ font-size:8px;
+ font-weight:850;
+}
+
+.priority-low{
+ color:#aab9c4;
+ border:1px solid #4c6272;
+ background:#13232e;
+}
+
+.priority-medium{
+ color:var(--gold2);
+ border:1px solid rgba(226,177,93,.5);
+ background:rgba(226,177,93,.08);
+}
+
+.priority-high{
+ color:var(--red);
+ border:1px solid rgba(238,115,115,.5);
+ background:rgba(238,115,115,.08);
+}
+
+.task-status-open{
+ color:var(--blue);
+ border:1px solid rgba(97,183,255,.45);
+ background:rgba(97,183,255,.08);
+}
+
+.task-status-completed{
+ color:var(--green);
+ border:1px solid rgba(79,206,139,.45);
+ background:rgba(79,206,139,.08);
+}
+
+.task-due{
+ font-size:9px;
+}
+
+.task-due.overdue-text{
+ color:var(--red);
+ font-weight:800;
+}
+
+.task-actions{
+ display:flex;
+ gap:6px;
+ justify-content:flex-end;
+ flex-wrap:wrap;
+}
+
+.mini-btn{
+ min-height:31px;
+ padding:0 9px;
+ border:1px solid #2d4656;
+ border-radius:7px;
+ background:#0d1f2c;
+ color:#d6e0e6;
+ font-size:8px;
+ font-weight:800;
+}
+
+.mini-btn.complete{
+ color:var(--green);
+ border-color:rgba(79,206,139,.42);
+}
+
+.mini-btn.delete{
+ color:var(--red);
+ border-color:rgba(238,115,115,.42);
+}
+
+/* =====================================================
    PIPELINE
 ===================================================== */
 
@@ -1019,11 +1184,22 @@ a{
  gap:8px;
 }
 
-@media(max-width:1250px){
+@media(max-width:1450px){
  .stat-grid{
   grid-template-columns:repeat(3,1fr);
  }
 
+ .task-head,
+ .task-row{
+  grid-template-columns:1.5fr 1fr .8fr .8fr;
+ }
+
+ .task-hide-small{
+  display:none;
+ }
+}
+
+@media(max-width:1250px){
  .contacts-layout,
  .companies-layout{
   grid-template-columns:1fr;
@@ -1080,6 +1256,11 @@ a{
  Follow-Ups
 </button>
 
+<button class="nav-btn" onclick="switchView('tasks',this)">
+ <span class="nav-icon">✓</span>
+ Tasks
+</button>
+
 </nav>
 
 <div class="sidebar-footer">
@@ -1121,7 +1302,7 @@ a{
   id="globalSearch"
   class="search"
   type="search"
-  placeholder="Search companies, contacts, phone, email or role..."
+  placeholder="Search companies, contacts, tasks, phone or email..."
  >
 </div>
 
@@ -1129,7 +1310,9 @@ a{
 
 <div class="content">
 
-<!-- DASHBOARD -->
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
 
 <section id="dashboardView" class="view active">
 
@@ -1148,6 +1331,14 @@ a{
  <div>
   <div class="stat-label">CONTACTS</div>
   <div id="statProspects" class="stat-number">0</div>
+ </div>
+</div>
+
+<div class="stat-card">
+ <div class="stat-icon">✓</div>
+ <div>
+  <div class="stat-label">TASKS DUE</div>
+  <div id="statTasksDue" class="stat-number gold">0</div>
  </div>
 </div>
 
@@ -1201,11 +1392,14 @@ a{
 
 </section>
 
-<!-- COMPANIES -->
+<!-- =====================================================
+     COMPANIES
+===================================================== -->
 
 <section id="companiesView" class="view">
 
 <div class="section-heading">
+
  <div>
   <h2>Companies</h2>
   <p>Manage organisations and the people connected to them.</p>
@@ -1214,6 +1408,7 @@ a{
  <button class="primary-btn" onclick="openCompanyModal()">
   ＋ New Company
  </button>
+
 </div>
 
 <div class="companies-layout">
@@ -1239,20 +1434,22 @@ a{
 
 </section>
 
-<!-- CONTACTS -->
+<!-- =====================================================
+     CONTACTS
+===================================================== -->
 
 <section id="contactsView" class="view">
 
 <div class="section-heading">
 
-<div>
- <h2>Contacts</h2>
- <p>Prospects and customers in the Excedere database.</p>
-</div>
+ <div>
+  <h2>Contacts</h2>
+  <p>Prospects and customers in the Excedere database.</p>
+ </div>
 
-<button class="primary-btn" onclick="openContactModal()">
- ＋ New Contact
-</button>
+ <button class="primary-btn" onclick="openContactModal()">
+  ＋ New Contact
+ </button>
 
 </div>
 
@@ -1280,7 +1477,9 @@ a{
 
 </section>
 
-<!-- PIPELINE -->
+<!-- =====================================================
+     PIPELINE
+===================================================== -->
 
 <section id="pipelineView" class="view">
 
@@ -1295,7 +1494,9 @@ a{
 
 </section>
 
-<!-- FOLLOWUPS -->
+<!-- =====================================================
+     FOLLOW UPS
+===================================================== -->
 
 <section id="followupsView" class="view">
 
@@ -1308,6 +1509,74 @@ a{
 
 <div class="card">
  <div id="followupList" class="card-body"></div>
+</div>
+
+</section>
+
+<!-- =====================================================
+     TASKS
+===================================================== -->
+
+<section id="tasksView" class="view">
+
+<div class="section-heading">
+
+ <div>
+  <h2>Tasks</h2>
+  <p>Manage reminders and actions linked to contacts or companies.</p>
+ </div>
+
+ <button class="primary-btn" onclick="openTaskModal()">
+  ＋ New Task
+ </button>
+
+</div>
+
+<div class="task-toolbar">
+
+ <div class="task-filters">
+
+  <button
+   id="taskFilterOpen"
+   class="filter-btn active"
+   onclick="setTaskFilter('Open')"
+  >
+   Open
+  </button>
+
+  <button
+   id="taskFilterAll"
+   class="filter-btn"
+   onclick="setTaskFilter('All')"
+  >
+   All
+  </button>
+
+  <button
+   id="taskFilterCompleted"
+   class="filter-btn"
+   onclick="setTaskFilter('Completed')"
+  >
+   Completed
+  </button>
+
+ </div>
+
+</div>
+
+<div class="card task-list">
+
+<div class="task-head">
+ <div>TASK</div>
+ <div>LINKED TO</div>
+ <div>DUE</div>
+ <div>PRIORITY</div>
+ <div class="task-hide-small">STATUS</div>
+ <div class="task-hide-small">ACTIONS</div>
+</div>
+
+<div id="tasksList"></div>
+
 </div>
 
 </section>
@@ -1328,10 +1597,7 @@ a{
 
 <div class="modal-head">
  <div id="contactModalTitle" class="modal-title">New Contact</div>
-
- <button class="modal-close" onclick="closeContactModal()">
-  ×
- </button>
+ <button class="modal-close" onclick="closeContactModal()">×</button>
 </div>
 
 <div class="form-grid">
@@ -1353,8 +1619,7 @@ a{
   id="formCompanyId"
   class="form-input"
   onchange="contactCompanyChanged()"
- >
- </select>
+ ></select>
 </div>
 
 <div class="form-field">
@@ -1420,15 +1685,8 @@ a{
 </div>
 
 <div class="modal-actions">
-
-<button class="secondary-btn" onclick="closeContactModal()">
- Cancel
-</button>
-
-<button class="primary-btn" onclick="saveContactForm()">
- Save Contact
-</button>
-
+ <button class="secondary-btn" onclick="closeContactModal()">Cancel</button>
+ <button class="primary-btn" onclick="saveContactForm()">Save Contact</button>
 </div>
 
 </div>
@@ -1445,10 +1703,7 @@ a{
 
 <div class="modal-head">
  <div id="companyModalTitle" class="modal-title">New Company</div>
-
- <button class="modal-close" onclick="closeCompanyModal()">
-  ×
- </button>
+ <button class="modal-close" onclick="closeCompanyModal()">×</button>
 </div>
 
 <div class="form-grid">
@@ -1530,25 +1785,14 @@ a{
 
 <div class="form-field full">
  <label class="form-label">COMPANY NOTES</label>
-
- <textarea
-  id="companyFormNotes"
-  class="form-input form-textarea"
- ></textarea>
+ <textarea id="companyFormNotes" class="form-input form-textarea"></textarea>
 </div>
 
 </div>
 
 <div class="modal-actions">
-
-<button class="secondary-btn" onclick="closeCompanyModal()">
- Cancel
-</button>
-
-<button class="primary-btn" onclick="saveCompanyForm()">
- Save Company
-</button>
-
+ <button class="secondary-btn" onclick="closeCompanyModal()">Cancel</button>
+ <button class="primary-btn" onclick="saveCompanyForm()">Save Company</button>
 </div>
 
 </div>
@@ -1566,126 +1810,147 @@ a{
 <div class="modal-head">
 
 <div>
- <div id="timelineModalTitle" class="modal-title">
-  Add Activity
- </div>
-
- <div
-  id="timelineModalTarget"
-  class="page-subtitle"
-  style="margin-top:5px"
- ></div>
+ <div id="timelineModalTitle" class="modal-title">Add Activity</div>
+ <div id="timelineModalTarget" class="page-subtitle" style="margin-top:5px"></div>
 </div>
 
-<button class="modal-close" onclick="closeTimelineModal()">
- ×
-</button>
+<button class="modal-close" onclick="closeTimelineModal()">×</button>
 
 </div>
 
 <div class="form-grid">
 
 <div class="form-field">
+ <label class="form-label">ACTIVITY TYPE</label>
 
-<label class="form-label">
- ACTIVITY TYPE
-</label>
-
-<select id="timelineType" class="form-input">
- <option value="note">Note</option>
- <option value="call">Call</option>
- <option value="email">Email</option>
- <option value="meeting">Meeting</option>
- <option value="proposal">Proposal</option>
- <option value="follow_up">Follow-Up</option>
- <option value="task">Task</option>
- <option value="status">Status Update</option>
-</select>
-
+ <select id="timelineType" class="form-input">
+  <option value="note">Note</option>
+  <option value="call">Call</option>
+  <option value="email">Email</option>
+  <option value="meeting">Meeting</option>
+  <option value="proposal">Proposal</option>
+  <option value="follow_up">Follow-Up</option>
+  <option value="task">Task</option>
+  <option value="status">Status Update</option>
+ </select>
 </div>
 
 <div class="form-field">
-
-<label class="form-label">
- DATE / TIME
-</label>
-
-<input
- id="timelineOccurredAt"
- class="form-input"
- type="datetime-local"
->
-
+ <label class="form-label">DATE / TIME</label>
+ <input id="timelineOccurredAt" class="form-input" type="datetime-local">
 </div>
 
 <div class="form-field full">
-
-<label class="form-label">
- TITLE
-</label>
-
-<input
- id="timelineTitle"
- class="form-input"
- placeholder="e.g. Proposal sent"
->
-
+ <label class="form-label">TITLE</label>
+ <input id="timelineTitle" class="form-input">
 </div>
 
 <div class="form-field full">
-
-<label class="form-label">
- NOTES
-</label>
-
-<textarea
- id="timelineBody"
- class="form-input form-textarea"
- placeholder="Enter notes or details..."
-></textarea>
-
+ <label class="form-label">NOTES</label>
+ <textarea id="timelineBody" class="form-input form-textarea"></textarea>
 </div>
 
 <div class="form-field">
-
-<label class="form-label">
- OUTCOME
-</label>
-
-<input
- id="timelineOutcome"
- class="form-input"
- placeholder="Optional"
->
-
+ <label class="form-label">OUTCOME</label>
+ <input id="timelineOutcome" class="form-input">
 </div>
 
 <div class="form-field">
-
-<label class="form-label">
- NEXT ACTION
-</label>
-
-<input
- id="timelineNextAction"
- class="form-input"
- placeholder="Optional"
->
-
+ <label class="form-label">NEXT ACTION</label>
+ <input id="timelineNextAction" class="form-input">
 </div>
 
 </div>
 
 <div class="modal-actions">
+ <button class="secondary-btn" onclick="closeTimelineModal()">Cancel</button>
+ <button class="primary-btn" onclick="saveTimelineItem()">Save Activity</button>
+</div>
 
-<button class="secondary-btn" onclick="closeTimelineModal()">
- Cancel
-</button>
+</div>
 
-<button class="primary-btn" onclick="saveTimelineItem()">
- Save Activity
-</button>
+</div>
 
+<!-- =====================================================
+     TASK MODAL
+===================================================== -->
+
+<div id="taskModal" class="modal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<div>
+ <div id="taskModalTitle" class="modal-title">New Task</div>
+ <div id="taskModalSubtitle" class="page-subtitle" style="margin-top:5px">
+  Link the task to a contact or company.
+ </div>
+</div>
+
+<button class="modal-close" onclick="closeTaskModal()">×</button>
+
+</div>
+
+<div class="form-grid">
+
+<div class="form-field full">
+ <label class="form-label">TASK TITLE</label>
+ <input id="taskTitle" class="form-input" placeholder="e.g. Follow up on proposal">
+</div>
+
+<div class="form-field full">
+ <label class="form-label">DESCRIPTION</label>
+ <textarea id="taskDescription" class="form-input form-textarea"></textarea>
+</div>
+
+<div class="form-field">
+ <label class="form-label">LINK TYPE</label>
+
+ <select
+  id="taskTargetType"
+  class="form-input"
+  onchange="taskTargetTypeChanged()"
+ >
+  <option value="contact">Contact</option>
+  <option value="company">Company</option>
+ </select>
+</div>
+
+<div class="form-field">
+ <label class="form-label">LINKED RECORD</label>
+ <select id="taskTargetId" class="form-input"></select>
+</div>
+
+<div class="form-field">
+ <label class="form-label">DUE DATE / TIME</label>
+ <input id="taskDueAt" class="form-input" type="datetime-local">
+</div>
+
+<div class="form-field">
+ <label class="form-label">PRIORITY</label>
+
+ <select id="taskPriority" class="form-input">
+  <option>Low</option>
+  <option selected>Medium</option>
+  <option>High</option>
+ </select>
+</div>
+
+<div class="form-field">
+ <label class="form-label">STATUS</label>
+
+ <select id="taskStatus" class="form-input">
+  <option>Open</option>
+  <option>Completed</option>
+ </select>
+</div>
+
+</div>
+
+<div class="modal-actions">
+ <button class="secondary-btn" onclick="closeTaskModal()">Cancel</button>
+ <button class="primary-btn" onclick="saveTaskForm()">Save Task</button>
 </div>
 
 </div>
@@ -1731,7 +1996,13 @@ const TIMELINE_STORAGE_KEY =
 const TIMELINE_BACKUP_KEY =
  "excedereCRMTimelineBackup";
 
-const PIPELINE_STAGES = [
+const TASK_STORAGE_KEY =
+ "excedereCRMTasks";
+
+const TASK_BACKUP_KEY =
+ "excedereCRMTasksBackup";
+
+const PIPELINE_STAGES=[
  "New",
  "Contacted",
  "Follow-Up",
@@ -1743,28 +2014,23 @@ const PIPELINE_STAGES = [
 ];
 
 /* =====================================================
-   SESSION DISCOVERY
+   SESSION
 ===================================================== */
 
 function findExistingExcedereSession(){
 
- const expectedKey =
+ const expectedKey=
   `sb-${SUPABASE_PROJECT_REF}-auth-token`;
 
  const keys=[];
 
- if(
-  localStorage.getItem(expectedKey)
- ){
+ if(localStorage.getItem(expectedKey)){
   keys.push(expectedKey);
  }
 
- for(
-  let i=0;
-  i<localStorage.length;
-  i++
- ){
-  const key =
+ for(let i=0;i<localStorage.length;i++){
+
+  const key=
    localStorage.key(i);
 
   if(
@@ -1776,19 +2042,18 @@ function findExistingExcedereSession(){
   }
  }
 
- for(
-  const key of keys
- ){
+ for(const key of keys){
+
   try{
 
-   const raw =
+   const raw=
     localStorage.getItem(key);
 
    if(!raw){
     continue;
    }
 
-   const parsed =
+   const parsed=
     JSON.parse(raw);
 
    const possible=[
@@ -1798,9 +2063,8 @@ function findExistingExcedereSession(){
     parsed?.data?.session
    ];
 
-   for(
-    const candidate of possible
-   ){
+   for(const candidate of possible){
+
     if(
      candidate?.access_token &&
      candidate?.refresh_token
@@ -1813,6 +2077,7 @@ function findExistingExcedereSession(){
    }
 
   }catch(error){
+
    console.warn(
     "Stored session read failed:",
     key,
@@ -1824,14 +2089,10 @@ function findExistingExcedereSession(){
  return null;
 }
 
-const existingExcedereSession =
+const existingExcedereSession=
  findExistingExcedereSession();
 
-/* =====================================================
-   SUPABASE CLIENT
-===================================================== */
-
-const supabaseClient =
+const supabaseClient=
  window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY,
@@ -1852,28 +2113,35 @@ const supabaseClient =
 let leads=[];
 let companies=[];
 let timeline=[];
+let tasks=[];
 
 let selectedLeadId=null;
 let selectedCompanyId=null;
 
 let currentSearch="";
 let currentView="dashboard";
+let taskFilter="Open";
 
 let editingLeadId=null;
 let editingCompanyId=null;
+let editingTaskId=null;
 
 let timelineTargetType=null;
 let timelineTargetId=null;
+
+let presetTaskTargetType=null;
+let presetTaskTargetId=null;
 
 let cloudSyncTimer=null;
 let cloudSyncRunning=false;
 let sessionBridgeRunning=null;
 
 /* =====================================================
-   HELPERS
+   GENERAL HELPERS
 ===================================================== */
 
 function e(value){
+
  return String(value ?? "")
   .replace(/&/g,"&amp;")
   .replace(/</g,"&lt;")
@@ -1954,21 +2222,45 @@ function timelineDefaults(item){
  return item;
 }
 
+function taskDefaults(task){
+
+ task.contactId ||= "";
+ task.companyId ||= "";
+ task.title ||= "";
+ task.description ||= "";
+ task.dueAt ||= "";
+ task.priority ||= "Medium";
+ task.status ||= "Open";
+ task.completedAt ||= "";
+
+ return task;
+}
+
 function getLeadById(id){
+
  return leads.find(
   lead=>lead.id===id
  );
 }
 
 function getCompanyById(id){
+
  return companies.find(
   company=>company.id===id
+ );
+}
+
+function getTaskById(id){
+
+ return tasks.find(
+  task=>task.id===id
  );
 }
 
 function getCompanyForLead(lead){
 
  if(lead?.companyId){
+
   return getCompanyById(
    lead.companyId
   );
@@ -1978,7 +2270,7 @@ function getCompanyForLead(lead){
 
   return companies.find(
    company=>
-    company.name.trim().toLowerCase() ===
+    company.name.trim().toLowerCase()===
     lead.company.trim().toLowerCase()
   );
  }
@@ -2087,8 +2379,9 @@ async function getActiveSession(){
 
  if(
   expiresAt &&
-  expiresAt-now <= 120
+  expiresAt-now<=120
  ){
+
   const refreshed=
    await supabaseClient
     .auth
@@ -2116,7 +2409,7 @@ async function cloud(
  retry=true
 ){
 
- let session=
+ const session=
   await getActiveSession();
 
  if(!session){
@@ -2125,7 +2418,7 @@ async function cloud(
   );
  }
 
- let response=
+ const response=
   await fetch(
    CLOUD_FUNCTION_URL,
    {
@@ -2151,6 +2444,7 @@ async function cloud(
   response.status===401 &&
   retry
  ){
+
   const refreshed=
    await supabaseClient
     .auth
@@ -2219,11 +2513,17 @@ function saveCache(){
   TIMELINE_STORAGE_KEY,
   JSON.stringify(timeline)
  );
+
+ localStorage.setItem(
+  TASK_STORAGE_KEY,
+  JSON.stringify(tasks)
+ );
 }
 
 function loadLeadCache(){
 
  try{
+
   const parsed=
    JSON.parse(
     localStorage.getItem(
@@ -2243,6 +2543,7 @@ function loadLeadCache(){
 function loadCompanyCache(){
 
  try{
+
   const parsed=
    JSON.parse(
     localStorage.getItem(
@@ -2262,6 +2563,7 @@ function loadCompanyCache(){
 function loadTimelineCache(){
 
  try{
+
   const parsed=
    JSON.parse(
     localStorage.getItem(
@@ -2278,58 +2580,57 @@ function loadTimelineCache(){
  }
 }
 
+function loadTaskCache(){
+
+ try{
+
+  const parsed=
+   JSON.parse(
+    localStorage.getItem(
+     TASK_STORAGE_KEY
+    ) || "[]"
+   );
+
+  return Array.isArray(parsed)
+   ? parsed.map(taskDefaults)
+   : [];
+
+ }catch{
+  return [];
+ }
+}
+
 function backupCache(){
 
- const leadRaw=
-  localStorage.getItem(
-   LEAD_STORAGE_KEY
-  );
+ const values=[
+  [LEAD_STORAGE_KEY,LEAD_BACKUP_KEY],
+  [COMPANY_STORAGE_KEY,COMPANY_BACKUP_KEY],
+  [TIMELINE_STORAGE_KEY,TIMELINE_BACKUP_KEY],
+  [TASK_STORAGE_KEY,TASK_BACKUP_KEY]
+ ];
 
- if(
-  leadRaw &&
-  !localStorage.getItem(
-   LEAD_BACKUP_KEY
-  )
- ){
-  localStorage.setItem(
-   LEAD_BACKUP_KEY,
-   leadRaw
-  );
- }
+ values.forEach(
+  ([sourceKey,backupKey])=>{
 
- const companyRaw=
-  localStorage.getItem(
-   COMPANY_STORAGE_KEY
-  );
+   const raw=
+    localStorage.getItem(
+     sourceKey
+    );
 
- if(
-  companyRaw &&
-  !localStorage.getItem(
-   COMPANY_BACKUP_KEY
-  )
- ){
-  localStorage.setItem(
-   COMPANY_BACKUP_KEY,
-   companyRaw
-  );
- }
+   if(
+    raw &&
+    !localStorage.getItem(
+     backupKey
+    )
+   ){
+    localStorage.setItem(
+     backupKey,
+     raw
+    );
+   }
 
- const timelineRaw=
-  localStorage.getItem(
-   TIMELINE_STORAGE_KEY
-  );
-
- if(
-  timelineRaw &&
-  !localStorage.getItem(
-   TIMELINE_BACKUP_KEY
-  )
- ){
-  localStorage.setItem(
-   TIMELINE_BACKUP_KEY,
-   timelineRaw
-  );
- }
+  }
+ );
 }
 
 /* =====================================================
@@ -2376,7 +2677,8 @@ async function syncCloud(){
    {
     companies,
     leads,
-    timeline
+    timeline,
+    tasks
    }
   );
 
@@ -2419,6 +2721,9 @@ async function initialise(){
  const timelineFallback=
   loadTimelineCache();
 
+ const taskFallback=
+  loadTaskCache();
+
  setSync(
   "syncing",
   "Connecting..."
@@ -2434,6 +2739,7 @@ async function initialise(){
    leads=leadFallback;
    companies=companyFallback;
    timeline=timelineFallback;
+   tasks=taskFallback;
 
    selectedLeadId=
     leads[0]?.id || null;
@@ -2469,6 +2775,11 @@ async function initialise(){
     ? result.timeline.map(timelineDefaults)
     : [];
 
+  const cloudTasks=
+   Array.isArray(result.tasks)
+    ? result.tasks.map(taskDefaults)
+    : [];
+
   companies=[
    ...cloudCompanies
   ];
@@ -2487,7 +2798,6 @@ async function initialise(){
       localCompany
      );
     }
-
    }
   );
 
@@ -2509,7 +2819,6 @@ async function initialise(){
       localLead
      );
     }
-
    }
   );
 
@@ -2531,7 +2840,27 @@ async function initialise(){
       localItem
      );
     }
+   }
+  );
 
+  tasks=[
+   ...cloudTasks
+  ];
+
+  taskFallback.forEach(
+   localTask=>{
+
+    if(
+     !tasks.some(
+      cloudTask=>
+       cloudTask.id===
+       localTask.id
+     )
+    ){
+     tasks.push(
+      localTask
+     );
+    }
    }
   );
 
@@ -2546,9 +2875,10 @@ async function initialise(){
   renderAll();
 
   if(
-   companies.length > cloudCompanies.length ||
-   leads.length > cloudLeads.length ||
-   timeline.length > cloudTimeline.length
+   companies.length>cloudCompanies.length ||
+   leads.length>cloudLeads.length ||
+   timeline.length>cloudTimeline.length ||
+   tasks.length>cloudTasks.length
   ){
 
    setSync(
@@ -2561,7 +2891,8 @@ async function initialise(){
     {
      companies,
      leads,
-     timeline
+     timeline,
+     tasks
     }
    );
   }
@@ -2581,6 +2912,7 @@ async function initialise(){
   leads=leadFallback;
   companies=companyFallback;
   timeline=timelineFallback;
+  tasks=taskFallback;
 
   selectedLeadId=
    leads[0]?.id || null;
@@ -2610,17 +2942,11 @@ supabaseClient
   )=>{
 
    if(
-    event==="TOKEN_REFRESHED"
-   ){
-    setSync(
-     "synced",
-     "Cloud synced"
-    );
-   }
-
-   if(
-    event==="SIGNED_IN" &&
-    session
+    event==="TOKEN_REFRESHED" ||
+    (
+     event==="SIGNED_IN" &&
+     session
+    )
    ){
     setSync(
      "synced",
@@ -2636,12 +2962,11 @@ supabaseClient
      "Login required"
     );
    }
-
   }
  );
 
 /* =====================================================
-   CONTACT STATUS
+   STATUS HELPERS
 ===================================================== */
 
 function days(dateString){
@@ -2818,6 +3143,84 @@ function filteredCompanies(){
  );
 }
 
+function filteredTasks(){
+
+ let result=[
+  ...tasks
+ ];
+
+ if(taskFilter!=="All"){
+
+  result=
+   result.filter(
+    task=>
+     task.status===taskFilter
+   );
+ }
+
+ if(currentSearch){
+
+  const query=
+   currentSearch.toLowerCase();
+
+  result=
+   result.filter(
+    task=>{
+
+     const lead=
+      task.contactId
+       ? getLeadById(
+          task.contactId
+         )
+       : null;
+
+     const company=
+      task.companyId
+       ? getCompanyById(
+          task.companyId
+         )
+       : null;
+
+     return [
+      task.title,
+      task.description,
+      task.priority,
+      task.status,
+      lead?.firstName,
+      lead?.company,
+      company?.name
+     ]
+      .join(" ")
+      .toLowerCase()
+      .includes(query);
+
+    }
+   );
+ }
+
+ return result.sort(
+  (a,b)=>{
+
+   if(!a.dueAt && !b.dueAt){
+    return 0;
+   }
+
+   if(!a.dueAt){
+    return 1;
+   }
+
+   if(!b.dueAt){
+    return -1;
+   }
+
+   return (
+    new Date(a.dueAt) -
+    new Date(b.dueAt)
+   );
+  }
+ );
+}
+
 /* =====================================================
    VIEW SWITCHING
 ===================================================== */
@@ -2868,7 +3271,8 @@ function switchView(
    companies:1,
    contacts:2,
    pipeline:3,
-   followups:4
+   followups:4,
+   tasks:5
   };
 
   document
@@ -2906,8 +3310,12 @@ function switchView(
   followups:[
    "Follow-Ups",
    "See who needs your attention next."
-  ]
+  ],
 
+  tasks:[
+   "Tasks",
+   "Manage reminders and actions across your CRM."
+  ]
  };
 
  document
@@ -3008,11 +3416,9 @@ function timelineForContact(
       "Call logged",
      body:"",
      outcome:
-      entry.outcome ||
-      "",
+      entry.outcome || "",
      nextAction:
-      entry.nextAction ||
-      "",
+      entry.nextAction || "",
      contactId
     })
    );
@@ -3107,11 +3513,9 @@ function timelineForCompany(
         entry.outcome ||
         "Call logged",
        outcome:
-        entry.outcome ||
-        "",
+        entry.outcome || "",
        nextAction:
-        entry.nextAction ||
-        "",
+        entry.nextAction || "",
        contactId:
         lead.id,
        companyId
@@ -3169,16 +3573,14 @@ function timelineForCompany(
   );
 }
 
-function renderTimelineItems(
- items
-){
+function renderTimelineItems(items){
 
  if(!items.length){
 
-  return `
-  <div class="history-sub">
-   No activity recorded yet.
-  </div>
+  return`
+   <div class="history-sub">
+    No activity recorded yet.
+   </div>
   `;
  }
 
@@ -3194,7 +3596,7 @@ function renderTimelineItems(
         )
       : null;
 
-    return `
+    return`
 
     <div class="timeline-item">
 
@@ -3221,85 +3623,71 @@ function renderTimelineItems(
 
      ${
       item.title
-       ?
-       `
+       ? `
        <div class="timeline-title">
         ${e(item.title)}
        </div>
        `
-       :
-       ""
+       : ""
      }
 
      ${
       item.body
-       ?
-       `
+       ? `
        <div class="timeline-body">
         ${e(item.body)}
        </div>
        `
-       :
-       ""
+       : ""
      }
 
      ${
       item.outcome ||
       item.nextAction
-       ?
-       `
+       ? `
 
        <div class="timeline-extra">
 
         ${
          item.outcome
-          ?
-          `
+          ? `
           <div>
            <strong>Outcome:</strong>
            ${e(item.outcome)}
           </div>
           `
-          :
-          ""
+          : ""
         }
 
         ${
          item.nextAction
-          ?
-          `
+          ? `
           <div>
            <strong>Next:</strong>
            ${e(item.nextAction)}
           </div>
           `
-          :
-          ""
+          : ""
         }
 
        </div>
-
        `
-       :
-       ""
+       : ""
      }
 
      ${
       lead
-       ?
-       `
+       ? `
        <div class="timeline-contact">
         ${e(lead.firstName || "Contact")}
        </div>
        `
-       :
-       ""
+       : ""
      }
 
      ${
       item.source==="manual"
-       ?
-       `
+       ? `
        <div class="timeline-controls">
 
         <button
@@ -3311,8 +3699,7 @@ function renderTimelineItems(
 
        </div>
        `
-       :
-       ""
+       : ""
      }
 
     </div>
@@ -3321,6 +3708,134 @@ function renderTimelineItems(
    }
   )
   .join("");
+}
+
+/* =====================================================
+   TASK HELPERS
+===================================================== */
+
+function taskIsOverdue(task){
+
+ if(
+  task.status==="Completed" ||
+  !task.dueAt
+ ){
+  return false;
+ }
+
+ return (
+  new Date(task.dueAt) <
+  new Date()
+ );
+}
+
+function tasksDueCount(){
+
+ const end=
+  new Date();
+
+ end.setHours(
+  23,59,59,999
+ );
+
+ return tasks.filter(
+  task=>
+   task.status==="Open" &&
+   task.dueAt &&
+   new Date(task.dueAt)<=end
+ ).length;
+}
+
+function priorityClass(priority){
+
+ switch(priority){
+
+  case "High":
+   return "priority-high";
+
+  case "Low":
+   return "priority-low";
+
+  default:
+   return "priority-medium";
+ }
+}
+
+function taskTargetName(task){
+
+ if(task.contactId){
+
+  const lead=
+   getLeadById(
+    task.contactId
+   );
+
+  if(lead){
+
+   return {
+    type:"contact",
+    name:
+     lead.firstName ||
+     lead.company ||
+     "Contact"
+   };
+  }
+ }
+
+ if(task.companyId){
+
+  const company=
+   getCompanyById(
+    task.companyId
+   );
+
+  if(company){
+
+   return {
+    type:"company",
+    name:
+     company.name ||
+     "Company"
+   };
+  }
+ }
+
+ return{
+  type:"",
+  name:"Unknown"
+ };
+}
+
+function openTaskTarget(taskId){
+
+ const task=
+  getTaskById(taskId);
+
+ if(!task){
+  return;
+ }
+
+ if(task.contactId){
+
+  selectedLeadId=
+   task.contactId;
+
+  switchView(
+   "contacts"
+  );
+
+  return;
+ }
+
+ if(task.companyId){
+
+  selectedCompanyId=
+   task.companyId;
+
+  switchView(
+   "companies"
+  );
+ }
 }
 
 /* =====================================================
@@ -3371,6 +3886,13 @@ function renderDashboard(){
   )
   .textContent=
    leads.length;
+
+ document
+  .getElementById(
+   "statTasksDue"
+  )
+  .textContent=
+   tasksDueCount();
 
  document
   .getElementById(
@@ -3484,23 +4006,19 @@ function renderDashboard(){
 
      const title=
       activity.manual
-       ?
-       (
+       ? (
         activity.entry.title ||
         timelineTypeLabel(
          activity.type
         )
        )
-       :
-       activity.type==="email"
-        ?
-        activity.entry.subject ||
-        "Email sent"
-        :
-        activity.entry.outcome ||
-        "Call logged";
+       : activity.type==="email"
+        ? activity.entry.subject ||
+          "Email sent"
+        : activity.entry.outcome ||
+          "Call logged";
 
-     return `
+     return`
 
      <div class="activity-row">
 
@@ -3573,7 +4091,7 @@ function renderDashboard(){
      const currentStatus=
       status(lead);
 
-     return `
+     return`
 
      <div class="follow-row">
 
@@ -3640,12 +4158,11 @@ function renderCompanies(){
       .filter(Boolean)
       .join(", ");
 
-     return `
+     return`
 
      <button
       class="company-row ${
-       selectedCompanyId===
-       company.id
+       selectedCompanyId===company.id
         ? "selected"
         : ""
       }"
@@ -3758,6 +4275,13 @@ function renderCompanyDetail(){
    company.id
   );
 
+ const companyTasks=
+  tasks.filter(
+   task=>
+    task.companyId===company.id &&
+    task.status==="Open"
+  );
+
  box.innerHTML=`
 
  <div class="detail-top">
@@ -3818,10 +4342,8 @@ function renderCompanyDetail(){
 
     ${
      company.website
-      ?
-      `<a href="${e(normalizeWebsite(company.website))}" target="_blank">${e(company.website)}</a>`
-      :
-      "Not provided"
+      ? `<a href="${e(normalizeWebsite(company.website))}" target="_blank">${e(company.website)}</a>`
+      : "Not provided"
     }
 
    </div>
@@ -3898,6 +4420,13 @@ function renderCompanyDetail(){
    </button>
 
    <button
+    class="secondary-btn"
+    onclick="openTaskModal(null,'company','${company.id}')"
+   >
+    ✓ Add Task
+   </button>
+
+   <button
     class="danger-btn"
     onclick="deleteCompany('${company.id}')"
    >
@@ -3905,6 +4434,50 @@ function renderCompanyDetail(){
    </button>
 
   </div>
+
+  <div class="history-title">
+   OPEN TASKS (${companyTasks.length})
+  </div>
+
+  ${
+   companyTasks
+    .slice(0,5)
+    .map(
+     task=>`
+
+     <button
+      class="linked-contact"
+      onclick="openTaskFromRecord('${task.id}')"
+     >
+
+      <div>
+
+       <div class="linked-contact-name">
+        ${e(task.title)}
+       </div>
+
+       <div class="linked-contact-role">
+        ${
+         task.dueAt
+          ? e(new Date(task.dueAt).toLocaleString())
+          : "No due date"
+        }
+       </div>
+
+      </div>
+
+      <div class="linked-contact-arrow">
+       ›
+      </div>
+
+     </button>
+
+     `
+    )
+    .join("")
+   ||
+   '<div class="history-sub">No open tasks.</div>'
+  }
 
   <div class="history-title">
    LINKED CONTACTS
@@ -4007,7 +4580,7 @@ function renderContacts(){
      const currentStatus=
       status(lead);
 
-     return `
+     return`
 
      <button
       class="contact-row ${
@@ -4144,6 +4717,13 @@ function renderDetail(){
    lead.id
   );
 
+ const contactTasks=
+  tasks.filter(
+   task=>
+    task.contactId===lead.id &&
+    task.status==="Open"
+  );
+
  box.innerHTML=`
 
  <div class="detail-top">
@@ -4177,8 +4757,7 @@ function renderDetail(){
 
   ${
    linkedCompany
-    ?
-    `
+    ? `
 
     <div class="detail-item">
 
@@ -4199,10 +4778,8 @@ function renderDetail(){
      </div>
 
     </div>
-
     `
-    :
-    ""
+    : ""
   }
 
   <div class="detail-item">
@@ -4354,6 +4931,13 @@ function renderDetail(){
 
    <button
     class="secondary-btn"
+    onclick="openTaskModal(null,'contact','${lead.id}')"
+   >
+    ✓ Add Task
+   </button>
+
+   <button
+    class="secondary-btn"
     onclick="openContactModal('${lead.id}')"
    >
     ✎ Edit Contact
@@ -4367,6 +4951,50 @@ function renderDetail(){
    </button>
 
   </div>
+
+  <div class="history-title">
+   OPEN TASKS (${contactTasks.length})
+  </div>
+
+  ${
+   contactTasks
+    .slice(0,5)
+    .map(
+     task=>`
+
+     <button
+      class="linked-contact"
+      onclick="openTaskFromRecord('${task.id}')"
+     >
+
+      <div>
+
+       <div class="linked-contact-name">
+        ${e(task.title)}
+       </div>
+
+       <div class="linked-contact-role">
+        ${
+         task.dueAt
+          ? e(new Date(task.dueAt).toLocaleString())
+          : "No due date"
+        }
+       </div>
+
+      </div>
+
+      <div class="linked-contact-arrow">
+       ›
+      </div>
+
+     </button>
+
+     `
+    )
+    .join("")
+   ||
+   '<div class="history-sub">No open tasks.</div>'
+  }
 
   <div class="timeline-toolbar">
 
@@ -4425,7 +5053,7 @@ function renderPipeline(){
          )===stage
        );
 
-     return `
+     return`
 
      <div class="pipeline-column">
 
@@ -4482,7 +5110,7 @@ function renderPipeline(){
 }
 
 /* =====================================================
-   FOLLOW UPS
+   FOLLOWUPS
 ===================================================== */
 
 function renderFollowups(){
@@ -4516,7 +5144,7 @@ function renderFollowups(){
      const currentStatus=
       status(lead);
 
-     return `
+     return`
 
      <div class="follow-row">
 
@@ -4561,6 +5189,778 @@ function renderFollowups(){
 }
 
 /* =====================================================
+   TASKS
+===================================================== */
+
+function setTaskFilter(value){
+
+ taskFilter=value;
+
+ [
+  "Open",
+  "All",
+  "Completed"
+ ]
+  .forEach(
+   filter=>{
+
+    const element=
+     document.getElementById(
+      `taskFilter${filter}`
+     );
+
+    if(element){
+
+     element.classList.toggle(
+      "active",
+      filter===value
+     );
+    }
+   }
+  );
+
+ renderTasks();
+}
+
+function renderTasks(){
+
+ const list=
+  document.getElementById(
+   "tasksList"
+  );
+
+ const items=
+  filteredTasks();
+
+ list.innerHTML=
+
+  items
+   .map(
+    task=>{
+
+     const target=
+      taskTargetName(task);
+
+     const overdue=
+      taskIsOverdue(task);
+
+     return`
+
+     <div class="task-row ${overdue ? "overdue" : ""}">
+
+      <div>
+
+       <div class="task-title">
+        ${e(task.title)}
+       </div>
+
+       <div class="task-description">
+        ${e(task.description || "")}
+       </div>
+
+      </div>
+
+      <div>
+
+       <button
+        class="task-target"
+        onclick="openTaskTarget('${task.id}')"
+       >
+        ${
+         target.type==="company"
+          ? "◆"
+          : "●"
+        }
+        ${e(target.name)}
+       </button>
+
+      </div>
+
+      <div
+       class="task-due ${overdue ? "overdue-text" : ""}"
+      >
+       ${
+        task.dueAt
+         ? e(
+          new Date(
+           task.dueAt
+          ).toLocaleString()
+         )
+         : "No due date"
+       }
+      </div>
+
+      <div>
+
+       <span
+        class="priority ${priorityClass(task.priority)}"
+       >
+        ${e(task.priority)}
+       </span>
+
+      </div>
+
+      <div class="task-hide-small">
+
+       <span
+        class="status-badge ${
+         task.status==="Completed"
+          ? "task-status-completed"
+          : "task-status-open"
+        }"
+       >
+        ${e(task.status)}
+       </span>
+
+      </div>
+
+      <div class="task-actions task-hide-small">
+
+       ${
+        task.status==="Open"
+         ? `
+         <button
+          class="mini-btn complete"
+          onclick="setTaskStatus('${task.id}','Completed')"
+         >
+          Complete
+         </button>
+         `
+         : `
+         <button
+          class="mini-btn"
+          onclick="setTaskStatus('${task.id}','Open')"
+         >
+          Reopen
+         </button>
+         `
+       }
+
+       <button
+        class="mini-btn"
+        onclick="openTaskModal('${task.id}')"
+       >
+        Edit
+       </button>
+
+       <button
+        class="mini-btn delete"
+        onclick="deleteTask('${task.id}')"
+       >
+        Delete
+       </button>
+
+      </div>
+
+     </div>
+
+     `;
+    }
+   )
+   .join("")
+   ||
+   '<div class="empty">No tasks match this view.</div>';
+}
+
+function openTaskFromRecord(id){
+
+ taskFilter="Open";
+
+ switchView(
+  "tasks"
+ );
+
+ setTimeout(
+  ()=>{
+
+   const task=
+    getTaskById(id);
+
+   if(task){
+    openTaskModal(id);
+   }
+
+  },
+  50
+ );
+}
+
+/* =====================================================
+   TASK MODAL
+===================================================== */
+
+function populateTaskTargets(
+ type,
+ selectedId=""
+){
+
+ const select=
+  document.getElementById(
+   "taskTargetId"
+  );
+
+ let options=[];
+
+ if(type==="contact"){
+
+  options=
+   [...leads]
+    .sort(
+     (a,b)=>
+      (a.firstName || "")
+       .localeCompare(
+        b.firstName || ""
+       )
+    )
+    .map(
+     lead=>({
+      id:lead.id,
+      name:
+       `${lead.firstName || "Unknown"}${
+        lead.company
+         ? ` — ${lead.company}`
+         : ""
+       }`
+     })
+    );
+
+ }else{
+
+  options=
+   [...companies]
+    .sort(
+     (a,b)=>
+      a.name.localeCompare(
+       b.name
+      )
+    )
+    .map(
+     company=>({
+      id:company.id,
+      name:company.name
+     })
+    );
+ }
+
+ select.innerHTML=`
+
+ <option value="">
+  Select ${type}
+ </option>
+
+ ${
+  options
+   .map(
+    option=>`
+
+    <option
+     value="${e(option.id)}"
+     ${
+      option.id===selectedId
+       ? "selected"
+       : ""
+     }
+    >
+     ${e(option.name)}
+    </option>
+
+    `
+   )
+   .join("")
+ }
+
+ `;
+}
+
+function taskTargetTypeChanged(){
+
+ const type=
+  document
+   .getElementById(
+    "taskTargetType"
+   )
+   .value;
+
+ populateTaskTargets(
+  type
+ );
+}
+
+function openTaskModal(
+ id=null,
+ targetType=null,
+ targetId=null
+){
+
+ editingTaskId=id;
+
+ presetTaskTargetType=
+  targetType;
+
+ presetTaskTargetId=
+  targetId;
+
+ const task=
+  id
+   ? getTaskById(id)
+   : null;
+
+ document
+  .getElementById(
+   "taskModalTitle"
+  )
+  .textContent=
+   task
+    ? "Edit Task"
+    : "New Task";
+
+ document
+  .getElementById(
+   "taskTitle"
+  )
+  .value=
+   task?.title || "";
+
+ document
+  .getElementById(
+   "taskDescription"
+  )
+  .value=
+   task?.description || "";
+
+ document
+  .getElementById(
+   "taskPriority"
+  )
+  .value=
+   task?.priority || "Medium";
+
+ document
+  .getElementById(
+   "taskStatus"
+  )
+  .value=
+   task?.status || "Open";
+
+ document
+  .getElementById(
+   "taskDueAt"
+  )
+  .value=
+   task?.dueAt
+    ? toDateTimeLocal(
+       task.dueAt
+      )
+    : "";
+
+ let resolvedType=
+  "contact";
+
+ let resolvedId="";
+
+ if(task){
+
+  if(task.contactId){
+   resolvedType="contact";
+   resolvedId=task.contactId;
+  }else{
+   resolvedType="company";
+   resolvedId=task.companyId;
+  }
+
+ }else if(
+  targetType &&
+  targetId
+ ){
+
+  resolvedType=
+   targetType;
+
+  resolvedId=
+   targetId;
+ }
+
+ document
+  .getElementById(
+   "taskTargetType"
+  )
+  .value=
+   resolvedType;
+
+ populateTaskTargets(
+  resolvedType,
+  resolvedId
+ );
+
+ document
+  .getElementById(
+   "taskModal"
+  )
+  .classList.add(
+   "show"
+  );
+}
+
+function closeTaskModal(){
+
+ document
+  .getElementById(
+   "taskModal"
+  )
+  .classList.remove(
+   "show"
+  );
+
+ editingTaskId=null;
+ presetTaskTargetType=null;
+ presetTaskTargetId=null;
+}
+
+function toDateTimeLocal(value){
+
+ const date=
+  new Date(value);
+
+ if(
+  Number.isNaN(
+   date.getTime()
+  )
+ ){
+  return "";
+ }
+
+ const offset=
+  date.getTimezoneOffset();
+
+ const local=
+  new Date(
+   date.getTime() -
+   offset*60000
+  );
+
+ return local
+  .toISOString()
+  .slice(0,16);
+}
+
+async function saveTaskForm(){
+
+ const title=
+  document
+   .getElementById(
+    "taskTitle"
+   )
+   .value
+   .trim();
+
+ const description=
+  document
+   .getElementById(
+    "taskDescription"
+   )
+   .value
+   .trim();
+
+ const targetType=
+  document
+   .getElementById(
+    "taskTargetType"
+   )
+   .value;
+
+ const targetId=
+  document
+   .getElementById(
+    "taskTargetId"
+   )
+   .value;
+
+ const dueValue=
+  document
+   .getElementById(
+    "taskDueAt"
+   )
+   .value;
+
+ const priority=
+  document
+   .getElementById(
+    "taskPriority"
+   )
+   .value;
+
+ const taskStatus=
+  document
+   .getElementById(
+    "taskStatus"
+   )
+   .value;
+
+ if(!title){
+
+  alert(
+   "Please enter a task title."
+  );
+
+  return;
+ }
+
+ if(!targetId){
+
+  alert(
+   "Please select a contact or company for this task."
+  );
+
+  return;
+ }
+
+ let dueAt="";
+
+ if(dueValue){
+
+  const parsed=
+   new Date(
+    dueValue
+   );
+
+  if(
+   !Number.isNaN(
+    parsed.getTime()
+   )
+  ){
+   dueAt=
+    parsed.toISOString();
+  }
+ }
+
+ let task;
+
+ if(editingTaskId){
+
+  task=
+   getTaskById(
+    editingTaskId
+   );
+
+  if(!task){
+   return;
+  }
+
+ }else{
+
+  task=
+   taskDefaults({
+    id:uuid()
+   });
+
+  tasks.push(
+   task
+  );
+ }
+
+ task.title=title;
+ task.description=description;
+ task.dueAt=dueAt;
+ task.priority=priority;
+ task.status=taskStatus;
+
+ task.contactId=
+  targetType==="contact"
+   ? targetId
+   : "";
+
+ task.companyId=
+  targetType==="company"
+   ? targetId
+   : "";
+
+ if(
+  taskStatus==="Completed"
+ ){
+
+  task.completedAt=
+   task.completedAt ||
+   new Date().toISOString();
+
+ }else{
+
+  task.completedAt="";
+ }
+
+ closeTaskModal();
+
+ saveCache();
+
+ renderAll();
+
+ setSync(
+  "syncing",
+  "Saving task..."
+ );
+
+ try{
+
+  await cloud(
+   "sync",
+   {
+    companies,
+    leads,
+    timeline,
+    tasks
+   }
+  );
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   "Task save failed:",
+   error
+  );
+
+  setSync(
+   "error",
+   "Local cache active"
+  );
+
+  alert(
+   "The task was saved locally, but cloud sync failed."
+  );
+ }
+}
+
+async function setTaskStatus(
+ id,
+ newStatus
+){
+
+ const task=
+  getTaskById(id);
+
+ if(!task){
+  return;
+ }
+
+ setSync(
+  "syncing",
+  newStatus==="Completed"
+   ? "Completing task..."
+   : "Reopening task..."
+ );
+
+ try{
+
+  const result=
+   await cloud(
+    "setTaskStatus",
+    {
+     externalId:id,
+     status:newStatus
+    }
+   );
+
+  task.status=
+   newStatus;
+
+  task.completedAt=
+   result.completedAt || "";
+
+  saveCache();
+
+  renderAll();
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   "Task status update failed:",
+   error
+  );
+
+  setSync(
+   "error",
+   "Task update failed"
+  );
+
+  alert(
+   "The task status could not be updated."
+  );
+ }
+}
+
+async function deleteTask(id){
+
+ const task=
+  getTaskById(id);
+
+ if(!task){
+  return;
+ }
+
+ if(
+  !confirm(
+   `Delete the task "${task.title}"?`
+  )
+ ){
+  return;
+ }
+
+ setSync(
+  "syncing",
+  "Deleting task..."
+ );
+
+ try{
+
+  await cloud(
+   "deleteTask",
+   {
+    externalId:id
+   }
+  );
+
+  tasks=
+   tasks.filter(
+    item=>
+     item.id!==id
+   );
+
+  saveCache();
+
+  renderAll();
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   "Task delete failed:",
+   error
+  );
+
+  setSync(
+   "error",
+   "Delete failed"
+  );
+
+  alert(
+   "The task was not deleted."
+  );
+ }
+}
+
+/* =====================================================
    RENDER ALL
 ===================================================== */
 
@@ -4571,6 +5971,7 @@ function renderAll(){
  renderContacts();
  renderPipeline();
  renderFollowups();
+ renderTasks();
 }
 
 /* =====================================================
@@ -4858,6 +6259,7 @@ async function saveContactForm(){
   alert(
    "Please enter a contact name or select a company."
   );
+
   return;
  }
 
@@ -4978,7 +6380,8 @@ async function saveContactForm(){
    {
     companies,
     leads,
-    timeline
+    timeline,
+    tasks
    }
   );
 
@@ -5025,7 +6428,7 @@ async function deleteContact(id){
 
  if(
   !confirm(
-   `Delete ${label} from the CRM?\n\nThis will also remove the record and its manual timeline activity from Supabase.`
+   `Delete ${label} from the CRM?\n\nIts manual timeline activity and linked tasks will also be removed.`
   )
  ){
   return;
@@ -5057,6 +6460,12 @@ async function deleteContact(id){
      item.contactId!==id
    );
 
+  tasks=
+   tasks.filter(
+    task=>
+     task.contactId!==id
+   );
+
   selectedLeadId=
    leads[0]?.id ||
    null;
@@ -5083,7 +6492,7 @@ async function deleteContact(id){
   );
 
   alert(
-   "The contact was not deleted. Your existing data has been left unchanged."
+   "The contact was not deleted."
   );
  }
 }
@@ -5214,9 +6623,11 @@ async function saveCompanyForm(){
   );
 
  if(!name){
+
   alert(
    "Please enter a company name."
   );
+
   return;
  }
 
@@ -5236,9 +6647,11 @@ async function saveCompanyForm(){
   );
 
  if(duplicate){
+
   alert(
    "A company with this name already exists."
   );
+
   return;
  }
 
@@ -5364,13 +6777,13 @@ async function saveCompanyForm(){
       .toLowerCase()
     )
    ){
+
     lead.companyId=
      company.id;
 
     lead.company=
      company.name;
    }
-
   }
  );
 
@@ -5392,7 +6805,8 @@ async function saveCompanyForm(){
    {
     companies,
     leads,
-    timeline
+    timeline,
+    tasks
    }
   );
 
@@ -5448,11 +6862,11 @@ async function deleteCompany(id){
     linkedContacts.length===1
      ? ""
      : "s"
-   } will remain in the CRM but will no longer be linked to this company.`;
+   } will remain but will no longer be linked to this company.`;
  }
 
  warning+=
-  "\n\nCompany timeline activity will also be removed.";
+  "\n\nCompany timeline activity and company tasks will also be removed.";
 
  if(!confirm(warning)){
   return;
@@ -5480,7 +6894,6 @@ async function deleteCompany(id){
     ){
      lead.companyId="";
     }
-
    }
   );
 
@@ -5488,6 +6901,12 @@ async function deleteCompany(id){
    timeline.filter(
     item=>
      item.companyId!==id
+   );
+
+  tasks=
+   tasks.filter(
+    task=>
+     task.companyId!==id
    );
 
   companies=
@@ -5509,7 +6928,8 @@ async function deleteCompany(id){
    {
     companies,
     leads,
-    timeline
+    timeline,
+    tasks
    }
   );
 
@@ -5531,7 +6951,7 @@ async function deleteCompany(id){
   );
 
   alert(
-   "The company was not deleted. Your existing data has been left unchanged."
+   "The company was not deleted."
   );
  }
 }
@@ -5575,6 +6995,7 @@ function openTimelineModal(
  if(
   targetType==="contact"
  ){
+
   const lead=
    getLeadById(
     targetId
@@ -5589,6 +7010,7 @@ function openTimelineModal(
  if(
   targetType==="company"
  ){
+
   const company=
    getCompanyById(
     targetId
@@ -5598,13 +7020,6 @@ function openTimelineModal(
    company?.name ||
    "Company";
  }
-
- document
-  .getElementById(
-   "timelineModalTitle"
-  )
-  .textContent=
-   "Add Activity";
 
  document
   .getElementById(
@@ -5673,10 +7088,6 @@ function closeTimelineModal(){
  timelineTargetType=null;
  timelineTargetId=null;
 }
-
-/* =====================================================
-   SAVE TIMELINE
-===================================================== */
 
 async function saveTimelineItem(){
 
@@ -5775,10 +7186,12 @@ async function saveTimelineItem(){
    body,
    outcome,
    nextAction,
+
    contactId:
     timelineTargetType==="contact"
      ? timelineTargetId
      : "",
+
    companyId:
     timelineTargetType==="company"
      ? timelineTargetId
@@ -5807,7 +7220,8 @@ async function saveTimelineItem(){
    {
     companies,
     leads,
-    timeline
+    timeline,
+    tasks
    }
   );
 
@@ -5833,10 +7247,6 @@ async function saveTimelineItem(){
   );
  }
 }
-
-/* =====================================================
-   DELETE TIMELINE
-===================================================== */
 
 async function deleteTimelineItem(id){
 
@@ -5906,7 +7316,7 @@ async function deleteTimelineItem(id){
 }
 
 /* =====================================================
-   CALL ASSIST
+   CALL ASSIST / EMAIL
 ===================================================== */
 
 function openCallAssist(){
@@ -5929,10 +7339,6 @@ function openLeadInCallAssist(id){
   "_blank"
  );
 }
-
-/* =====================================================
-   EMAIL
-===================================================== */
 
 function emailLead(id){
 
@@ -5973,7 +7379,6 @@ document
     event.target.value.trim();
 
    renderAll();
-
   }
  );
 
@@ -5981,59 +7386,28 @@ document
    MODAL BACKDROPS
 ===================================================== */
 
-document
- .getElementById(
-  "contactModal"
- )
- .addEventListener(
-  "click",
-  event=>{
+[
+ ["contactModal",closeContactModal],
+ ["companyModal",closeCompanyModal],
+ ["timelineModal",closeTimelineModal],
+ ["taskModal",closeTaskModal]
+]
+.forEach(
+ ([id,closer])=>{
 
-   if(
-    event.target.id===
-    "contactModal"
-   ){
-    closeContactModal();
-   }
+  document
+   .getElementById(id)
+   .addEventListener(
+    "click",
+    event=>{
 
-  }
- );
-
-document
- .getElementById(
-  "companyModal"
- )
- .addEventListener(
-  "click",
-  event=>{
-
-   if(
-    event.target.id===
-    "companyModal"
-   ){
-    closeCompanyModal();
-   }
-
-  }
- );
-
-document
- .getElementById(
-  "timelineModal"
- )
- .addEventListener(
-  "click",
-  event=>{
-
-   if(
-    event.target.id===
-    "timelineModal"
-   ){
-    closeTimelineModal();
-   }
-
-  }
- );
+     if(event.target.id===id){
+      closer();
+     }
+    }
+   );
+ }
+);
 
 /* =====================================================
    CALL ASSIST STORAGE
@@ -6067,12 +7441,11 @@ window.addEventListener(
   renderAll();
 
   scheduleSync();
-
  }
- );
+);
 
 /* =====================================================
-   RETURN FROM SLEEP / IDLE
+   RETURN FROM IDLE
 ===================================================== */
 
 async function verifySessionWhenReturning(){
