@@ -6,9 +6,6 @@
 
 <title>Excedere CRM</title>
 
-<link rel="icon" type="image/png" href="excedere-favicon.png">
-<link rel="apple-touch-icon" href="excedere-favicon.png">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -31,23 +28,47 @@
  --red:#ee7373;
 }
 
-*{box-sizing:border-box}
+*{
+ box-sizing:border-box;
+}
 
-html,body{
+html,
+body{
  margin:0;
  min-height:100%;
 }
 
 body{
  color:var(--text);
+
  background:
- radial-gradient(circle at 78% -5%,rgba(40,108,145,.20),transparent 34%),
- radial-gradient(circle at 6% 96%,rgba(211,164,83,.09),transparent 30%),
- linear-gradient(145deg,var(--bg),var(--bg2));
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ radial-gradient(
+  circle at 78% -5%,
+  rgba(40,108,145,.20),
+  transparent 34%
+ ),
+ radial-gradient(
+  circle at 6% 96%,
+  rgba(211,164,83,.09),
+  transparent 30%
+ ),
+ linear-gradient(
+  145deg,
+  var(--bg),
+  var(--bg2)
+ );
+
+ font-family:
+ -apple-system,
+ BlinkMacSystemFont,
+ "Segoe UI",
+ sans-serif;
 }
 
-button,input,select,textarea{
+button,
+input,
+select,
+textarea{
  font:inherit;
 }
 
@@ -65,8 +86,11 @@ a{
 
 .app{
  min-height:100vh;
+
  display:grid;
- grid-template-columns:250px minmax(0,1fr);
+
+ grid-template-columns:
+ 250px minmax(0,1fr);
 }
 
 /* =====================================================
@@ -76,17 +100,33 @@ a{
 .sidebar{
  min-height:100vh;
  height:100vh;
+
  position:sticky;
  top:0;
- padding:24px 18px;
- border-right:1px solid var(--line);
- background:linear-gradient(180deg,rgba(4,13,20,.99),rgba(6,18,27,.98));
+
+ padding:
+ 24px 18px;
+
+ border-right:
+ 1px solid var(--line);
+
+ background:
+ linear-gradient(
+  180deg,
+  rgba(4,13,20,.99),
+  rgba(6,18,27,.98)
+ );
 }
 
 .brand{
- padding:4px 8px 26px;
- border-bottom:1px solid var(--line);
- margin-bottom:22px;
+ padding:
+ 4px 8px 26px;
+
+ border-bottom:
+ 1px solid var(--line);
+
+ margin-bottom:
+ 22px;
 }
 
 .brand-top{
@@ -95,29 +135,127 @@ a{
  gap:12px;
 }
 
-.brand-icon{
+.brand-mark{
  width:54px;
  height:54px;
+
+ flex:
+ 0 0 54px;
+
+ position:relative;
+
+ display:grid;
+ place-items:center;
+
  border-radius:15px;
- object-fit:cover;
- box-shadow:0 0 24px rgba(226,177,93,.15);
+
+ border:
+ 1px solid rgba(
+   227,
+   177,
+   93,
+   .75
+  );
+
+ background:
+ radial-gradient(
+  circle at 35% 28%,
+  rgba(244,208,138,.35),
+  transparent 24%
+ ),
+ linear-gradient(
+  145deg,
+  #07141f,
+  #0d2636
+ );
+
+ box-shadow:
+ 0 0 24px rgba(
+  226,
+  177,
+  93,
+  .15
+ );
+}
+
+.brand-mark::before{
+ content:"";
+
+ width:32px;
+ height:32px;
+
+ position:absolute;
+
+ border:
+ 4px solid var(--gold);
+
+ border-right-color:
+ var(--silver);
+
+ border-radius:
+ 50%;
+
+ transform:
+ rotate(-28deg);
+}
+
+.brand-mark::after{
+ content:"";
+
+ width:27px;
+ height:4px;
+
+ position:absolute;
+
+ border-radius:
+ 4px;
+
+ background:
+ linear-gradient(
+  90deg,
+  var(--gold2),
+  var(--silver)
+ );
+
+ transform:
+ rotate(-34deg);
 }
 
 .brand-word{
- font-family:Georgia,"Times New Roman",serif;
+ font-family:
+ Georgia,
+ "Times New Roman",
+ serif;
+
  font-size:20px;
- letter-spacing:.22em;
- background:linear-gradient(90deg,var(--gold2),#fff,var(--silver));
+
+ letter-spacing:
+ .22em;
+
+ background:
+ linear-gradient(
+  90deg,
+  var(--gold2),
+  #fff,
+  var(--silver)
+ );
+
  -webkit-background-clip:text;
  background-clip:text;
+
  color:transparent;
 }
 
 .brand-sub{
  margin-top:4px;
- color:var(--silver);
+
+ color:
+ var(--silver);
+
  font-size:8px;
- letter-spacing:.20em;
+
+ letter-spacing:
+ .20em;
 }
 
 .nav{
@@ -128,38 +266,71 @@ a{
 
 .nav-btn{
  width:100%;
- min-height:46px;
- padding:0 14px;
+
+ min-height:
+ 46px;
+
+ padding:
+ 0 14px;
+
  display:flex;
  align-items:center;
  gap:12px;
- border:1px solid transparent;
- border-radius:10px;
- background:transparent;
- color:#b6c4cf;
+
+ border:
+ 1px solid transparent;
+
+ border-radius:
+ 10px;
+
+ background:
+ transparent;
+
+ color:
+ #b6c4cf;
+
  text-align:left;
- font-weight:650;
+
+ font-weight:
+ 650;
 }
 
 .nav-btn:hover{
- background:#0b1a25;
+ background:
+ #0b1a25;
 }
 
 .nav-btn.active{
  color:#fff;
- border-color:#253b4a;
- background:linear-gradient(90deg,rgba(226,177,93,.16),rgba(26,52,69,.42));
- box-shadow:inset 3px 0 0 var(--gold);
+
+ border-color:
+ #253b4a;
+
+ background:
+ linear-gradient(
+  90deg,
+  rgba(226,177,93,.16),
+  rgba(26,52,69,.42)
+ );
+
+ box-shadow:
+ inset 3px 0 0 var(--gold);
 }
 
 .nav-icon{
- width:22px;
- text-align:center;
- color:var(--gold);
+ width:
+ 22px;
+
+ text-align:
+ center;
+
+ color:
+ var(--gold);
 }
 
 .sidebar-footer{
  position:absolute;
+
  left:18px;
  right:18px;
  bottom:20px;
@@ -167,73 +338,149 @@ a{
 
 .sync-status{
  display:flex;
+
  align-items:center;
+
  gap:8px;
- min-height:34px;
- margin-bottom:10px;
- padding:8px 10px;
- border:1px solid var(--line);
- border-radius:8px;
- background:rgba(8,22,31,.70);
- color:var(--muted);
- font-size:9px;
- font-weight:700;
- letter-spacing:.04em;
+
+ min-height:
+ 34px;
+
+ margin-bottom:
+ 10px;
+
+ padding:
+ 8px 10px;
+
+ border:
+ 1px solid var(--line);
+
+ border-radius:
+ 8px;
+
+ background:
+ rgba(8,22,31,.70);
+
+ color:
+ var(--muted);
+
+ font-size:
+ 9px;
+
+ font-weight:
+ 700;
+
+ letter-spacing:
+ .04em;
 }
 
 .sync-dot{
  width:7px;
  height:7px;
- flex:0 0 7px;
- border-radius:50%;
- background:#607786;
+
+ flex:
+ 0 0 7px;
+
+ border-radius:
+ 50%;
+
+ background:
+ #607786;
 }
 
 .sync-status.syncing{
- color:var(--gold2);
+ color:
+ var(--gold2);
 }
 
-.sync-status.syncing .sync-dot{
- background:var(--gold);
- box-shadow:0 0 10px rgba(226,177,93,.35);
+.sync-status.syncing
+.sync-dot{
+ background:
+ var(--gold);
+
+ box-shadow:
+ 0 0 10px
+ rgba(226,177,93,.35);
 }
 
 .sync-status.synced{
- color:var(--green);
+ color:
+ var(--green);
 }
 
-.sync-status.synced .sync-dot{
- background:var(--green);
- box-shadow:0 0 10px rgba(79,206,139,.35);
+.sync-status.synced
+.sync-dot{
+ background:
+ var(--green);
+
+ box-shadow:
+ 0 0 10px
+ rgba(79,206,139,.35);
 }
 
 .sync-status.error{
- color:var(--amber);
+ color:
+ var(--amber);
 }
 
-.sync-status.error .sync-dot{
- background:var(--amber);
+.sync-status.error
+.sync-dot{
+ background:
+ var(--amber);
 }
 
 .call-assist-link{
  width:100%;
- min-height:48px;
- border:1px solid #e4b864;
- border-radius:10px;
- color:#10141a;
- font-weight:850;
- background:linear-gradient(135deg,#f1cd84,#dca64e);
+
+ min-height:
+ 48px;
+
+ border:
+ 1px solid #e4b864;
+
+ border-radius:
+ 10px;
+
+ color:
+ #10141a;
+
+ font-weight:
+ 850;
+
+ background:
+ linear-gradient(
+  135deg,
+  #f1cd84,
+  #dca64e
+ );
 }
 
 .sidebar-tagline{
- margin-top:18px;
- padding-top:14px;
- border-top:1px solid var(--line);
- color:#7f93a3;
- font-family:Georgia,"Times New Roman",serif;
- font-size:9px;
- line-height:1.8;
- letter-spacing:.25em;
+ margin-top:
+ 18px;
+
+ padding-top:
+ 14px;
+
+ border-top:
+ 1px solid var(--line);
+
+ color:
+ #7f93a3;
+
+ font-family:
+ Georgia,
+ "Times New Roman",
+ serif;
+
+ font-size:
+ 9px;
+
+ line-height:
+ 1.8;
+
+ letter-spacing:
+ .25em;
 }
 
 /* =====================================================
@@ -246,28 +493,52 @@ a{
 
 .topbar{
  min-height:78px;
+
  display:grid;
- grid-template-columns:1fr minmax(330px,520px);
+
+ grid-template-columns:
+ 1fr
+ minmax(330px,520px);
+
  gap:22px;
+
  align-items:center;
- padding:11px 28px;
- border-bottom:1px solid var(--line);
+
+ padding:
+ 11px 28px;
+
+ border-bottom:
+ 1px solid var(--line);
+
  position:sticky;
  top:0;
+
  z-index:30;
- background:rgba(5,13,20,.92);
- backdrop-filter:blur(14px);
+
+ background:
+ rgba(5,13,20,.92);
+
+ backdrop-filter:
+ blur(14px);
 }
 
 .page-title{
- font-size:28px;
- font-weight:780;
+ font-size:
+ 28px;
+
+ font-weight:
+ 780;
 }
 
 .page-subtitle{
- margin-top:4px;
- color:var(--muted);
- font-size:11px;
+ margin-top:
+ 4px;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 11px;
 }
 
 .search-wrap{
@@ -276,25 +547,44 @@ a{
 
 .search-icon{
  position:absolute;
+
  left:14px;
  top:50%;
- transform:translateY(-50%);
- color:var(--gold);
+
+ transform:
+ translateY(-50%);
+
+ color:
+ var(--gold);
 }
 
 .search{
  width:100%;
- height:44px;
- padding:0 14px 0 42px;
- border:1px solid #2b4252;
- border-radius:10px;
+
+ height:
+ 44px;
+
+ padding:
+ 0 14px 0 42px;
+
+ border:
+ 1px solid #2b4252;
+
+ border-radius:
+ 10px;
+
  outline:none;
- background:#08141d;
- color:var(--text);
+
+ background:
+ #08141d;
+
+ color:
+ var(--text);
 }
 
 .content{
- padding:24px 28px 42px;
+ padding:
+ 24px 28px 42px;
 }
 
 .view{
@@ -310,112 +600,210 @@ a{
 ===================================================== */
 
 .card{
- border:1px solid var(--line);
- border-radius:12px;
- background:linear-gradient(155deg,rgba(12,28,39,.94),rgba(7,19,28,.96));
+ border:
+ 1px solid var(--line);
+
+ border-radius:
+ 12px;
+
+ background:
+ linear-gradient(
+  155deg,
+  rgba(12,28,39,.94),
+  rgba(7,19,28,.96)
+ );
 }
 
 .empty{
- padding:28px;
- color:var(--muted);
- text-align:center;
+ padding:
+ 28px;
+
+ color:
+ var(--muted);
+
+ text-align:
+ center;
 }
 
 .primary-btn,
 .secondary-btn,
 .danger-btn{
- min-height:40px;
- padding:0 15px;
- border-radius:8px;
- font-weight:800;
+ min-height:
+ 40px;
+
+ padding:
+ 0 15px;
+
+ border-radius:
+ 8px;
+
+ font-weight:
+ 800;
 }
 
 .primary-btn{
  border:0;
- background:linear-gradient(135deg,#f0cc80,#d9a34a);
- color:#101318;
+
+ background:
+ linear-gradient(
+  135deg,
+  #f0cc80,
+  #d9a34a
+ );
+
+ color:
+ #101318;
 }
 
 .secondary-btn{
- border:1px solid #2d4656;
- background:#0d1f2c;
- color:var(--text);
+ border:
+ 1px solid #2d4656;
+
+ background:
+ #0d1f2c;
+
+ color:
+ var(--text);
 }
 
 .danger-btn{
- border:1px solid rgba(238,115,115,.55);
- background:rgba(238,115,115,.08);
- color:var(--red);
+ border:
+ 1px solid rgba(238,115,115,.55);
+
+ background:
+ rgba(238,115,115,.08);
+
+ color:
+ var(--red);
 }
 
 .section-heading{
  display:flex;
- justify-content:space-between;
+
+ justify-content:
+ space-between;
+
  align-items:center;
- gap:18px;
- margin-bottom:13px;
+
+ gap:
+ 18px;
+
+ margin-bottom:
+ 13px;
 }
 
 .section-heading h2{
  margin:0;
- font-size:19px;
+
+ font-size:
+ 19px;
 }
 
 .section-heading p{
- margin:4px 0 0;
- color:var(--muted);
- font-size:10px;
+ margin:
+ 4px 0 0;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 10px;
 }
 
 .status-badge{
  display:inline-block;
- margin-top:4px;
- padding:4px 8px;
- border-radius:999px;
- font-size:8px;
- font-weight:850;
+
+ margin-top:
+ 4px;
+
+ padding:
+ 4px 8px;
+
+ border-radius:
+ 999px;
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 850;
 }
 
 .status-new{
- color:var(--silver);
- border:1px solid #536776;
- background:#162631;
+ color:
+ var(--silver);
+
+ border:
+ 1px solid #536776;
+
+ background:
+ #162631;
 }
 
 .status-current{
- color:var(--green);
- border:1px solid rgba(79,206,139,.55);
- background:rgba(79,206,139,.08);
+ color:
+ var(--green);
+
+ border:
+ 1px solid rgba(79,206,139,.55);
+
+ background:
+ rgba(79,206,139,.08);
 }
 
 .status-due{
- color:var(--gold2);
- border:1px solid rgba(226,177,93,.55);
- background:rgba(226,177,93,.09);
+ color:
+ var(--gold2);
+
+ border:
+ 1px solid rgba(226,177,93,.55);
+
+ background:
+ rgba(226,177,93,.09);
 }
 
 .status-overdue{
- color:var(--red);
- border:1px solid rgba(238,115,115,.55);
- background:rgba(238,115,115,.08);
+ color:
+ var(--red);
+
+ border:
+ 1px solid rgba(238,115,115,.55);
+
+ background:
+ rgba(238,115,115,.08);
 }
 
 .company-status-prospect{
- color:var(--gold2);
- border:1px solid rgba(226,177,93,.55);
- background:rgba(226,177,93,.08);
+ color:
+ var(--gold2);
+
+ border:
+ 1px solid rgba(226,177,93,.55);
+
+ background:
+ rgba(226,177,93,.08);
 }
 
 .company-status-customer{
- color:var(--green);
- border:1px solid rgba(79,206,139,.55);
- background:rgba(79,206,139,.08);
+ color:
+ var(--green);
+
+ border:
+ 1px solid rgba(79,206,139,.55);
+
+ background:
+ rgba(79,206,139,.08);
 }
 
 .company-status-inactive{
- color:var(--muted);
- border:1px solid #536776;
- background:#162631;
+ color:
+ var(--muted);
+
+ border:
+ 1px solid #536776;
+
+ background:
+ #162631;
 }
 
 /* =====================================================
@@ -424,134 +812,264 @@ a{
 
 .stat-grid{
  display:grid;
- grid-template-columns:repeat(6,1fr);
- gap:12px;
- margin-bottom:16px;
+
+ grid-template-columns:
+ repeat(6,1fr);
+
+ gap:
+ 12px;
+
+ margin-bottom:
+ 16px;
 }
 
 .stat-card{
- padding:16px 17px;
+ padding:
+ 16px 17px;
+
  display:grid;
- grid-template-columns:38px 1fr;
- gap:12px;
+
+ grid-template-columns:
+ 38px 1fr;
+
+ gap:
+ 12px;
+
  align-items:center;
- border:1px solid var(--line);
- border-radius:12px;
- background:linear-gradient(145deg,#0a1823,#0c1e2b);
+
+ border:
+ 1px solid var(--line);
+
+ border-radius:
+ 12px;
+
+ background:
+ linear-gradient(
+  145deg,
+  #0a1823,
+  #0c1e2b
+ );
 }
 
 .stat-icon{
- width:38px;
- height:38px;
+ width:
+ 38px;
+
+ height:
+ 38px;
+
  display:grid;
+
  place-items:center;
- border:1px solid rgba(226,177,93,.55);
- border-radius:10px;
- color:var(--gold);
- background:rgba(226,177,93,.07);
- font-size:18px;
+
+ border:
+ 1px solid rgba(226,177,93,.55);
+
+ border-radius:
+ 10px;
+
+ color:
+ var(--gold);
+
+ background:
+ rgba(226,177,93,.07);
+
+ font-size:
+ 18px;
 }
 
 .stat-label{
- color:var(--muted);
- font-size:8px;
- font-weight:800;
- letter-spacing:.11em;
+ color:
+ var(--muted);
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 800;
+
+ letter-spacing:
+ .11em;
 }
 
 .stat-number{
- margin-top:3px;
- font-size:27px;
- font-weight:850;
+ margin-top:
+ 3px;
+
+ font-size:
+ 27px;
+
+ font-weight:
+ 850;
 }
 
-.gold{color:var(--gold2)}
-.red{color:var(--red)}
-.blue{color:var(--blue)}
-.green{color:var(--green)}
+.gold{
+ color:
+ var(--gold2);
+}
+
+.red{
+ color:
+ var(--red);
+}
+
+.blue{
+ color:
+ var(--blue);
+}
+
+.green{
+ color:
+ var(--green);
+}
 
 .dashboard-grid{
  display:grid;
- grid-template-columns:minmax(0,1.3fr) minmax(330px,.8fr);
- gap:14px;
+
+ grid-template-columns:
+ minmax(0,1.3fr)
+ minmax(330px,.8fr);
+
+ gap:
+ 14px;
 }
 
 .card-header{
- padding:14px 16px;
- border-bottom:1px solid var(--line);
+ padding:
+ 14px 16px;
+
+ border-bottom:
+ 1px solid var(--line);
+
  display:flex;
- justify-content:space-between;
+
+ justify-content:
+ space-between;
+
  align-items:center;
- font-size:12px;
- font-weight:800;
+
+ font-size:
+ 12px;
+
+ font-weight:
+ 800;
 }
 
 .card-header span{
- color:var(--gold);
+ color:
+ var(--gold);
 }
 
 .card-body{
- padding:10px 16px 14px;
+ padding:
+ 10px 16px 14px;
 }
 
 .activity-row{
- padding:11px 0;
+ padding:
+ 11px 0;
+
  display:grid;
- grid-template-columns:38px minmax(0,1fr) auto;
- gap:11px;
+
+ grid-template-columns:
+ 38px minmax(0,1fr) auto;
+
+ gap:
+ 11px;
+
  align-items:center;
- border-bottom:1px solid var(--line2);
+
+ border-bottom:
+ 1px solid var(--line2);
 }
 
 .activity-icon{
- width:35px;
- height:35px;
+ width:
+ 35px;
+
+ height:
+ 35px;
+
  display:grid;
+
  place-items:center;
- border-radius:50%;
- background:#132737;
- color:var(--silver);
- border:1px solid #294354;
+
+ border-radius:
+ 50%;
+
+ background:
+ #132737;
+
+ color:
+ var(--silver);
+
+ border:
+ 1px solid #294354;
 }
 
 .activity-title,
 .follow-name,
 .contact-name,
 .company-name{
- font-size:11px;
- font-weight:800;
+ font-size:
+ 11px;
+
+ font-weight:
+ 800;
 }
 
 .activity-subtitle,
 .follow-company,
 .contact-sub,
 .company-sub{
- margin-top:3px;
- color:var(--muted);
- font-size:9px;
+ margin-top:
+ 3px;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 9px;
 }
 
 .activity-time{
- color:#8294a2;
- font-size:8px;
+ color:
+ #8294a2;
+
+ font-size:
+ 8px;
 }
 
 .follow-row{
- padding:11px 0;
+ padding:
+ 11px 0;
+
  display:grid;
- grid-template-columns:minmax(0,1fr) 105px;
- gap:12px;
- border-bottom:1px solid var(--line2);
+
+ grid-template-columns:
+ minmax(0,1fr) 105px;
+
+ gap:
+ 12px;
+
+ border-bottom:
+ 1px solid var(--line2);
 }
 
 .follow-action{
- margin-top:5px;
- font-size:9px;
+ margin-top:
+ 5px;
+
+ font-size:
+ 9px;
 }
 
 .follow-date{
- text-align:right;
- font-size:9px;
+ text-align:
+ right;
+
+ font-size:
+ 9px;
 }
 
 /* =====================================================
@@ -561,8 +1079,13 @@ a{
 .contacts-layout,
 .companies-layout{
  display:grid;
- grid-template-columns:minmax(0,1fr) 410px;
- gap:14px;
+
+ grid-template-columns:
+ minmax(0,1fr)
+ 410px;
+
+ gap:
+ 14px;
 }
 
 .contact-list,
@@ -573,52 +1096,96 @@ a{
 .contact-head,
 .contact-row{
  display:grid;
- grid-template-columns:1.1fr 1.3fr 1.2fr .85fr .72fr;
- gap:10px;
+
+ grid-template-columns:
+ 1.1fr
+ 1.3fr
+ 1.2fr
+ .85fr
+ .72fr;
+
+ gap:
+ 10px;
 }
 
 .company-head,
 .company-row{
  display:grid;
- grid-template-columns:1.45fr 1fr 1fr .8fr;
- gap:10px;
+
+ grid-template-columns:
+ 1.45fr
+ 1fr
+ 1fr
+ .8fr;
+
+ gap:
+ 10px;
 }
 
 .contact-head,
 .company-head{
- padding:10px 14px;
- border-bottom:1px solid var(--line);
- color:#8296a5;
- font-size:8px;
- font-weight:800;
+ padding:
+ 10px 14px;
+
+ border-bottom:
+ 1px solid var(--line);
+
+ color:
+ #8296a5;
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 800;
 }
 
 .contact-row,
 .company-row{
  width:100%;
+
  align-items:center;
- padding:12px 14px;
+
+ padding:
+ 12px 14px;
+
  border:0;
- border-bottom:1px solid var(--line2);
- background:transparent;
- color:var(--text);
+
+ border-bottom:
+ 1px solid var(--line2);
+
+ background:
+ transparent;
+
+ color:
+ var(--text);
+
  text-align:left;
 }
 
 .contact-row:hover,
 .company-row:hover{
- background:#0c1d29;
+ background:
+ #0c1d29;
 }
 
 .contact-row.selected,
 .company-row.selected{
- background:linear-gradient(90deg,rgba(226,177,93,.11),rgba(23,48,66,.34));
+ background:
+ linear-gradient(
+  90deg,
+  rgba(226,177,93,.11),
+  rgba(23,48,66,.34)
+ );
 }
 
 .contact-cell,
 .company-cell{
- font-size:9px;
- line-height:1.45;
+ font-size:
+ 9px;
+
+ line-height:
+ 1.45;
 }
 
 /* =====================================================
@@ -626,137 +1193,276 @@ a{
 ===================================================== */
 
 .detail-panel{
- height:fit-content;
- position:sticky;
- top:102px;
+ height:
+ fit-content;
+
+ position:
+ sticky;
+
+ top:
+ 102px;
 }
 
 .detail-top{
- padding:18px;
- border-bottom:1px solid var(--line);
- background:linear-gradient(135deg,rgba(226,177,93,.07),transparent);
+ padding:
+ 18px;
+
+ border-bottom:
+ 1px solid var(--line);
+
+ background:
+ linear-gradient(
+  135deg,
+  rgba(226,177,93,.07),
+  transparent
+ );
 }
 
 .detail-avatar{
- width:48px;
- height:48px;
- margin-bottom:11px;
+ width:
+ 48px;
+
+ height:
+ 48px;
+
+ margin-bottom:
+ 11px;
+
  display:grid;
+
  place-items:center;
- border-radius:50%;
- border:1px solid var(--gold);
- color:#15181c;
- font-weight:850;
- background:linear-gradient(135deg,#f1cf8b,#b98138);
+
+ border-radius:
+ 50%;
+
+ border:
+ 1px solid var(--gold);
+
+ color:
+ #15181c;
+
+ font-weight:
+ 850;
+
+ background:
+ linear-gradient(
+  135deg,
+  #f1cf8b,
+  #b98138
+ );
 }
 
 .company-avatar{
- border-radius:12px;
+ border-radius:
+ 12px;
 }
 
 .detail-name{
- font-size:22px;
- font-weight:850;
+ font-size:
+ 22px;
+
+ font-weight:
+ 850;
 }
 
 .detail-company{
- margin-top:4px;
- color:var(--muted);
- font-size:11px;
+ margin-top:
+ 4px;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 11px;
 }
 
 .detail-body{
- padding:13px 17px 18px;
+ padding:
+ 13px 17px 18px;
 }
 
 .detail-item{
- padding:9px 0;
- border-bottom:1px solid var(--line2);
+ padding:
+ 9px 0;
+
+ border-bottom:
+ 1px solid var(--line2);
 }
 
 .detail-label{
- margin-bottom:4px;
- color:#7f95a5;
- font-size:7px;
- font-weight:800;
- letter-spacing:.11em;
+ margin-bottom:
+ 4px;
+
+ color:
+ #7f95a5;
+
+ font-size:
+ 7px;
+
+ font-weight:
+ 800;
+
+ letter-spacing:
+ .11em;
 }
 
 .detail-value{
- font-size:10px;
- line-height:1.45;
- overflow-wrap:anywhere;
+ font-size:
+ 10px;
+
+ line-height:
+ 1.45;
+
+ overflow-wrap:
+ anywhere;
 }
 
 .detail-gold{
- color:var(--gold2);
+ color:
+ var(--gold2);
 }
 
 .pipeline-select,
 .form-input{
  width:100%;
- min-height:38px;
- padding:8px 9px;
- border:1px solid #2d4656;
- border-radius:8px;
+
+ min-height:
+ 38px;
+
+ padding:
+ 8px 9px;
+
+ border:
+ 1px solid #2d4656;
+
+ border-radius:
+ 8px;
+
  outline:none;
- background:#07151f;
- color:var(--text);
+
+ background:
+ #07151f;
+
+ color:
+ var(--text);
 }
 
 .form-textarea{
- min-height:120px;
+ min-height:
+ 120px;
 }
 
 .detail-actions{
  display:grid;
- grid-template-columns:1fr 1fr;
- gap:7px;
- margin-top:13px;
+
+ grid-template-columns:
+ 1fr 1fr;
+
+ gap:
+ 7px;
+
+ margin-top:
+ 13px;
 }
 
 .history-title{
- margin:17px 0 7px;
- color:var(--gold);
- font-size:8px;
- font-weight:850;
- letter-spacing:.12em;
+ margin:
+ 17px 0 7px;
+
+ color:
+ var(--gold);
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 850;
+
+ letter-spacing:
+ .12em;
+}
+
+.history-sub{
+ color:
+ var(--muted);
+
+ font-size:
+ 8px;
+
+ line-height:
+ 1.5;
+
+ padding:
+ 7px 0;
 }
 
 .linked-contact{
  width:100%;
- margin-bottom:7px;
- padding:9px 10px;
+
+ margin-bottom:
+ 7px;
+
+ padding:
+ 9px 10px;
+
  display:flex;
- justify-content:space-between;
+
+ justify-content:
+ space-between;
+
  align-items:center;
- gap:10px;
- border:1px solid #243b4a;
- border-radius:8px;
- background:#0a1822;
- color:var(--text);
+
+ gap:
+ 10px;
+
+ border:
+ 1px solid #243b4a;
+
+ border-radius:
+ 8px;
+
+ background:
+ #0a1822;
+
+ color:
+ var(--text);
+
  text-align:left;
 }
 
 .linked-contact:hover{
- border-color:rgba(226,177,93,.55);
- background:#0c1d29;
+ border-color:
+ rgba(226,177,93,.55);
+
+ background:
+ #0c1d29;
 }
 
 .linked-contact-name{
- font-size:9px;
- font-weight:800;
+ font-size:
+ 9px;
+
+ font-weight:
+ 800;
 }
 
 .linked-contact-role{
- margin-top:2px;
- color:var(--muted);
- font-size:8px;
+ margin-top:
+ 2px;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 8px;
 }
 
 .linked-contact-arrow{
- color:var(--gold);
- font-size:16px;
+ color:
+ var(--gold);
+
+ font-size:
+ 16px;
 }
 
 /* =====================================================
@@ -765,115 +1471,223 @@ a{
 
 .timeline-toolbar{
  display:flex;
- justify-content:space-between;
+
+ justify-content:
+ space-between;
+
  align-items:center;
- gap:10px;
- margin:18px 0 8px;
+
+ gap:
+ 10px;
+
+ margin:
+ 18px 0 8px;
 }
 
 .timeline-heading{
- color:var(--gold);
- font-size:8px;
- font-weight:850;
- letter-spacing:.12em;
+ color:
+ var(--gold);
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 850;
+
+ letter-spacing:
+ .12em;
 }
 
 .timeline-add{
- min-height:32px;
- padding:0 10px;
- border:1px solid rgba(226,177,93,.55);
- border-radius:7px;
- background:rgba(226,177,93,.08);
- color:var(--gold2);
- font-size:8px;
- font-weight:850;
+ min-height:
+ 32px;
+
+ padding:
+ 0 10px;
+
+ border:
+ 1px solid rgba(226,177,93,.55);
+
+ border-radius:
+ 7px;
+
+ background:
+ rgba(226,177,93,.08);
+
+ color:
+ var(--gold2);
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 850;
 }
 
 .timeline-item{
- position:relative;
- margin-bottom:8px;
- padding:11px 10px 10px 13px;
- border:1px solid #223846;
- border-radius:9px;
- background:#091822;
+ position:
+ relative;
+
+ margin-bottom:
+ 8px;
+
+ padding:
+ 11px 10px 10px 13px;
+
+ border:
+ 1px solid #223846;
+
+ border-radius:
+ 9px;
+
+ background:
+ #091822;
 }
 
 .timeline-item::before{
  content:"";
+
  position:absolute;
+
  left:0;
  top:9px;
  bottom:9px;
- width:3px;
- border-radius:2px;
- background:var(--gold);
+
+ width:
+ 3px;
+
+ border-radius:
+ 2px;
+
+ background:
+ var(--gold);
 }
 
 .timeline-meta{
  display:flex;
- justify-content:space-between;
- gap:8px;
+
+ justify-content:
+ space-between;
+
+ gap:
+ 8px;
+
  align-items:center;
 }
 
 .timeline-type{
- color:var(--gold2);
- font-size:7px;
- font-weight:850;
- letter-spacing:.08em;
- text-transform:uppercase;
+ color:
+ var(--gold2);
+
+ font-size:
+ 7px;
+
+ font-weight:
+ 850;
+
+ letter-spacing:
+ .08em;
+
+ text-transform:
+ uppercase;
 }
 
 .timeline-date{
- color:#7f94a3;
- font-size:7px;
- text-align:right;
+ color:
+ #7f94a3;
+
+ font-size:
+ 7px;
+
+ text-align:
+ right;
 }
 
 .timeline-title{
- margin-top:6px;
- font-size:10px;
- font-weight:850;
+ margin-top:
+ 6px;
+
+ font-size:
+ 10px;
+
+ font-weight:
+ 850;
 }
 
 .timeline-body{
- margin-top:5px;
- color:#c5d0d8;
- font-size:9px;
- line-height:1.5;
- white-space:pre-wrap;
+ margin-top:
+ 5px;
+
+ color:
+ #c5d0d8;
+
+ font-size:
+ 9px;
+
+ line-height:
+ 1.5;
+
+ white-space:
+ pre-wrap;
 }
 
 .timeline-extra{
- margin-top:6px;
- padding-top:6px;
- border-top:1px solid var(--line2);
- font-size:8px;
- line-height:1.5;
+ margin-top:
+ 6px;
+
+ padding-top:
+ 6px;
+
+ border-top:
+ 1px solid var(--line2);
+
+ font-size:
+ 8px;
+
+ line-height:
+ 1.5;
 }
 
 .timeline-extra strong{
- color:#8ca0af;
+ color:
+ #8ca0af;
 }
 
 .timeline-contact{
- margin-top:5px;
- color:var(--blue);
- font-size:8px;
+ margin-top:
+ 5px;
+
+ color:
+ var(--blue);
+
+ font-size:
+ 8px;
 }
 
 .timeline-controls{
- margin-top:8px;
+ margin-top:
+ 8px;
+
  display:flex;
- justify-content:flex-end;
+
+ justify-content:
+ flex-end;
 }
 
 .timeline-delete{
  border:0;
- background:transparent;
- color:#c87979;
- font-size:7px;
- font-weight:800;
+
+ background:
+ transparent;
+
+ color:
+ #c87979;
+
+ font-size:
+ 7px;
+
+ font-weight:
+ 800;
 }
 
 /* =====================================================
@@ -882,33 +1696,68 @@ a{
 
 .task-toolbar{
  display:flex;
- justify-content:space-between;
+
+ justify-content:
+ space-between;
+
  align-items:center;
- gap:14px;
- margin-bottom:13px;
+
+ gap:
+ 14px;
+
+ margin-bottom:
+ 13px;
 }
 
 .task-filters{
  display:flex;
- gap:7px;
- flex-wrap:wrap;
+
+ gap:
+ 7px;
+
+ flex-wrap:
+ wrap;
 }
 
 .filter-btn{
- min-height:34px;
- padding:0 12px;
- border:1px solid #2b4353;
- border-radius:8px;
- background:#0b1b27;
- color:#9eb0bd;
- font-size:9px;
- font-weight:800;
+ min-height:
+ 34px;
+
+ padding:
+ 0 12px;
+
+ border:
+ 1px solid #2b4353;
+
+ border-radius:
+ 8px;
+
+ background:
+ #0b1b27;
+
+ color:
+ #9eb0bd;
+
+ font-size:
+ 9px;
+
+ font-weight:
+ 800;
 }
 
 .filter-btn.active{
- color:#161b20;
- border-color:var(--gold);
- background:linear-gradient(135deg,#f1ce83,#d8a34b);
+ color:
+ #161b20;
+
+ border-color:
+ var(--gold);
+
+ background:
+ linear-gradient(
+  135deg,
+  #f1ce83,
+  #d8a34b
+ );
 }
 
 .task-list{
@@ -918,126 +1767,232 @@ a{
 .task-head,
 .task-row{
  display:grid;
- grid-template-columns:minmax(240px,1.5fr) 1fr .8fr .8fr .8fr 220px;
- gap:12px;
+
+ grid-template-columns:
+ minmax(240px,1.5fr)
+ 1fr
+ .8fr
+ .8fr
+ .8fr
+ 220px;
+
+ gap:
+ 12px;
+
  align-items:center;
 }
 
 .task-head{
- padding:11px 14px;
- border-bottom:1px solid var(--line);
- color:#8296a5;
- font-size:8px;
- font-weight:800;
+ padding:
+ 11px 14px;
+
+ border-bottom:
+ 1px solid var(--line);
+
+ color:
+ #8296a5;
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 800;
 }
 
 .task-row{
- padding:13px 14px;
- border-bottom:1px solid var(--line2);
+ padding:
+ 13px 14px;
+
+ border-bottom:
+ 1px solid var(--line2);
 }
 
 .task-row.overdue{
- background:rgba(238,115,115,.035);
+ background:
+ rgba(238,115,115,.035);
 }
 
 .task-title{
- font-size:11px;
- font-weight:850;
+ font-size:
+ 11px;
+
+ font-weight:
+ 850;
 }
 
 .task-description{
- margin-top:3px;
- color:var(--muted);
- font-size:9px;
+ margin-top:
+ 3px;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 9px;
 }
 
 .task-target{
  border:0;
- background:transparent;
- color:var(--blue);
+
+ background:
+ transparent;
+
+ color:
+ var(--blue);
+
  padding:0;
+
  text-align:left;
- font-size:9px;
- font-weight:750;
+
+ font-size:
+ 9px;
+
+ font-weight:
+ 750;
 }
 
 .task-target:hover{
- text-decoration:underline;
+ text-decoration:
+ underline;
 }
 
 .priority{
  display:inline-block;
- padding:4px 8px;
- border-radius:999px;
- font-size:8px;
- font-weight:850;
+
+ padding:
+ 4px 8px;
+
+ border-radius:
+ 999px;
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 850;
 }
 
 .priority-low{
- color:#aab9c4;
- border:1px solid #4c6272;
- background:#13232e;
+ color:
+ #aab9c4;
+
+ border:
+ 1px solid #4c6272;
+
+ background:
+ #13232e;
 }
 
 .priority-medium{
- color:var(--gold2);
- border:1px solid rgba(226,177,93,.5);
- background:rgba(226,177,93,.08);
+ color:
+ var(--gold2);
+
+ border:
+ 1px solid rgba(226,177,93,.5);
+
+ background:
+ rgba(226,177,93,.08);
 }
 
 .priority-high{
- color:var(--red);
- border:1px solid rgba(238,115,115,.5);
- background:rgba(238,115,115,.08);
+ color:
+ var(--red);
+
+ border:
+ 1px solid rgba(238,115,115,.5);
+
+ background:
+ rgba(238,115,115,.08);
 }
 
 .task-status-open{
- color:var(--blue);
- border:1px solid rgba(97,183,255,.45);
- background:rgba(97,183,255,.08);
+ color:
+ var(--blue);
+
+ border:
+ 1px solid rgba(97,183,255,.45);
+
+ background:
+ rgba(97,183,255,.08);
 }
 
 .task-status-completed{
- color:var(--green);
- border:1px solid rgba(79,206,139,.45);
- background:rgba(79,206,139,.08);
+ color:
+ var(--green);
+
+ border:
+ 1px solid rgba(79,206,139,.45);
+
+ background:
+ rgba(79,206,139,.08);
 }
 
 .task-due{
- font-size:9px;
+ font-size:
+ 9px;
 }
 
 .task-due.overdue-text{
- color:var(--red);
- font-weight:800;
+ color:
+ var(--red);
+
+ font-weight:
+ 800;
 }
 
 .task-actions{
  display:flex;
- gap:6px;
- justify-content:flex-end;
- flex-wrap:wrap;
+
+ gap:
+ 6px;
+
+ justify-content:
+ flex-end;
+
+ flex-wrap:
+ wrap;
 }
 
 .mini-btn{
- min-height:31px;
- padding:0 9px;
- border:1px solid #2d4656;
- border-radius:7px;
- background:#0d1f2c;
- color:#d6e0e6;
- font-size:8px;
- font-weight:800;
+ min-height:
+ 31px;
+
+ padding:
+ 0 9px;
+
+ border:
+ 1px solid #2d4656;
+
+ border-radius:
+ 7px;
+
+ background:
+ #0d1f2c;
+
+ color:
+ #d6e0e6;
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 800;
 }
 
 .mini-btn.complete{
- color:var(--green);
- border-color:rgba(79,206,139,.42);
+ color:
+ var(--green);
+
+ border-color:
+ rgba(79,206,139,.42);
 }
 
 .mini-btn.delete{
- color:var(--red);
- border-color:rgba(238,115,115,.42);
+ color:
+ var(--red);
+
+ border-color:
+ rgba(238,115,115,.42);
 }
 
 /* =====================================================
@@ -1046,64 +2001,118 @@ a{
 
 .pipeline-board{
  display:grid;
- grid-template-columns:repeat(8,minmax(220px,1fr));
- gap:10px;
+
+ grid-template-columns:
+ repeat(
+  8,
+  minmax(220px,1fr)
+ );
+
+ gap:
+ 10px;
+
  overflow-x:auto;
- padding-bottom:10px;
+
+ padding-bottom:
+ 10px;
 }
 
 .pipeline-column{
- min-height:500px;
- border:1px solid var(--line);
- border-radius:11px;
- background:rgba(7,20,29,.84);
+ min-height:
+ 500px;
+
+ border:
+ 1px solid var(--line);
+
+ border-radius:
+ 11px;
+
+ background:
+ rgba(7,20,29,.84);
 }
 
 .pipeline-head{
- padding:11px 12px;
+ padding:
+ 11px 12px;
+
  display:flex;
- justify-content:space-between;
- border-bottom:1px solid var(--line);
+
+ justify-content:
+ space-between;
+
+ border-bottom:
+ 1px solid var(--line);
 }
 
 .pipeline-title{
- font-size:9px;
- font-weight:850;
- color:var(--gold2);
+ font-size:
+ 9px;
+
+ font-weight:
+ 850;
+
+ color:
+ var(--gold2);
 }
 
 .pipeline-count{
- color:var(--muted);
- font-size:9px;
+ color:
+ var(--muted);
+
+ font-size:
+ 9px;
 }
 
 .pipeline-body{
- padding:8px;
+ padding:
+ 8px;
 }
 
 .pipeline-card{
- margin-bottom:8px;
- padding:11px;
- border:1px solid #263d4c;
- border-radius:8px;
- background:#0a1822;
+ margin-bottom:
+ 8px;
+
+ padding:
+ 11px;
+
+ border:
+ 1px solid #263d4c;
+
+ border-radius:
+ 8px;
+
+ background:
+ #0a1822;
 }
 
 .pipeline-card-name{
- font-size:10px;
- font-weight:800;
+ font-size:
+ 10px;
+
+ font-weight:
+ 800;
 }
 
 .pipeline-card-company{
- margin-top:3px;
- color:var(--muted);
- font-size:8px;
+ margin-top:
+ 3px;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 8px;
 }
 
 .pipeline-card-action{
- margin-top:8px;
- color:#c4d0d9;
- font-size:8px;
+ margin-top:
+ 8px;
+
+ color:
+ #c4d0d9;
+
+ font-size:
+ 8px;
 }
 
 /* =====================================================
@@ -1112,14 +2121,25 @@ a{
 
 .modal{
  position:fixed;
+
  inset:0;
+
  z-index:100;
+
  display:none;
+
  align-items:center;
+
  justify-content:center;
- padding:20px;
- background:rgba(0,0,0,.72);
- backdrop-filter:blur(5px);
+
+ padding:
+ 20px;
+
+ background:
+ rgba(0,0,0,.72);
+
+ backdrop-filter:
+ blur(5px);
 }
 
 .modal.show{
@@ -1127,71 +2147,520 @@ a{
 }
 
 .modal-box{
- width:min(760px,100%);
- max-height:90vh;
+ width:
+ min(760px,100%);
+
+ max-height:
+ 90vh;
+
  overflow:auto;
- border:1px solid #30495a;
- border-radius:14px;
- background:#081620;
- box-shadow:0 25px 80px rgba(0,0,0,.5);
+
+ border:
+ 1px solid #30495a;
+
+ border-radius:
+ 14px;
+
+ background:
+ #081620;
+
+ box-shadow:
+ 0 25px 80px
+ rgba(0,0,0,.5);
 }
 
 .modal-head{
- padding:18px 20px;
+ padding:
+ 18px 20px;
+
  display:flex;
- justify-content:space-between;
+
+ justify-content:
+ space-between;
+
  align-items:center;
- border-bottom:1px solid var(--line);
+
+ border-bottom:
+ 1px solid var(--line);
 }
 
 .modal-title{
- font-size:18px;
- font-weight:850;
+ font-size:
+ 18px;
+
+ font-weight:
+ 850;
 }
 
 .modal-close{
  border:0;
- background:transparent;
- color:var(--silver);
- font-size:22px;
+
+ background:
+ transparent;
+
+ color:
+ var(--silver);
+
+ font-size:
+ 22px;
 }
 
 .form-grid{
- padding:20px;
+ padding:
+ 20px;
+
  display:grid;
- grid-template-columns:1fr 1fr;
- gap:14px;
+
+ grid-template-columns:
+ 1fr 1fr;
+
+ gap:
+ 14px;
 }
 
 .form-field.full{
- grid-column:1/-1;
+ grid-column:
+ 1/-1;
 }
 
 .form-label{
  display:block;
- margin-bottom:6px;
- color:#8ca1b0;
- font-size:8px;
- font-weight:800;
- letter-spacing:.1em;
+
+ margin-bottom:
+ 6px;
+
+ color:
+ #8ca1b0;
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 800;
+
+ letter-spacing:
+ .1em;
 }
 
 .modal-actions{
- padding:16px 20px;
- border-top:1px solid var(--line);
+ padding:
+ 16px 20px;
+
+ border-top:
+ 1px solid var(--line);
+
  display:flex;
- justify-content:flex-end;
- gap:8px;
+
+ justify-content:
+ flex-end;
+
+ gap:
+ 8px;
 }
 
+/* =====================================================
+   LOGIN
+===================================================== */
+
+.login-overlay{
+ position:fixed;
+
+ inset:0;
+
+ z-index:
+ 1000;
+
+ display:none;
+
+ align-items:center;
+
+ justify-content:center;
+
+ padding:
+ 24px;
+
+ background:
+ radial-gradient(
+  circle at 50% 10%,
+  rgba(28,91,126,.28),
+  transparent 36%
+ ),
+ rgba(3,9,14,.96);
+
+ backdrop-filter:
+ blur(14px);
+}
+
+.login-overlay.show{
+ display:flex;
+}
+
+.login-card{
+ width:
+ min(430px,100%);
+
+ border:
+ 1px solid #294252;
+
+ border-radius:
+ 18px;
+
+ overflow:hidden;
+
+ background:
+ linear-gradient(
+  155deg,
+  #0b1b27,
+  #06121b
+ );
+
+ box-shadow:
+ 0 30px 100px
+ rgba(0,0,0,.55);
+}
+
+.login-brand{
+ padding:
+ 30px 30px 22px;
+
+ text-align:center;
+
+ border-bottom:
+ 1px solid var(--line);
+}
+
+.login-mark{
+ width:
+ 70px;
+
+ height:
+ 70px;
+
+ margin:
+ 0 auto 17px;
+
+ position:
+ relative;
+
+ display:grid;
+
+ place-items:center;
+
+ border-radius:
+ 20px;
+
+ border:
+ 1px solid rgba(
+   227,
+   177,
+   93,
+   .75
+  );
+
+ background:
+ radial-gradient(
+  circle at 35% 28%,
+  rgba(244,208,138,.35),
+  transparent 24%
+ ),
+ linear-gradient(
+  145deg,
+  #07141f,
+  #0d2636
+ );
+
+ box-shadow:
+ 0 0 30px
+ rgba(226,177,93,.16);
+}
+
+.login-mark::before{
+ content:"";
+
+ width:
+ 41px;
+
+ height:
+ 41px;
+
+ position:absolute;
+
+ border:
+ 5px solid var(--gold);
+
+ border-right-color:
+ var(--silver);
+
+ border-radius:
+ 50%;
+
+ transform:
+ rotate(-28deg);
+}
+
+.login-mark::after{
+ content:"";
+
+ width:
+ 35px;
+
+ height:
+ 5px;
+
+ position:absolute;
+
+ border-radius:
+ 5px;
+
+ background:
+ linear-gradient(
+  90deg,
+  var(--gold2),
+  var(--silver)
+ );
+
+ transform:
+ rotate(-34deg);
+}
+
+.login-name{
+ font-family:
+ Georgia,
+ "Times New Roman",
+ serif;
+
+ font-size:
+ 25px;
+
+ letter-spacing:
+ .24em;
+
+ background:
+ linear-gradient(
+  90deg,
+  var(--gold2),
+  #fff,
+  var(--silver)
+ );
+
+ -webkit-background-clip:text;
+
+ background-clip:text;
+
+ color:
+ transparent;
+}
+
+.login-sub{
+ margin-top:
+ 8px;
+
+ color:
+ var(--silver);
+
+ font-size:
+ 9px;
+
+ letter-spacing:
+ .20em;
+}
+
+.login-body{
+ padding:
+ 26px 30px 30px;
+}
+
+.login-heading{
+ font-size:
+ 22px;
+
+ font-weight:
+ 850;
+}
+
+.login-copy{
+ margin-top:
+ 5px;
+
+ margin-bottom:
+ 22px;
+
+ color:
+ var(--muted);
+
+ font-size:
+ 11px;
+
+ line-height:
+ 1.5;
+}
+
+.login-field{
+ margin-bottom:
+ 14px;
+}
+
+.login-label{
+ display:block;
+
+ margin-bottom:
+ 6px;
+
+ color:
+ #8ca1b0;
+
+ font-size:
+ 8px;
+
+ font-weight:
+ 850;
+
+ letter-spacing:
+ .1em;
+}
+
+.login-input{
+ width:100%;
+
+ height:
+ 44px;
+
+ padding:
+ 0 12px;
+
+ outline:none;
+
+ border:
+ 1px solid #2d4656;
+
+ border-radius:
+ 9px;
+
+ background:
+ #06131d;
+
+ color:
+ var(--text);
+}
+
+.login-input:focus{
+ border-color:
+ rgba(227,177,93,.75);
+
+ box-shadow:
+ 0 0 0 2px
+ rgba(227,177,93,.08);
+}
+
+.login-button{
+ width:100%;
+
+ min-height:
+ 46px;
+
+ margin-top:
+ 5px;
+
+ border:0;
+
+ border-radius:
+ 9px;
+
+ background:
+ linear-gradient(
+  135deg,
+  #f1cd84,
+  #dca64e
+ );
+
+ color:
+ #101318;
+
+ font-weight:
+ 900;
+}
+
+.login-button:disabled{
+ opacity:
+ .6;
+
+ cursor:
+ wait;
+}
+
+.login-error{
+ display:none;
+
+ margin-top:
+ 14px;
+
+ padding:
+ 10px 11px;
+
+ border:
+ 1px solid rgba(
+   238,
+   115,
+   115,
+   .4
+  );
+
+ border-radius:
+ 8px;
+
+ background:
+ rgba(
+  238,
+  115,
+  115,
+  .07
+ );
+
+ color:
+ #ff9999;
+
+ font-size:
+ 10px;
+
+ line-height:
+ 1.45;
+}
+
+.login-error.show{
+ display:block;
+}
+
+.login-status{
+ display:none;
+
+ margin-top:
+ 14px;
+
+ color:
+ var(--gold2);
+
+ font-size:
+ 10px;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
 @media(max-width:1450px){
+
  .stat-grid{
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:
+  repeat(3,1fr);
  }
 
  .task-head,
  .task-row{
-  grid-template-columns:1.5fr 1fr .8fr .8fr;
+  grid-template-columns:
+  1.5fr
+  1fr
+  .8fr
+  .8fr;
  }
 
  .task-hide-small{
@@ -1200,9 +2669,11 @@ a{
 }
 
 @media(max-width:1250px){
+
  .contacts-layout,
  .companies-layout{
-  grid-template-columns:1fr;
+  grid-template-columns:
+  1fr;
  }
 
  .detail-panel{
@@ -1219,44 +2690,76 @@ a{
 <aside class="sidebar">
 
 <div class="brand">
+
  <div class="brand-top">
-  <img class="brand-icon" src="excedere-favicon.png" alt="Excedere">
+
+  <div
+   class="brand-mark"
+   aria-label="Excedere"
+  ></div>
 
   <div>
-   <div class="brand-word">EXCEDERE</div>
-   <div class="brand-sub">MANAGEMENT CONSULTANCY</div>
+
+   <div class="brand-word">
+    EXCEDERE
+   </div>
+
+   <div class="brand-sub">
+    MANAGEMENT CONSULTANCY
+   </div>
+
   </div>
+
  </div>
+
 </div>
 
 <nav class="nav">
 
-<button class="nav-btn active" onclick="switchView('dashboard',this)">
+<button
+ class="nav-btn active"
+ onclick="switchView('dashboard',this)"
+>
  <span class="nav-icon">⌂</span>
  Dashboard
 </button>
 
-<button class="nav-btn" onclick="switchView('companies',this)">
+<button
+ class="nav-btn"
+ onclick="switchView('companies',this)"
+>
  <span class="nav-icon">◆</span>
  Companies
 </button>
 
-<button class="nav-btn" onclick="switchView('contacts',this)">
+<button
+ class="nav-btn"
+ onclick="switchView('contacts',this)"
+>
  <span class="nav-icon">●</span>
  Contacts
 </button>
 
-<button class="nav-btn" onclick="switchView('pipeline',this)">
+<button
+ class="nav-btn"
+ onclick="switchView('pipeline',this)"
+>
  <span class="nav-icon">▥</span>
  Pipeline
 </button>
 
-<button class="nav-btn" onclick="switchView('followups',this)">
+<button
+ class="nav-btn"
+ onclick="switchView('followups',this)"
+>
  <span class="nav-icon">▣</span>
  Follow-Ups
 </button>
 
-<button class="nav-btn" onclick="switchView('tasks',this)">
+<button
+ class="nav-btn"
+ onclick="switchView('tasks',this)"
+>
  <span class="nav-icon">✓</span>
  Tasks
 </button>
@@ -1265,12 +2768,20 @@ a{
 
 <div class="sidebar-footer">
 
-<div id="syncStatus" class="sync-status syncing">
+<div
+ id="syncStatus"
+ class="sync-status syncing"
+>
  <span class="sync-dot"></span>
- <span id="syncStatusText">Connecting...</span>
+ <span id="syncStatusText">
+  Connecting...
+ </span>
 </div>
 
-<button class="call-assist-link" onclick="openCallAssist()">
+<button
+ class="call-assist-link"
+ onclick="openCallAssist()"
+>
  ☎ &nbsp; Open Call Assist
 </button>
 
@@ -1289,14 +2800,28 @@ a{
 <header class="topbar">
 
 <div>
- <div id="pageTitle" class="page-title">Dashboard</div>
- <div id="pageSubtitle" class="page-subtitle">
+
+ <div
+  id="pageTitle"
+  class="page-title"
+ >
+  Dashboard
+ </div>
+
+ <div
+  id="pageSubtitle"
+  class="page-subtitle"
+ >
   Your Excedere sales activity at a glance.
  </div>
+
 </div>
 
 <div class="search-wrap">
- <span class="search-icon">⌕</span>
+
+ <span class="search-icon">
+  ⌕
+ </span>
 
  <input
   id="globalSearch"
@@ -1304,62 +2829,156 @@ a{
   type="search"
   placeholder="Search companies, contacts, tasks, phone or email..."
  >
+
 </div>
 
 </header>
 
 <div class="content">
 
-<section id="dashboardView" class="view active">
+<section
+ id="dashboardView"
+ class="view active"
+>
 
 <div class="stat-grid">
 
 <div class="stat-card">
- <div class="stat-icon">◆</div>
- <div>
-  <div class="stat-label">COMPANIES</div>
-  <div id="statCompanies" class="stat-number">0</div>
+
+ <div class="stat-icon">
+  ◆
  </div>
+
+ <div>
+
+  <div class="stat-label">
+   COMPANIES
+  </div>
+
+  <div
+   id="statCompanies"
+   class="stat-number"
+  >
+   0
+  </div>
+
+ </div>
+
 </div>
 
 <div class="stat-card">
- <div class="stat-icon">♙</div>
- <div>
-  <div class="stat-label">CONTACTS</div>
-  <div id="statProspects" class="stat-number">0</div>
+
+ <div class="stat-icon">
+  ♙
  </div>
+
+ <div>
+
+  <div class="stat-label">
+   CONTACTS
+  </div>
+
+  <div
+   id="statProspects"
+   class="stat-number"
+  >
+   0
+  </div>
+
+ </div>
+
 </div>
 
 <div class="stat-card">
- <div class="stat-icon">✓</div>
- <div>
-  <div class="stat-label">TASKS DUE</div>
-  <div id="statTasksDue" class="stat-number gold">0</div>
+
+ <div class="stat-icon">
+  ✓
  </div>
+
+ <div>
+
+  <div class="stat-label">
+   TASKS DUE
+  </div>
+
+  <div
+   id="statTasksDue"
+   class="stat-number gold"
+  >
+   0
+  </div>
+
+ </div>
+
 </div>
 
 <div class="stat-card">
- <div class="stat-icon">▣</div>
- <div>
-  <div class="stat-label">FOLLOW-UPS DUE</div>
-  <div id="statDue" class="stat-number gold">0</div>
+
+ <div class="stat-icon">
+  ▣
  </div>
+
+ <div>
+
+  <div class="stat-label">
+   FOLLOW-UPS DUE
+  </div>
+
+  <div
+   id="statDue"
+   class="stat-number gold"
+  >
+   0
+  </div>
+
+ </div>
+
 </div>
 
 <div class="stat-card">
- <div class="stat-icon">◷</div>
- <div>
-  <div class="stat-label">OVERDUE</div>
-  <div id="statOverdue" class="stat-number red">0</div>
+
+ <div class="stat-icon">
+  ◷
  </div>
+
+ <div>
+
+  <div class="stat-label">
+   OVERDUE
+  </div>
+
+  <div
+   id="statOverdue"
+   class="stat-number red"
+  >
+   0
+  </div>
+
+ </div>
+
 </div>
 
 <div class="stat-card">
- <div class="stat-icon">☎</div>
- <div>
-  <div class="stat-label">CALLS LOGGED</div>
-  <div id="statCalls" class="stat-number blue">0</div>
+
+ <div class="stat-icon">
+  ☎
  </div>
+
+ <div>
+
+  <div class="stat-label">
+   CALLS LOGGED
+  </div>
+
+  <div
+   id="statCalls"
+   class="stat-number blue"
+  >
+   0
+  </div>
+
+ </div>
+
 </div>
 
 </div>
@@ -1367,37 +2986,74 @@ a{
 <div class="dashboard-grid">
 
 <div class="card">
+
  <div class="card-header">
-  <div>Recent Activity</div>
-  <span>LIVE</span>
+
+  <div>
+   Recent Activity
+  </div>
+
+  <span>
+   LIVE
+  </span>
+
  </div>
 
- <div id="recentActivity" class="card-body"></div>
+ <div
+  id="recentActivity"
+  class="card-body"
+ ></div>
+
 </div>
 
 <div class="card">
+
  <div class="card-header">
-  <div>Next Follow-Ups</div>
-  <span>UPCOMING</span>
+
+  <div>
+   Next Follow-Ups
+  </div>
+
+  <span>
+   UPCOMING
+  </span>
+
  </div>
 
- <div id="dashboardFollowups" class="card-body"></div>
+ <div
+  id="dashboardFollowups"
+  class="card-body"
+ ></div>
+
 </div>
 
 </div>
 
 </section>
 
-<section id="companiesView" class="view">
+<section
+ id="companiesView"
+ class="view"
+>
 
 <div class="section-heading">
 
  <div>
-  <h2>Companies</h2>
-  <p>Manage organisations and the people connected to them.</p>
+
+  <h2>
+   Companies
+  </h2>
+
+  <p>
+   Manage organisations and the people connected to them.
+  </p>
+
  </div>
 
- <button class="primary-btn" onclick="openCompanyModal()">
+ <button
+  class="primary-btn"
+  onclick="openCompanyModal()"
+ >
   ＋ New Company
  </button>
 
@@ -1408,34 +3064,65 @@ a{
 <div class="card company-list">
 
 <div class="company-head">
- <div>COMPANY</div>
- <div>INDUSTRY</div>
- <div>LOCATION</div>
- <div>STATUS</div>
+
+ <div>
+  COMPANY
+ </div>
+
+ <div>
+  INDUSTRY
+ </div>
+
+ <div>
+  LOCATION
+ </div>
+
+ <div>
+  STATUS
+ </div>
+
 </div>
 
 <div id="companiesList"></div>
 
 </div>
 
-<div id="companyDetail" class="card detail-panel">
- <div class="empty">Select a company to view the record.</div>
+<div
+ id="companyDetail"
+ class="card detail-panel"
+>
+ <div class="empty">
+  Select a company to view the record.
+ </div>
 </div>
 
 </div>
 
 </section>
 
-<section id="contactsView" class="view">
+<section
+ id="contactsView"
+ class="view"
+>
 
 <div class="section-heading">
 
  <div>
-  <h2>Contacts</h2>
-  <p>Prospects and customers in the Excedere database.</p>
+
+  <h2>
+   Contacts
+  </h2>
+
+  <p>
+   Prospects and customers in the Excedere database.
+  </p>
+
  </div>
 
- <button class="primary-btn" onclick="openContactModal()">
+ <button
+  class="primary-btn"
+  onclick="openContactModal()"
+ >
   ＋ New Contact
  </button>
 
@@ -1446,63 +3133,129 @@ a{
 <div class="card contact-list">
 
 <div class="contact-head">
- <div>CONTACT</div>
- <div>COMPANY / ROLE</div>
- <div>CONTACT DETAILS</div>
- <div>FOLLOW-UP</div>
- <div>STATUS</div>
+
+ <div>
+  CONTACT
+ </div>
+
+ <div>
+  COMPANY / ROLE
+ </div>
+
+ <div>
+  CONTACT DETAILS
+ </div>
+
+ <div>
+  FOLLOW-UP
+ </div>
+
+ <div>
+  STATUS
+ </div>
+
 </div>
 
 <div id="contactsList"></div>
 
 </div>
 
-<div id="contactDetail" class="card detail-panel">
- <div class="empty">Select a contact to view the record.</div>
+<div
+ id="contactDetail"
+ class="card detail-panel"
+>
+ <div class="empty">
+  Select a contact to view the record.
+ </div>
 </div>
 
 </div>
 
 </section>
 
-<section id="pipelineView" class="view">
+<section
+ id="pipelineView"
+ class="view"
+>
 
 <div class="section-heading">
+
  <div>
-  <h2>Pipeline</h2>
-  <p>Track prospects through the sales process.</p>
+
+  <h2>
+   Pipeline
+  </h2>
+
+  <p>
+   Track prospects through the sales process.
+  </p>
+
  </div>
+
 </div>
 
-<div id="pipelineBoard" class="pipeline-board"></div>
+<div
+ id="pipelineBoard"
+ class="pipeline-board"
+></div>
 
 </section>
 
-<section id="followupsView" class="view">
+<section
+ id="followupsView"
+ class="view"
+>
 
 <div class="section-heading">
+
  <div>
-  <h2>Follow-Ups</h2>
-  <p>Prospects requiring your attention.</p>
+
+  <h2>
+   Follow-Ups
+  </h2>
+
+  <p>
+   Prospects requiring your attention.
+  </p>
+
  </div>
+
 </div>
 
 <div class="card">
- <div id="followupList" class="card-body"></div>
+
+ <div
+  id="followupList"
+  class="card-body"
+ ></div>
+
 </div>
 
 </section>
 
-<section id="tasksView" class="view">
+<section
+ id="tasksView"
+ class="view"
+>
 
 <div class="section-heading">
 
  <div>
-  <h2>Tasks</h2>
-  <p>Manage reminders and actions linked to contacts or companies.</p>
+
+  <h2>
+   Tasks
+  </h2>
+
+  <p>
+   Manage reminders and actions linked to contacts or companies.
+  </p>
+
  </div>
 
- <button class="primary-btn" onclick="openTaskModal()">
+ <button
+  class="primary-btn"
+  onclick="openTaskModal()"
+ >
   ＋ New Task
  </button>
 
@@ -1543,12 +3296,31 @@ a{
 <div class="card task-list">
 
 <div class="task-head">
- <div>TASK</div>
- <div>LINKED TO</div>
- <div>DUE</div>
- <div>PRIORITY</div>
- <div class="task-hide-small">STATUS</div>
- <div class="task-hide-small">ACTIONS</div>
+
+ <div>
+  TASK
+ </div>
+
+ <div>
+  LINKED TO
+ </div>
+
+ <div>
+  DUE
+ </div>
+
+ <div>
+  PRIORITY
+ </div>
+
+ <div class="task-hide-small">
+  STATUS
+ </div>
+
+ <div class="task-hide-small">
+  ACTIONS
+ </div>
+
 </div>
 
 <div id="tasksList"></div>
@@ -1563,76 +3335,272 @@ a{
 
 </div>
 
-<div id="contactModal" class="modal">
+<!-- ===================================================
+     LOGIN
+=================================================== -->
+
+<div
+ id="loginOverlay"
+ class="login-overlay"
+>
+
+<div class="login-card">
+
+ <div class="login-brand">
+
+  <div class="login-mark"></div>
+
+  <div class="login-name">
+   EXCEDERE
+  </div>
+
+  <div class="login-sub">
+   MANAGEMENT CONSULTANCY
+  </div>
+
+ </div>
+
+ <div class="login-body">
+
+  <div class="login-heading">
+   Sign in
+  </div>
+
+  <div class="login-copy">
+   Sign in to your Excedere workspace to load your CRM data.
+  </div>
+
+  <div class="login-field">
+
+   <label class="login-label">
+    EMAIL
+   </label>
+
+   <input
+    id="loginEmail"
+    class="login-input"
+    type="email"
+    autocomplete="username"
+    placeholder="Email address"
+   >
+
+  </div>
+
+  <div class="login-field">
+
+   <label class="login-label">
+    PASSWORD
+   </label>
+
+   <input
+    id="loginPassword"
+    class="login-input"
+    type="password"
+    autocomplete="current-password"
+    placeholder="Password"
+   >
+
+  </div>
+
+  <button
+   id="loginButton"
+   class="login-button"
+   onclick="signInCRM()"
+  >
+   Sign In
+  </button>
+
+  <div
+   id="loginStatus"
+   class="login-status"
+  >
+   Signing in...
+  </div>
+
+  <div
+   id="loginError"
+   class="login-error"
+  ></div>
+
+ </div>
+
+</div>
+
+</div>
+
+<!-- ===================================================
+     CONTACT MODAL
+=================================================== -->
+
+<div
+ id="contactModal"
+ class="modal"
+>
 
 <div class="modal-box">
 
 <div class="modal-head">
- <div id="contactModalTitle" class="modal-title">New Contact</div>
- <button class="modal-close" onclick="closeContactModal()">×</button>
+
+ <div
+  id="contactModalTitle"
+  class="modal-title"
+ >
+  New Contact
+ </div>
+
+ <button
+  class="modal-close"
+  onclick="closeContactModal()"
+ >
+  ×
+ </button>
+
 </div>
 
 <div class="form-grid">
 
 <div class="form-field">
- <label class="form-label">FIRST NAME</label>
- <input id="formFirstName" class="form-input">
+
+ <label class="form-label">
+  FIRST NAME
+ </label>
+
+ <input
+  id="formFirstName"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">TITLE</label>
- <input id="formTitle" class="form-input">
+
+ <label class="form-label">
+  TITLE
+ </label>
+
+ <input
+  id="formTitle"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">COMPANY</label>
+
+ <label class="form-label">
+  COMPANY
+ </label>
 
  <select
   id="formCompanyId"
   class="form-input"
   onchange="contactCompanyChanged()"
  ></select>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">ROLE / REQUIREMENT</label>
- <input id="formRole" class="form-input">
+
+ <label class="form-label">
+  ROLE / REQUIREMENT
+ </label>
+
+ <input
+  id="formRole"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">LOCATION</label>
- <input id="formLocation" class="form-input">
+
+ <label class="form-label">
+  LOCATION
+ </label>
+
+ <input
+  id="formLocation"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">PHONE</label>
- <input id="formPhone" class="form-input">
+
+ <label class="form-label">
+  PHONE
+ </label>
+
+ <input
+  id="formPhone"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">DIRECT PHONE</label>
- <input id="formDirectPhone" class="form-input">
+
+ <label class="form-label">
+  DIRECT PHONE
+ </label>
+
+ <input
+  id="formDirectPhone"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">EMAIL</label>
- <input id="formEmail" class="form-input" type="email">
+
+ <label class="form-label">
+  EMAIL
+ </label>
+
+ <input
+  id="formEmail"
+  class="form-input"
+  type="email"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">TIMEZONE</label>
- <input id="formTimezone" class="form-input">
+
+ <label class="form-label">
+  TIMEZONE
+ </label>
+
+ <input
+  id="formTimezone"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">TIMEZONE LABEL</label>
- <input id="formTimezoneLabel" class="form-input">
+
+ <label class="form-label">
+  TIMEZONE LABEL
+ </label>
+
+ <input
+  id="formTimezoneLabel"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">PIPELINE STAGE</label>
 
- <select id="formPipelineStage" class="form-input">
+ <label class="form-label">
+  PIPELINE STAGE
+ </label>
+
+ <select
+  id="formPipelineStage"
+  class="form-input"
+ >
   <option>New</option>
   <option>Contacted</option>
   <option>Follow-Up</option>
@@ -1642,152 +3610,366 @@ a{
   <option>Won</option>
   <option>Lost</option>
  </select>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">FOLLOW-UP DATE</label>
- <input id="formFollowUpDate" class="form-input" type="date">
+
+ <label class="form-label">
+  FOLLOW-UP DATE
+ </label>
+
+ <input
+  id="formFollowUpDate"
+  class="form-input"
+  type="date"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">NEXT ACTION</label>
- <input id="formNextAction" class="form-input">
+
+ <label class="form-label">
+  NEXT ACTION
+ </label>
+
+ <input
+  id="formNextAction"
+  class="form-input"
+ >
+
 </div>
 
 </div>
 
 <div class="modal-actions">
- <button class="secondary-btn" onclick="closeContactModal()">Cancel</button>
- <button class="primary-btn" onclick="saveContactForm()">Save Contact</button>
-</div>
+
+ <button
+  class="secondary-btn"
+  onclick="closeContactModal()"
+ >
+  Cancel
+ </button>
+
+ <button
+  class="primary-btn"
+  onclick="saveContactForm()"
+ >
+  Save Contact
+ </button>
 
 </div>
 
 </div>
 
-<div id="companyModal" class="modal">
+</div>
+
+<!-- ===================================================
+     COMPANY MODAL
+=================================================== -->
+
+<div
+ id="companyModal"
+ class="modal"
+>
 
 <div class="modal-box">
 
 <div class="modal-head">
- <div id="companyModalTitle" class="modal-title">New Company</div>
- <button class="modal-close" onclick="closeCompanyModal()">×</button>
+
+ <div
+  id="companyModalTitle"
+  class="modal-title"
+ >
+  New Company
+ </div>
+
+ <button
+  class="modal-close"
+  onclick="closeCompanyModal()"
+ >
+  ×
+ </button>
+
 </div>
 
 <div class="form-grid">
 
 <div class="form-field full">
- <label class="form-label">COMPANY NAME</label>
- <input id="companyFormName" class="form-input">
+
+ <label class="form-label">
+  COMPANY NAME
+ </label>
+
+ <input
+  id="companyFormName"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">WEBSITE</label>
- <input id="companyFormWebsite" class="form-input">
+
+ <label class="form-label">
+  WEBSITE
+ </label>
+
+ <input
+  id="companyFormWebsite"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">INDUSTRY</label>
- <input id="companyFormIndustry" class="form-input">
+
+ <label class="form-label">
+  INDUSTRY
+ </label>
+
+ <input
+  id="companyFormIndustry"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">PHONE</label>
- <input id="companyFormPhone" class="form-input">
+
+ <label class="form-label">
+  PHONE
+ </label>
+
+ <input
+  id="companyFormPhone"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">EMAIL</label>
- <input id="companyFormEmail" class="form-input" type="email">
+
+ <label class="form-label">
+  EMAIL
+ </label>
+
+ <input
+  id="companyFormEmail"
+  class="form-input"
+  type="email"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">STATUS</label>
 
- <select id="companyFormStatus" class="form-input">
+ <label class="form-label">
+  STATUS
+ </label>
+
+ <select
+  id="companyFormStatus"
+  class="form-input"
+ >
   <option>Prospect</option>
   <option>Customer</option>
   <option>Inactive</option>
  </select>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">TIMEZONE</label>
- <input id="companyFormTimezone" class="form-input">
+
+ <label class="form-label">
+  TIMEZONE
+ </label>
+
+ <input
+  id="companyFormTimezone"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">TIMEZONE LABEL</label>
- <input id="companyFormTimezoneLabel" class="form-input">
+
+ <label class="form-label">
+  TIMEZONE LABEL
+ </label>
+
+ <input
+  id="companyFormTimezoneLabel"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">ADDRESS LINE 1</label>
- <input id="companyFormAddress1" class="form-input">
+
+ <label class="form-label">
+  ADDRESS LINE 1
+ </label>
+
+ <input
+  id="companyFormAddress1"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">ADDRESS LINE 2</label>
- <input id="companyFormAddress2" class="form-input">
+
+ <label class="form-label">
+  ADDRESS LINE 2
+ </label>
+
+ <input
+  id="companyFormAddress2"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">CITY</label>
- <input id="companyFormCity" class="form-input">
+
+ <label class="form-label">
+  CITY
+ </label>
+
+ <input
+  id="companyFormCity"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">STATE / REGION</label>
- <input id="companyFormState" class="form-input">
+
+ <label class="form-label">
+  STATE / REGION
+ </label>
+
+ <input
+  id="companyFormState"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">POSTAL CODE</label>
- <input id="companyFormPostal" class="form-input">
+
+ <label class="form-label">
+  POSTAL CODE
+ </label>
+
+ <input
+  id="companyFormPostal"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">COUNTRY</label>
- <input id="companyFormCountry" class="form-input">
+
+ <label class="form-label">
+  COUNTRY
+ </label>
+
+ <input
+  id="companyFormCountry"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">COMPANY NOTES</label>
- <textarea id="companyFormNotes" class="form-input form-textarea"></textarea>
+
+ <label class="form-label">
+  COMPANY NOTES
+ </label>
+
+ <textarea
+  id="companyFormNotes"
+  class="form-input form-textarea"
+ ></textarea>
+
 </div>
 
 </div>
 
 <div class="modal-actions">
- <button class="secondary-btn" onclick="closeCompanyModal()">Cancel</button>
- <button class="primary-btn" onclick="saveCompanyForm()">Save Company</button>
-</div>
+
+ <button
+  class="secondary-btn"
+  onclick="closeCompanyModal()"
+ >
+  Cancel
+ </button>
+
+ <button
+  class="primary-btn"
+  onclick="saveCompanyForm()"
+ >
+  Save Company
+ </button>
 
 </div>
 
 </div>
 
-<div id="timelineModal" class="modal">
+</div>
+
+<!-- ===================================================
+     TIMELINE MODAL
+=================================================== -->
+
+<div
+ id="timelineModal"
+ class="modal"
+>
 
 <div class="modal-box">
 
 <div class="modal-head">
 
 <div>
- <div id="timelineModalTitle" class="modal-title">Add Activity</div>
- <div id="timelineModalTarget" class="page-subtitle" style="margin-top:5px"></div>
+
+ <div
+  id="timelineModalTitle"
+  class="modal-title"
+ >
+  Add Activity
+ </div>
+
+ <div
+  id="timelineModalTarget"
+  class="page-subtitle"
+  style="margin-top:5px"
+ ></div>
+
 </div>
 
-<button class="modal-close" onclick="closeTimelineModal()">×</button>
+<button
+ class="modal-close"
+ onclick="closeTimelineModal()"
+>
+ ×
+</button>
 
 </div>
 
 <div class="form-grid">
 
 <div class="form-field">
- <label class="form-label">ACTIVITY TYPE</label>
 
- <select id="timelineType" class="form-input">
+ <label class="form-label">
+  ACTIVITY TYPE
+ </label>
+
+ <select
+  id="timelineType"
+  class="form-input"
+ >
   <option value="note">Note</option>
   <option value="call">Call</option>
   <option value="email">Email</option>
@@ -1797,75 +3979,174 @@ a{
   <option value="task">Task</option>
   <option value="status">Status Update</option>
  </select>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">DATE / TIME</label>
- <input id="timelineOccurredAt" class="form-input" type="datetime-local">
+
+ <label class="form-label">
+  DATE / TIME
+ </label>
+
+ <input
+  id="timelineOccurredAt"
+  class="form-input"
+  type="datetime-local"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">TITLE</label>
- <input id="timelineTitle" class="form-input">
+
+ <label class="form-label">
+  TITLE
+ </label>
+
+ <input
+  id="timelineTitle"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">NOTES</label>
- <textarea id="timelineBody" class="form-input form-textarea"></textarea>
+
+ <label class="form-label">
+  NOTES
+ </label>
+
+ <textarea
+  id="timelineBody"
+  class="form-input form-textarea"
+ ></textarea>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">OUTCOME</label>
- <input id="timelineOutcome" class="form-input">
+
+ <label class="form-label">
+  OUTCOME
+ </label>
+
+ <input
+  id="timelineOutcome"
+  class="form-input"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">NEXT ACTION</label>
- <input id="timelineNextAction" class="form-input">
+
+ <label class="form-label">
+  NEXT ACTION
+ </label>
+
+ <input
+  id="timelineNextAction"
+  class="form-input"
+ >
+
 </div>
 
 </div>
 
 <div class="modal-actions">
- <button class="secondary-btn" onclick="closeTimelineModal()">Cancel</button>
- <button class="primary-btn" onclick="saveTimelineItem()">Save Activity</button>
-</div>
+
+ <button
+  class="secondary-btn"
+  onclick="closeTimelineModal()"
+ >
+  Cancel
+ </button>
+
+ <button
+  class="primary-btn"
+  onclick="saveTimelineItem()"
+ >
+  Save Activity
+ </button>
 
 </div>
 
 </div>
 
-<div id="taskModal" class="modal">
+</div>
+
+<!-- ===================================================
+     TASK MODAL
+=================================================== -->
+
+<div
+ id="taskModal"
+ class="modal"
+>
 
 <div class="modal-box">
 
 <div class="modal-head">
 
 <div>
- <div id="taskModalTitle" class="modal-title">New Task</div>
- <div id="taskModalSubtitle" class="page-subtitle" style="margin-top:5px">
+
+ <div
+  id="taskModalTitle"
+  class="modal-title"
+ >
+  New Task
+ </div>
+
+ <div
+  id="taskModalSubtitle"
+  class="page-subtitle"
+  style="margin-top:5px"
+ >
   Link the task to a contact or company.
  </div>
+
 </div>
 
-<button class="modal-close" onclick="closeTaskModal()">×</button>
+<button
+ class="modal-close"
+ onclick="closeTaskModal()"
+>
+ ×
+</button>
 
 </div>
 
 <div class="form-grid">
 
 <div class="form-field full">
- <label class="form-label">TASK TITLE</label>
- <input id="taskTitle" class="form-input" placeholder="e.g. Follow up on proposal">
+
+ <label class="form-label">
+  TASK TITLE
+ </label>
+
+ <input
+  id="taskTitle"
+  class="form-input"
+  placeholder="e.g. Follow up on proposal"
+ >
+
 </div>
 
 <div class="form-field full">
- <label class="form-label">DESCRIPTION</label>
- <textarea id="taskDescription" class="form-input form-textarea"></textarea>
+
+ <label class="form-label">
+  DESCRIPTION
+ </label>
+
+ <textarea
+  id="taskDescription"
+  class="form-input form-textarea"
+ ></textarea>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">LINK TYPE</label>
+
+ <label class="form-label">
+  LINK TYPE
+ </label>
 
  <select
   id="taskTargetType"
@@ -1875,42 +4156,87 @@ a{
   <option value="contact">Contact</option>
   <option value="company">Company</option>
  </select>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">LINKED RECORD</label>
- <select id="taskTargetId" class="form-input"></select>
+
+ <label class="form-label">
+  LINKED RECORD
+ </label>
+
+ <select
+  id="taskTargetId"
+  class="form-input"
+ ></select>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">DUE DATE / TIME</label>
- <input id="taskDueAt" class="form-input" type="datetime-local">
+
+ <label class="form-label">
+  DUE DATE / TIME
+ </label>
+
+ <input
+  id="taskDueAt"
+  class="form-input"
+  type="datetime-local"
+ >
+
 </div>
 
 <div class="form-field">
- <label class="form-label">PRIORITY</label>
 
- <select id="taskPriority" class="form-input">
+ <label class="form-label">
+  PRIORITY
+ </label>
+
+ <select
+  id="taskPriority"
+  class="form-input"
+ >
   <option>Low</option>
   <option selected>Medium</option>
   <option>High</option>
  </select>
+
 </div>
 
 <div class="form-field">
- <label class="form-label">STATUS</label>
 
- <select id="taskStatus" class="form-input">
+ <label class="form-label">
+  STATUS
+ </label>
+
+ <select
+  id="taskStatus"
+  class="form-input"
+ >
   <option>Open</option>
   <option>Completed</option>
  </select>
+
 </div>
 
 </div>
 
 <div class="modal-actions">
- <button class="secondary-btn" onclick="closeTaskModal()">Cancel</button>
- <button class="primary-btn" onclick="saveTaskForm()">Save Task</button>
+
+ <button
+  class="secondary-btn"
+  onclick="closeTaskModal()"
+ >
+  Cancel
+ </button>
+
+ <button
+  class="primary-btn"
+  onclick="saveTaskForm()"
+ >
+  Save Task
+ </button>
+
 </div>
 
 </div>
@@ -1923,43 +4249,43 @@ a{
    CONFIG
 ===================================================== */
 
-const SUPABASE_URL =
+const SUPABASE_URL=
  "https://kxxoyhagfmexvnzpuwys.supabase.co";
 
-const SUPABASE_PROJECT_REF =
+const SUPABASE_PROJECT_REF=
  "kxxoyhagfmexvnzpuwys";
 
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_PUBLISHABLE_KEY=
  "sb_publishable_2gcvru1GxULE5nCVFNPgQw__vOGbDxx";
 
-const CLOUD_FUNCTION_URL =
+const CLOUD_FUNCTION_URL=
  `${SUPABASE_URL}/functions/v1/crm-data`;
 
-const CALL_ASSIST_URL =
+const CALL_ASSIST_URL=
  "https://excederemanagementconsultancy.github.io/excedere-call-assist/";
 
-const LEAD_STORAGE_KEY =
+const LEAD_STORAGE_KEY=
  "excedereCallAssistLeads";
 
-const LEAD_BACKUP_KEY =
+const LEAD_BACKUP_KEY=
  "excedereCallAssistLeadsBackup";
 
-const COMPANY_STORAGE_KEY =
+const COMPANY_STORAGE_KEY=
  "excedereCRMCompanies";
 
-const COMPANY_BACKUP_KEY =
+const COMPANY_BACKUP_KEY=
  "excedereCRMCompaniesBackup";
 
-const TIMELINE_STORAGE_KEY =
+const TIMELINE_STORAGE_KEY=
  "excedereCRMTimeline";
 
-const TIMELINE_BACKUP_KEY =
+const TIMELINE_BACKUP_KEY=
  "excedereCRMTimelineBackup";
 
-const TASK_STORAGE_KEY =
+const TASK_STORAGE_KEY=
  "excedereCRMTasks";
 
-const TASK_BACKUP_KEY =
+const TASK_BACKUP_KEY=
  "excedereCRMTasksBackup";
 
 const PIPELINE_STAGES=[
@@ -1974,83 +4300,8 @@ const PIPELINE_STAGES=[
 ];
 
 /* =====================================================
-   SESSION
+   SUPABASE CLIENT
 ===================================================== */
-
-function findExistingExcedereSession(){
-
- const expectedKey=
-  `sb-${SUPABASE_PROJECT_REF}-auth-token`;
-
- const keys=[];
-
- if(localStorage.getItem(expectedKey)){
-  keys.push(expectedKey);
- }
-
- for(let i=0;i<localStorage.length;i++){
-
-  const key=
-   localStorage.key(i);
-
-  if(
-   key &&
-   key.includes(SUPABASE_PROJECT_REF) &&
-   !keys.includes(key)
-  ){
-   keys.push(key);
-  }
- }
-
- for(const key of keys){
-
-  try{
-
-   const raw=
-    localStorage.getItem(key);
-
-   if(!raw){
-    continue;
-   }
-
-   const parsed=
-    JSON.parse(raw);
-
-   const possible=[
-    parsed,
-    parsed?.currentSession,
-    parsed?.session,
-    parsed?.data?.session
-   ];
-
-   for(const candidate of possible){
-
-    if(
-     candidate?.access_token &&
-     candidate?.refresh_token
-    ){
-     return{
-      access_token:candidate.access_token,
-      refresh_token:candidate.refresh_token
-     };
-    }
-   }
-
-  }catch(error){
-
-   console.warn(
-    "Stored session read failed:",
-    key,
-    error
-   );
-  }
- }
-
- return null;
-}
-
-const existingExcedereSession=
- findExistingExcedereSession();
 
 const supabaseClient=
  window.supabase.createClient(
@@ -2080,7 +4331,9 @@ let selectedCompanyId=null;
 
 let currentSearch="";
 let currentView="dashboard";
-let taskFilter="Open";
+
+let taskFilter=
+ "Open";
 
 let editingLeadId=null;
 let editingCompanyId=null;
@@ -2094,7 +4347,6 @@ let presetTaskTargetId=null;
 
 let cloudSyncTimer=null;
 let cloudSyncRunning=false;
-let sessionBridgeRunning=null;
 
 /* =====================================================
    GENERAL HELPERS
@@ -2102,149 +4354,273 @@ let sessionBridgeRunning=null;
 
 function e(value){
 
- return String(value ?? "")
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
+ return String(
+  value ?? ""
+ )
+ .replace(
+  /&/g,
+  "&amp;"
+ )
+ .replace(
+  /</g,
+  "&lt;"
+ )
+ .replace(
+  />/g,
+  "&gt;"
+ )
+ .replace(
+  /"/g,
+  "&quot;"
+ )
+ .replace(
+  /'/g,
+  "&#039;"
+ );
 }
 
 function uuid(){
 
- if(crypto.randomUUID){
+ if(
+  crypto.randomUUID
+ ){
   return crypto.randomUUID();
  }
 
- return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-  .replace(
-   /[xy]/g,
-   character=>{
+ return(
+  "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+ )
+ .replace(
+  /[xy]/g,
+  character=>{
 
-    const random=
-     Math.random()*16|0;
+   const random=
+    Math.random()*16|0;
 
-    const value=
-     character==="x"
-      ? random
-      : (random & 3 | 8);
+   const value=
+    character==="x"
+     ? random
+     : (
+      random & 3 | 8
+     );
 
-    return value.toString(16);
-   }
-  );
+   return value
+    .toString(16);
+  }
+ );
 }
 
 function defaults(lead){
 
- lead.pipelineStage ||= "New";
- lead.callHistory ||= [];
- lead.emailHistory ||= [];
- lead.callCount ||= 0;
- lead.lastOutcome ||= "";
- lead.nextAction ||= "";
- lead.nextFollowUpDate ||= "";
- lead.companyId ||= "";
+ lead.pipelineStage ||=
+  "New";
+
+ lead.callHistory ||=
+  [];
+
+ lead.emailHistory ||=
+  [];
+
+ lead.callCount ||=
+  0;
+
+ lead.lastOutcome ||=
+  "";
+
+ lead.nextAction ||=
+  "";
+
+ lead.nextFollowUpDate ||=
+  "";
+
+ lead.companyId ||=
+  "";
 
  return lead;
 }
 
-function companyDefaults(company){
+function companyDefaults(
+ company
+){
 
- company.status ||= "Prospect";
- company.website ||= "";
- company.industry ||= "";
- company.phone ||= "";
- company.email ||= "";
- company.addressLine1 ||= "";
- company.addressLine2 ||= "";
- company.city ||= "";
- company.stateRegion ||= "";
- company.postalCode ||= "";
- company.country ||= "";
- company.timezone ||= "";
- company.timezoneLabel ||= "";
- company.notes ||= "";
+ company.status ||=
+  "Prospect";
+
+ company.website ||=
+  "";
+
+ company.industry ||=
+  "";
+
+ company.phone ||=
+  "";
+
+ company.email ||=
+  "";
+
+ company.addressLine1 ||=
+  "";
+
+ company.addressLine2 ||=
+  "";
+
+ company.city ||=
+  "";
+
+ company.stateRegion ||=
+  "";
+
+ company.postalCode ||=
+  "";
+
+ company.country ||=
+  "";
+
+ company.timezone ||=
+  "";
+
+ company.timezoneLabel ||=
+  "";
+
+ company.notes ||=
+  "";
 
  return company;
 }
 
-function timelineDefaults(item){
+function timelineDefaults(
+ item
+){
 
- item.activityType ||= "note";
- item.contactId ||= "";
- item.companyId ||= "";
- item.occurredAt ||= new Date().toISOString();
- item.title ||= "";
- item.body ||= "";
- item.outcome ||= "";
- item.nextAction ||= "";
+ item.activityType ||=
+  "note";
+
+ item.contactId ||=
+  "";
+
+ item.companyId ||=
+  "";
+
+ item.occurredAt ||=
+  new Date()
+   .toISOString();
+
+ item.title ||=
+  "";
+
+ item.body ||=
+  "";
+
+ item.outcome ||=
+  "";
+
+ item.nextAction ||=
+  "";
 
  return item;
 }
 
-function taskDefaults(task){
+function taskDefaults(
+ task
+){
 
- task.contactId ||= "";
- task.companyId ||= "";
- task.title ||= "";
- task.description ||= "";
- task.dueAt ||= "";
- task.priority ||= "Medium";
- task.status ||= "Open";
- task.completedAt ||= "";
+ task.contactId ||=
+  "";
+
+ task.companyId ||=
+  "";
+
+ task.title ||=
+  "";
+
+ task.description ||=
+  "";
+
+ task.dueAt ||=
+  "";
+
+ task.priority ||=
+  "Medium";
+
+ task.status ||=
+  "Open";
+
+ task.completedAt ||=
+  "";
 
  return task;
 }
 
-function isSmartFollowUpTask(task){
+function isSmartFollowUpTask(
+ task
+){
 
  if(!task){
   return false;
  }
 
  return(
-  task.autoFollowUp===true ||
-  String(task.id || "")
-   .startsWith("followup:")
+  task.autoFollowUp===true
+  ||
+  String(
+   task.id || ""
+  )
+  .startsWith(
+   "followup:"
+  )
  );
 }
 
 function getLeadById(id){
 
  return leads.find(
-  lead=>lead.id===id
+  lead=>
+   lead.id===id
  );
 }
 
 function getCompanyById(id){
 
  return companies.find(
-  company=>company.id===id
+  company=>
+   company.id===id
  );
 }
 
 function getTaskById(id){
 
  return tasks.find(
-  task=>task.id===id
+  task=>
+   task.id===id
  );
 }
 
-function getCompanyForLead(lead){
+function getCompanyForLead(
+ lead
+){
 
- if(lead?.companyId){
+ if(
+  lead?.companyId
+ ){
 
   return getCompanyById(
    lead.companyId
   );
  }
 
- if(lead?.company){
+ if(
+  lead?.company
+ ){
 
   return companies.find(
    company=>
-    company.name.trim().toLowerCase()===
-    lead.company.trim().toLowerCase()
+    company.name
+     .trim()
+     .toLowerCase()
+    ===
+    lead.company
+     .trim()
+     .toLowerCase()
   );
  }
 
@@ -2255,7 +4631,10 @@ function getCompanyForLead(lead){
    SYNC STATUS
 ===================================================== */
 
-function setSync(type,text){
+function setSync(
+ type,
+ text
+){
 
  const box=
   document.getElementById(
@@ -2269,86 +4648,231 @@ function setSync(type,text){
   .getElementById(
    "syncStatusText"
   )
-  .textContent=text;
+  .textContent=
+   text;
 }
 
 /* =====================================================
-   AUTH BRIDGE
+   LOGIN
 ===================================================== */
 
-async function bridgeExistingSession(){
+function showLogin(){
 
- if(sessionBridgeRunning){
-  return sessionBridgeRunning;
+ document
+  .getElementById(
+   "loginOverlay"
+  )
+  .classList.add(
+   "show"
+  );
+
+ setSync(
+  "error",
+  "Login required"
+ );
+}
+
+function hideLogin(){
+
+ document
+  .getElementById(
+   "loginOverlay"
+  )
+  .classList.remove(
+   "show"
+  );
+
+ document
+  .getElementById(
+   "loginError"
+  )
+  .classList.remove(
+   "show"
+  );
+
+ document
+  .getElementById(
+   "loginStatus"
+  )
+  .style.display=
+   "none";
+}
+
+function showLoginError(
+ message
+){
+
+ const error=
+  document.getElementById(
+   "loginError"
+  );
+
+ error.textContent=
+  message;
+
+ error.classList.add(
+  "show"
+ );
+}
+
+async function signInCRM(){
+
+ const email=
+  document
+   .getElementById(
+    "loginEmail"
+   )
+   .value
+   .trim();
+
+ const password=
+  document
+   .getElementById(
+    "loginPassword"
+   )
+   .value;
+
+ const button=
+  document.getElementById(
+   "loginButton"
+  );
+
+ const statusBox=
+  document.getElementById(
+   "loginStatus"
+  );
+
+ const errorBox=
+  document.getElementById(
+   "loginError"
+  );
+
+ errorBox.classList.remove(
+  "show"
+ );
+
+ if(
+  !email ||
+  !password
+ ){
+
+  showLoginError(
+   "Enter your email address and password."
+  );
+
+  return;
  }
 
- sessionBridgeRunning=
-  (async()=>{
+ button.disabled=
+  true;
 
-   const current=
-    await supabaseClient
-     .auth
-     .getSession();
+ button.textContent=
+  "Signing In...";
 
-   if(current.data?.session){
-    return current.data.session;
-   }
+ statusBox.style.display=
+  "block";
 
-   if(
-    existingExcedereSession?.access_token &&
-    existingExcedereSession?.refresh_token
-   ){
-
-    setSync(
-     "syncing",
-     "Restoring session..."
-    );
-
-    const bridged=
-     await supabaseClient
-      .auth
-      .setSession({
-       access_token:
-        existingExcedereSession.access_token,
-
-       refresh_token:
-        existingExcedereSession.refresh_token
-      });
-
-    if(bridged.error){
-     throw bridged.error;
-    }
-
-    if(bridged.data?.session){
-     return bridged.data.session;
-    }
-   }
-
-   return null;
-
-  })();
+ setSync(
+  "syncing",
+  "Signing in..."
+ );
 
  try{
-  return await sessionBridgeRunning;
+
+  const {
+   data,
+   error
+  }=
+   await supabaseClient
+    .auth
+    .signInWithPassword({
+     email,
+     password
+    });
+
+  if(error){
+   throw error;
+  }
+
+  if(
+   !data?.session
+  ){
+   throw new Error(
+    "No login session was returned."
+   );
+  }
+
+  hideLogin();
+
+  await loadCRMFromCloud();
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   "CRM sign in failed:",
+   error
+  );
+
+  setSync(
+   "error",
+   "Login failed"
+  );
+
+  showLoginError(
+   error?.message ||
+   "Sign in failed."
+  );
+
  }finally{
-  sessionBridgeRunning=null;
+
+  button.disabled=
+   false;
+
+  button.textContent=
+   "Sign In";
+
+  statusBox.style.display=
+   "none";
  }
 }
 
 async function getActiveSession(){
 
+ const {
+  data,
+  error
+ }=
+  await supabaseClient
+   .auth
+   .getSession();
+
+ if(error){
+  throw error;
+ }
+
  let session=
-  await bridgeExistingSession();
+  data?.session ||
+  null;
 
  if(!session){
   return null;
  }
 
  const now=
-  Math.floor(Date.now()/1000);
+  Math.floor(
+   Date.now()/1000
+  );
 
  const expiresAt=
-  Number(session.expires_at || 0);
+  Number(
+   session.expires_at ||
+   0
+  );
 
  if(
   expiresAt &&
@@ -2360,7 +4884,9 @@ async function getActiveSession(){
     .auth
     .refreshSession();
 
-  if(refreshed.error){
+  if(
+   refreshed.error
+  ){
    throw refreshed.error;
   }
 
@@ -2386,6 +4912,9 @@ async function cloud(
   await getActiveSession();
 
  if(!session){
+
+  showLogin();
+
   throw new Error(
    "No active Excedere login session."
   );
@@ -2395,7 +4924,8 @@ async function cloud(
   await fetch(
    CLOUD_FUNCTION_URL,
    {
-    method:"POST",
+    method:
+     "POST",
 
     headers:{
      "Authorization":
@@ -2427,8 +4957,12 @@ async function cloud(
    refreshed.error ||
    !refreshed.data?.session
   ){
-   throw (
-    refreshed.error ||
+
+   showLogin();
+
+   throw(
+    refreshed.error
+    ||
     new Error(
      "Supabase session refresh failed."
     )
@@ -2445,9 +4979,12 @@ async function cloud(
  let result;
 
  try{
+
   result=
    await response.json();
+
  }catch{
+
   throw new Error(
    "Invalid CRM cloud response."
   );
@@ -2457,6 +4994,7 @@ async function cloud(
   !response.ok ||
   !result.success
  ){
+
   throw new Error(
    result.error ||
    "CRM cloud request failed."
@@ -2474,22 +5012,30 @@ function saveCache(){
 
  localStorage.setItem(
   LEAD_STORAGE_KEY,
-  JSON.stringify(leads)
+  JSON.stringify(
+   leads
+  )
  );
 
  localStorage.setItem(
   COMPANY_STORAGE_KEY,
-  JSON.stringify(companies)
+  JSON.stringify(
+   companies
+  )
  );
 
  localStorage.setItem(
   TIMELINE_STORAGE_KEY,
-  JSON.stringify(timeline)
+  JSON.stringify(
+   timeline
+  )
  );
 
  localStorage.setItem(
   TASK_STORAGE_KEY,
-  JSON.stringify(tasks)
+  JSON.stringify(
+   tasks
+  )
  );
 }
 
@@ -2504,11 +5050,16 @@ function loadLeadCache(){
     ) || "[]"
    );
 
-  return Array.isArray(parsed)
-   ? parsed.map(defaults)
+  return Array.isArray(
+   parsed
+  )
+   ? parsed.map(
+      defaults
+     )
    : [];
 
  }catch{
+
   return [];
  }
 }
@@ -2524,11 +5075,16 @@ function loadCompanyCache(){
     ) || "[]"
    );
 
-  return Array.isArray(parsed)
-   ? parsed.map(companyDefaults)
+  return Array.isArray(
+   parsed
+  )
+   ? parsed.map(
+      companyDefaults
+     )
    : [];
 
  }catch{
+
   return [];
  }
 }
@@ -2544,11 +5100,16 @@ function loadTimelineCache(){
     ) || "[]"
    );
 
-  return Array.isArray(parsed)
-   ? parsed.map(timelineDefaults)
+  return Array.isArray(
+   parsed
+  )
+   ? parsed.map(
+      timelineDefaults
+     )
    : [];
 
  }catch{
+
   return [];
  }
 }
@@ -2564,11 +5125,16 @@ function loadTaskCache(){
     ) || "[]"
    );
 
-  return Array.isArray(parsed)
-   ? parsed.map(taskDefaults)
+  return Array.isArray(
+   parsed
+  )
+   ? parsed.map(
+      taskDefaults
+     )
    : [];
 
  }catch{
+
   return [];
  }
 }
@@ -2576,14 +5142,35 @@ function loadTaskCache(){
 function backupCache(){
 
  const values=[
-  [LEAD_STORAGE_KEY,LEAD_BACKUP_KEY],
-  [COMPANY_STORAGE_KEY,COMPANY_BACKUP_KEY],
-  [TIMELINE_STORAGE_KEY,TIMELINE_BACKUP_KEY],
-  [TASK_STORAGE_KEY,TASK_BACKUP_KEY]
+
+  [
+   LEAD_STORAGE_KEY,
+   LEAD_BACKUP_KEY
+  ],
+
+  [
+   COMPANY_STORAGE_KEY,
+   COMPANY_BACKUP_KEY
+  ],
+
+  [
+   TIMELINE_STORAGE_KEY,
+   TIMELINE_BACKUP_KEY
+  ],
+
+  [
+   TASK_STORAGE_KEY,
+   TASK_BACKUP_KEY
+  ]
  ];
 
  values.forEach(
-  ([sourceKey,backupKey])=>{
+  (
+   [
+    sourceKey,
+    backupKey
+   ]
+  )=>{
 
    const raw=
     localStorage.getItem(
@@ -2596,13 +5183,116 @@ function backupCache(){
      backupKey
     )
    ){
+
     localStorage.setItem(
      backupKey,
      raw
     );
    }
-
   }
+ );
+}
+
+/* =====================================================
+   CLOUD STATE
+===================================================== */
+
+async function reloadCloudState(){
+
+ const result=
+  await cloud(
+   "load"
+  );
+
+ leads=
+  Array.isArray(
+   result.leads
+  )
+   ? result.leads.map(
+      defaults
+     )
+   : [];
+
+ companies=
+  Array.isArray(
+   result.companies
+  )
+   ? result.companies.map(
+      companyDefaults
+     )
+   : [];
+
+ timeline=
+  Array.isArray(
+   result.timeline
+  )
+   ? result.timeline.map(
+      timelineDefaults
+     )
+   : [];
+
+ tasks=
+  Array.isArray(
+   result.tasks
+  )
+   ? result.tasks.map(
+      taskDefaults
+     )
+   : [];
+
+ saveCache();
+}
+
+async function loadCRMFromCloud(){
+
+ setSync(
+  "syncing",
+  "Loading CRM..."
+ );
+
+ await reloadCloudState();
+
+ if(
+  selectedLeadId &&
+  !getLeadById(
+   selectedLeadId
+  )
+ ){
+  selectedLeadId=
+   null;
+ }
+
+ if(
+  selectedCompanyId &&
+  !getCompanyById(
+   selectedCompanyId
+  )
+ ){
+  selectedCompanyId=
+   null;
+ }
+
+ if(
+  !selectedLeadId
+ ){
+  selectedLeadId=
+   leads[0]?.id ||
+   null;
+ }
+
+ if(
+  !selectedCompanyId
+ ){
+  selectedCompanyId=
+   companies[0]?.id ||
+   null;
+ }
+
+ renderAll();
+
+ setSync(
+  "synced",
+  "Cloud synced"
  );
 }
 
@@ -2632,11 +5322,14 @@ function scheduleSync(){
 
 async function syncCloud(){
 
- if(cloudSyncRunning){
+ if(
+  cloudSyncRunning
+ ){
   return;
  }
 
- cloudSyncRunning=true;
+ cloudSyncRunning=
+  true;
 
  setSync(
   "syncing",
@@ -2669,40 +5362,14 @@ async function syncCloud(){
 
   setSync(
    "error",
-   "Local cache active"
+   "Sync failed"
   );
 
  }finally{
-  cloudSyncRunning=false;
+
+  cloudSyncRunning=
+   false;
  }
-}
-
-async function reloadCloudState(){
-
- const result=
-  await cloud("load");
-
- leads=
-  Array.isArray(result.leads)
-   ? result.leads.map(defaults)
-   : [];
-
- companies=
-  Array.isArray(result.companies)
-   ? result.companies.map(companyDefaults)
-   : [];
-
- timeline=
-  Array.isArray(result.timeline)
-   ? result.timeline.map(timelineDefaults)
-   : [];
-
- tasks=
-  Array.isArray(result.tasks)
-   ? result.tasks.map(taskDefaults)
-   : [];
-
- saveCache();
 }
 
 /* =====================================================
@@ -2737,171 +5404,36 @@ async function initialise(){
 
   if(!session){
 
-   leads=leadFallback;
-   companies=companyFallback;
-   timeline=timelineFallback;
-   tasks=taskFallback;
+   leads=
+    leadFallback;
+
+   companies=
+    companyFallback;
+
+   timeline=
+    timelineFallback;
+
+   tasks=
+    taskFallback;
 
    selectedLeadId=
-    leads[0]?.id || null;
+    leads[0]?.id ||
+    null;
 
    selectedCompanyId=
-    companies[0]?.id || null;
+    companies[0]?.id ||
+    null;
 
    renderAll();
 
-   setSync(
-    "error",
-    "Login required"
-   );
+   showLogin();
 
    return;
   }
 
-  const result=
-   await cloud("load");
+  hideLogin();
 
-  const cloudLeads=
-   Array.isArray(result.leads)
-    ? result.leads.map(defaults)
-    : [];
-
-  const cloudCompanies=
-   Array.isArray(result.companies)
-    ? result.companies.map(companyDefaults)
-    : [];
-
-  const cloudTimeline=
-   Array.isArray(result.timeline)
-    ? result.timeline.map(timelineDefaults)
-    : [];
-
-  const cloudTasks=
-   Array.isArray(result.tasks)
-    ? result.tasks.map(taskDefaults)
-    : [];
-
-  companies=[
-   ...cloudCompanies
-  ];
-
-  companyFallback.forEach(
-   localCompany=>{
-
-    if(
-     !companies.some(
-      cloudCompany=>
-       cloudCompany.id===
-       localCompany.id
-     )
-    ){
-     companies.push(
-      localCompany
-     );
-    }
-   }
-  );
-
-  leads=[
-   ...cloudLeads
-  ];
-
-  leadFallback.forEach(
-   localLead=>{
-
-    if(
-     !leads.some(
-      cloudLead=>
-       cloudLead.id===
-       localLead.id
-     )
-    ){
-     leads.push(
-      localLead
-     );
-    }
-   }
-  );
-
-  timeline=[
-   ...cloudTimeline
-  ];
-
-  timelineFallback.forEach(
-   localItem=>{
-
-    if(
-     !timeline.some(
-      cloudItem=>
-       cloudItem.id===
-       localItem.id
-     )
-    ){
-     timeline.push(
-      localItem
-     );
-    }
-   }
-  );
-
-  tasks=[
-   ...cloudTasks
-  ];
-
-  taskFallback.forEach(
-   localTask=>{
-
-    if(
-     !tasks.some(
-      cloudTask=>
-       cloudTask.id===
-       localTask.id
-     )
-    ){
-     tasks.push(
-      localTask
-     );
-    }
-   }
-  );
-
-  saveCache();
-
-  selectedLeadId=
-   leads[0]?.id || null;
-
-  selectedCompanyId=
-   companies[0]?.id || null;
-
-  renderAll();
-
-  if(
-   companies.length>cloudCompanies.length ||
-   leads.length>cloudLeads.length ||
-   timeline.length>cloudTimeline.length ||
-   tasks.length>cloudTasks.length
-  ){
-
-   setSync(
-    "syncing",
-    "Restoring unsynced changes..."
-   );
-
-   await cloud(
-    "sync",
-    {
-     companies,
-     leads,
-     timeline,
-     tasks
-    }
-   );
-  }
-
-  setSync(
-   "synced",
-   "Cloud synced"
-  );
+  await loadCRMFromCloud();
 
  }catch(error){
 
@@ -2910,23 +5442,29 @@ async function initialise(){
    error
   );
 
-  leads=leadFallback;
-  companies=companyFallback;
-  timeline=timelineFallback;
-  tasks=taskFallback;
+  leads=
+   leadFallback;
+
+  companies=
+   companyFallback;
+
+  timeline=
+   timelineFallback;
+
+  tasks=
+   taskFallback;
 
   selectedLeadId=
-   leads[0]?.id || null;
+   leads[0]?.id ||
+   null;
 
   selectedCompanyId=
-   companies[0]?.id || null;
+   companies[0]?.id ||
+   null;
 
   renderAll();
 
-  setSync(
-   "error",
-   "Local cache active"
-  );
+  showLogin();
  }
 }
 
@@ -2943,25 +5481,43 @@ supabaseClient
   )=>{
 
    if(
-    event==="TOKEN_REFRESHED" ||
-    (
-     event==="SIGNED_IN" &&
-     session
-    )
+    event===
+    "TOKEN_REFRESHED"
    ){
-    setSync(
-     "synced",
-     "Cloud synced"
-    );
+
+    if(session){
+
+     hideLogin();
+
+     setSync(
+      "synced",
+      "Cloud synced"
+     );
+    }
    }
 
    if(
-    event==="SIGNED_OUT"
+    event===
+    "SIGNED_IN"
    ){
-    setSync(
-     "error",
-     "Login required"
-    );
+
+    if(session){
+
+     hideLogin();
+
+     setSync(
+      "synced",
+      "Cloud synced"
+     );
+    }
+   }
+
+   if(
+    event===
+    "SIGNED_OUT"
+   ){
+
+    showLogin();
    }
   }
  );
@@ -2970,9 +5526,13 @@ supabaseClient
    STATUS HELPERS
 ===================================================== */
 
-function days(dateString){
+function days(
+ dateString
+){
 
- if(!dateString){
+ if(
+  !dateString
+ ){
   return null;
  }
 
@@ -2980,19 +5540,28 @@ function days(dateString){
   new Date();
 
  today.setHours(
-  0,0,0,0
+  0,
+  0,
+  0,
+  0
  );
 
  return Math.ceil(
   (
    new Date(
     `${dateString}T00:00:00`
-   ) - today
-  ) / 86400000
+   )
+   -
+   today
+  )
+  /
+  86400000
  );
 }
 
-function status(lead){
+function status(
+ lead
+){
 
  if(
   !lead.lastCalled &&
@@ -3004,21 +5573,27 @@ function status(lead){
   ];
  }
 
- if(lead.nextFollowUpDate){
+ if(
+  lead.nextFollowUpDate
+ ){
 
   const difference=
    days(
     lead.nextFollowUpDate
    );
 
-  if(difference<0){
+  if(
+   difference<0
+  ){
    return[
     "OVERDUE",
     "status-overdue"
    ];
   }
 
-  if(difference<=2){
+  if(
+   difference<=2
+  ){
    return[
     "DUE SOON",
     "status-due"
@@ -3032,22 +5607,32 @@ function status(lead){
  ];
 }
 
-function companyStatusClass(value){
+function companyStatusClass(
+ value
+){
 
  switch(value){
 
   case "Customer":
-   return "company-status-customer";
+   return(
+    "company-status-customer"
+   );
 
   case "Inactive":
-   return "company-status-inactive";
+   return(
+    "company-status-inactive"
+   );
 
   default:
-   return "company-status-prospect";
+   return(
+    "company-status-prospect"
+   );
  }
 }
 
-function timeFor(lead){
+function timeFor(
+ lead
+){
 
  try{
 
@@ -3056,19 +5641,24 @@ function timeFor(lead){
     "en-US",
     {
      timeZone:
-      lead.timezone ||
+      lead.timezone
+      ||
       "America/Los_Angeles",
 
-     hour:"numeric",
-     minute:"2-digit"
+     hour:
+      "numeric",
+
+     minute:
+      "2-digit"
     }
    )
-    .format(
-     new Date()
-    );
+   .format(
+    new Date()
+   );
 
-  return (
-   value +
+  return(
+   value
+   +
    (
     lead.timezoneLabel
      ? ` ${lead.timezoneLabel}`
@@ -3077,7 +5667,10 @@ function timeFor(lead){
   );
 
  }catch{
-  return "Time unavailable";
+
+  return(
+   "Time unavailable"
+  );
  }
 }
 
@@ -3087,15 +5680,19 @@ function timeFor(lead){
 
 function filteredLeads(){
 
- if(!currentSearch){
+ if(
+  !currentSearch
+ ){
   return leads;
  }
 
  const query=
-  currentSearch.toLowerCase();
+  currentSearch
+   .toLowerCase();
 
  return leads.filter(
   lead=>
+
    [
     lead.firstName,
     lead.title,
@@ -3109,23 +5706,29 @@ function filteredLeads(){
     lead.nextAction,
     lead.pipelineStage
    ]
-    .join(" ")
-    .toLowerCase()
-    .includes(query)
+   .join(" ")
+   .toLowerCase()
+   .includes(
+    query
+   )
  );
 }
 
 function filteredCompanies(){
 
- if(!currentSearch){
+ if(
+  !currentSearch
+ ){
   return companies;
  }
 
  const query=
-  currentSearch.toLowerCase();
+  currentSearch
+   .toLowerCase();
 
  return companies.filter(
   company=>
+
    [
     company.name,
     company.website,
@@ -3138,9 +5741,11 @@ function filteredCompanies(){
     company.status,
     company.notes
    ]
-    .join(" ")
-    .toLowerCase()
-    .includes(query)
+   .join(" ")
+   .toLowerCase()
+   .includes(
+    query
+   )
  );
 }
 
@@ -3150,19 +5755,26 @@ function filteredTasks(){
   ...tasks
  ];
 
- if(taskFilter!=="All"){
+ if(
+  taskFilter!==
+  "All"
+ ){
 
   result=
    result.filter(
     task=>
-     task.status===taskFilter
+     task.status===
+     taskFilter
    );
  }
 
- if(currentSearch){
+ if(
+  currentSearch
+ ){
 
   const query=
-   currentSearch.toLowerCase();
+   currentSearch
+    .toLowerCase();
 
   result=
    result.filter(
@@ -3182,7 +5794,7 @@ function filteredTasks(){
          )
        : null;
 
-     return [
+     return[
       task.title,
       task.description,
       task.priority,
@@ -3191,32 +5803,48 @@ function filteredTasks(){
       lead?.company,
       company?.name
      ]
-      .join(" ")
-      .toLowerCase()
-      .includes(query);
-
+     .join(" ")
+     .toLowerCase()
+     .includes(
+      query
+     );
     }
    );
  }
 
  return result.sort(
-  (a,b)=>{
+  (
+   a,
+   b
+  )=>{
 
-   if(!a.dueAt && !b.dueAt){
+   if(
+    !a.dueAt &&
+    !b.dueAt
+   ){
     return 0;
    }
 
-   if(!a.dueAt){
+   if(
+    !a.dueAt
+   ){
     return 1;
    }
 
-   if(!b.dueAt){
+   if(
+    !b.dueAt
+   ){
     return -1;
    }
 
-   return (
-    new Date(a.dueAt) -
-    new Date(b.dueAt)
+   return(
+    new Date(
+     a.dueAt
+    )
+    -
+    new Date(
+     b.dueAt
+    )
    );
   }
  );
@@ -3231,10 +5859,13 @@ function switchView(
  button=null
 ){
 
- currentView=view;
+ currentView=
+  view;
 
  document
-  .querySelectorAll(".view")
+  .querySelectorAll(
+   ".view"
+  )
   .forEach(
    element=>
     element.classList.remove(
@@ -3243,7 +5874,9 @@ function switchView(
   );
 
  document
-  .querySelectorAll(".nav-btn")
+  .querySelectorAll(
+   ".nav-btn"
+  )
   .forEach(
    element=>
     element.classList.remove(
@@ -3277,9 +5910,13 @@ function switchView(
   };
 
   document
-   .querySelectorAll(".nav-btn")
+   .querySelectorAll(
+    ".nav-btn"
+   )
    [
-    navIndex[view]
+    navIndex[
+     view
+    ]
    ]
    ?.classList.add(
     "active"
@@ -3340,7 +5977,9 @@ function switchView(
    TIMELINE HELPERS
 ===================================================== */
 
-function timelineTypeLabel(type){
+function timelineTypeLabel(
+ type
+){
 
  const labels={
   note:"Note",
@@ -3353,10 +5992,16 @@ function timelineTypeLabel(type){
   status:"Status"
  };
 
- return labels[type] || "Activity";
+ return(
+  labels[type]
+  ||
+  "Activity"
+ );
 }
 
-function timelineTypeIcon(type){
+function timelineTypeIcon(
+ type
+){
 
  const icons={
   note:"✎",
@@ -3369,7 +6014,11 @@ function timelineTypeIcon(type){
   status:"●"
  };
 
- return icons[type] || "•";
+ return(
+  icons[type]
+  ||
+  "•"
+ );
 }
 
 function timelineForContact(
@@ -3380,7 +6029,8 @@ function timelineForContact(
   timeline
    .filter(
     item=>
-     item.contactId===contactId
+     item.contactId===
+     contactId
    )
    .map(
     item=>({
@@ -3400,68 +6050,112 @@ function timelineForContact(
 
  const calls=
   (
-   lead.callHistory || []
+   lead.callHistory
+   ||
+   []
   )
-   .map(
-    entry=>({
-     id:
-      entry.id ||
-      entry.externalId ||
-      `call-${entry.timestamp}`,
+  .map(
+   entry=>({
 
-     source:"system",
-     activityType:"call",
-     occurredAt:entry.timestamp,
-     title:
-      entry.outcome ||
-      "Call logged",
-     body:"",
-     outcome:
-      entry.outcome || "",
-     nextAction:
-      entry.nextAction || "",
-     contactId
-    })
-   );
+    id:
+     entry.id
+     ||
+     entry.externalId
+     ||
+     `call-${entry.timestamp}`,
+
+    source:
+     "system",
+
+    activityType:
+     "call",
+
+    occurredAt:
+     entry.timestamp,
+
+    title:
+     entry.outcome
+     ||
+     "Call logged",
+
+    body:
+     "",
+
+    outcome:
+     entry.outcome
+     ||
+     "",
+
+    nextAction:
+     entry.nextAction
+     ||
+     "",
+
+    contactId
+   })
+  );
 
  const emails=
   (
-   lead.emailHistory || []
+   lead.emailHistory
+   ||
+   []
   )
-   .map(
-    entry=>({
-     id:
-      entry.id ||
-      entry.externalId ||
-      `email-${entry.timestamp}`,
+  .map(
+   entry=>({
 
-     source:"system",
-     activityType:"email",
-     occurredAt:entry.timestamp,
-     title:
-      entry.subject ||
-      "Email sent",
-     body:"",
-     outcome:"",
-     nextAction:"",
-     contactId
-    })
-   );
+    id:
+     entry.id
+     ||
+     entry.externalId
+     ||
+     `email-${entry.timestamp}`,
+
+    source:
+     "system",
+
+    activityType:
+     "email",
+
+    occurredAt:
+     entry.timestamp,
+
+    title:
+     entry.subject
+     ||
+     "Email sent",
+
+    body:
+     "",
+
+    outcome:
+     "",
+
+    nextAction:
+     "",
+
+    contactId
+   })
+  );
 
  return[
   ...manual,
   ...calls,
   ...emails
  ]
-  .sort(
-   (a,b)=>
-    new Date(
-     b.occurredAt
-    ) -
-    new Date(
-     a.occurredAt
-    )
-  );
+ .sort(
+  (
+   a,
+   b
+  )=>
+   new Date(
+    b.occurredAt
+   )
+   -
+   new Date(
+    a.occurredAt
+   )
+ );
 }
 
 function timelineForCompany(
@@ -3471,20 +6165,24 @@ function timelineForCompany(
  const companyContacts=
   leads.filter(
    lead=>
-    lead.companyId===companyId
+    lead.companyId===
+    companyId
   );
 
  const contactIds=
   new Set(
    companyContacts.map(
-    lead=>lead.id
+    lead=>
+     lead.id
    )
   );
 
  const manual=
   timeline.filter(
    item=>
-    item.companyId===companyId ||
+    item.companyId===
+    companyId
+    ||
     contactIds.has(
      item.contactId
     )
@@ -3496,61 +6194,92 @@ function timelineForCompany(
   lead=>{
 
    (
-    lead.callHistory || []
+    lead.callHistory
+    ||
+    []
    )
-    .forEach(
-     entry=>{
+   .forEach(
+    entry=>{
 
-      system.push({
-       id:
-        entry.id ||
-        entry.externalId ||
-        `call-${lead.id}-${entry.timestamp}`,
+     system.push({
 
-       source:"system",
-       activityType:"call",
-       occurredAt:entry.timestamp,
-       title:
-        entry.outcome ||
-        "Call logged",
-       outcome:
-        entry.outcome || "",
-       nextAction:
-        entry.nextAction || "",
-       contactId:
-        lead.id,
-       companyId
-      });
+      id:
+       entry.id
+       ||
+       entry.externalId
+       ||
+       `call-${lead.id}-${entry.timestamp}`,
 
-     }
-    );
+      source:
+       "system",
+
+      activityType:
+       "call",
+
+      occurredAt:
+       entry.timestamp,
+
+      title:
+       entry.outcome
+       ||
+       "Call logged",
+
+      outcome:
+       entry.outcome
+       ||
+       "",
+
+      nextAction:
+       entry.nextAction
+       ||
+       "",
+
+      contactId:
+       lead.id,
+
+      companyId
+     });
+    }
+   );
 
    (
-    lead.emailHistory || []
+    lead.emailHistory
+    ||
+    []
    )
-    .forEach(
-     entry=>{
+   .forEach(
+    entry=>{
 
-      system.push({
-       id:
-        entry.id ||
-        entry.externalId ||
-        `email-${lead.id}-${entry.timestamp}`,
+     system.push({
 
-       source:"system",
-       activityType:"email",
-       occurredAt:entry.timestamp,
-       title:
-        entry.subject ||
-        "Email sent",
-       contactId:
-        lead.id,
-       companyId
-      });
+      id:
+       entry.id
+       ||
+       entry.externalId
+       ||
+       `email-${lead.id}-${entry.timestamp}`,
 
-     }
-    );
+      source:
+       "system",
 
+      activityType:
+       "email",
+
+      occurredAt:
+       entry.timestamp,
+
+      title:
+       entry.subject
+       ||
+       "Email sent",
+
+      contactId:
+       lead.id,
+
+      companyId
+     });
+    }
+   );
   }
  );
 
@@ -3563,20 +6292,28 @@ function timelineForCompany(
   ),
   ...system
  ]
-  .sort(
-   (a,b)=>
-    new Date(
-     b.occurredAt
-    ) -
-    new Date(
-     a.occurredAt
-    )
-  );
+ .sort(
+  (
+   a,
+   b
+  )=>
+   new Date(
+    b.occurredAt
+   )
+   -
+   new Date(
+    a.occurredAt
+   )
+ );
 }
 
-function renderTimelineItems(items){
+function renderTimelineItems(
+ items
+){
 
- if(!items.length){
+ if(
+  !items.length
+ ){
 
   return`
    <div class="history-sub">
@@ -3586,7 +6323,10 @@ function renderTimelineItems(items){
  }
 
  return items
-  .slice(0,20)
+  .slice(
+   0,
+   20
+  )
   .map(
    item=>{
 
@@ -3604,20 +6344,32 @@ function renderTimelineItems(items){
      <div class="timeline-meta">
 
       <div class="timeline-type">
-       ${timelineTypeIcon(item.activityType)}
-       ${e(timelineTypeLabel(item.activityType))}
+
+       ${timelineTypeIcon(
+        item.activityType
+       )}
+
+       ${e(
+        timelineTypeLabel(
+         item.activityType
+        )
+       )}
+
       </div>
 
       <div class="timeline-date">
+
        ${
         e(
          item.occurredAt
           ? new Date(
              item.occurredAt
-            ).toLocaleString()
+            )
+            .toLocaleString()
           : ""
         )
        }
+
       </div>
 
      </div>
@@ -3643,7 +6395,8 @@ function renderTimelineItems(items){
      }
 
      ${
-      item.outcome ||
+      item.outcome
+      ||
       item.nextAction
        ? `
 
@@ -3680,14 +6433,19 @@ function renderTimelineItems(items){
       lead
        ? `
        <div class="timeline-contact">
-        ${e(lead.firstName || "Contact")}
+        ${e(
+         lead.firstName
+         ||
+         "Contact"
+        )}
        </div>
        `
        : ""
      }
 
      ${
-      item.source==="manual"
+      item.source===
+      "manual"
        ? `
        <div class="timeline-controls">
 
@@ -3704,7 +6462,6 @@ function renderTimelineItems(items){
      }
 
     </div>
-
     `;
    }
   )
@@ -3715,17 +6472,24 @@ function renderTimelineItems(items){
    TASK HELPERS
 ===================================================== */
 
-function taskIsOverdue(task){
+function taskIsOverdue(
+ task
+){
 
  if(
-  task.status==="Completed" ||
+  task.status===
+  "Completed"
+  ||
   !task.dueAt
  ){
   return false;
  }
 
- return (
-  new Date(task.dueAt) <
+ return(
+  new Date(
+   task.dueAt
+  )
+  <
   new Date()
  );
 }
@@ -3736,35 +6500,57 @@ function tasksDueCount(){
   new Date();
 
  end.setHours(
-  23,59,59,999
+  23,
+  59,
+  59,
+  999
  );
 
  return tasks.filter(
   task=>
-   task.status==="Open" &&
-   task.dueAt &&
-   new Date(task.dueAt)<=end
+   task.status===
+   "Open"
+   &&
+   task.dueAt
+   &&
+   new Date(
+    task.dueAt
+   )
+   <=
+   end
  ).length;
 }
 
-function priorityClass(priority){
+function priorityClass(
+ priority
+){
 
  switch(priority){
 
   case "High":
-   return "priority-high";
+   return(
+    "priority-high"
+   );
 
   case "Low":
-   return "priority-low";
+   return(
+    "priority-low"
+   );
 
   default:
-   return "priority-medium";
+   return(
+    "priority-medium"
+   );
  }
 }
 
-function taskTargetName(task){
+function taskTargetName(
+ task
+){
 
- if(task.contactId){
+ if(
+  task.contactId
+ ){
 
   const lead=
    getLeadById(
@@ -3773,17 +6559,23 @@ function taskTargetName(task){
 
   if(lead){
 
-   return {
-    type:"contact",
+   return{
+    type:
+     "contact",
+
     name:
-     lead.firstName ||
-     lead.company ||
+     lead.firstName
+     ||
+     lead.company
+     ||
      "Contact"
    };
   }
  }
 
- if(task.companyId){
+ if(
+  task.companyId
+ ){
 
   const company=
    getCompanyById(
@@ -3792,10 +6584,13 @@ function taskTargetName(task){
 
   if(company){
 
-   return {
-    type:"company",
+   return{
+    type:
+     "company",
+
     name:
-     company.name ||
+     company.name
+     ||
      "Company"
    };
   }
@@ -3807,16 +6602,22 @@ function taskTargetName(task){
  };
 }
 
-function openTaskTarget(taskId){
+function openTaskTarget(
+ taskId
+){
 
  const task=
-  getTaskById(taskId);
+  getTaskById(
+   taskId
+  );
 
  if(!task){
   return;
  }
 
- if(task.contactId){
+ if(
+  task.contactId
+ ){
 
   selectedLeadId=
    task.contactId;
@@ -3828,7 +6629,9 @@ function openTaskTarget(taskId){
   return;
  }
 
- if(task.companyId){
+ if(
+  task.companyId
+ ){
 
   selectedCompanyId=
    task.companyId;
@@ -3853,23 +6656,29 @@ function renderDashboard(){
   lead=>{
 
    const currentStatus=
-    status(lead)[0];
+    status(
+     lead
+    )[0];
 
    if(
-    currentStatus==="DUE SOON"
+    currentStatus===
+    "DUE SOON"
    ){
     due++;
    }
 
    if(
-    currentStatus==="OVERDUE"
+    currentStatus===
+    "OVERDUE"
    ){
     overdue++;
    }
 
    calls+=
     Number(
-     lead.callCount || 0
+     lead.callCount
+     ||
+     0
     );
   }
  );
@@ -3922,31 +6731,34 @@ function renderDashboard(){
   lead=>{
 
    (
-    lead.callHistory || []
+    lead.callHistory
+    ||
+    []
    )
-    .forEach(
-     entry=>
-      activities.push({
-       type:"call",
-       timestamp:entry.timestamp,
-       lead,
-       entry
-      })
-    );
+   .forEach(
+    entry=>
+     activities.push({
+      type:"call",
+      timestamp:entry.timestamp,
+      lead,
+      entry
+     })
+   );
 
    (
-    lead.emailHistory || []
+    lead.emailHistory
+    ||
+    []
    )
-    .forEach(
-     entry=>
-      activities.push({
-       type:"email",
-       timestamp:entry.timestamp,
-       lead,
-       entry
-      })
-    );
-
+   .forEach(
+    entry=>
+     activities.push({
+      type:"email",
+      timestamp:entry.timestamp,
+      lead,
+      entry
+     })
+   );
   }
  );
 
@@ -3968,22 +6780,34 @@ function renderDashboard(){
      : null;
 
    activities.push({
-    type:item.activityType,
-    timestamp:item.occurredAt,
-    lead,
-    company,
-    entry:item,
-    manual:true
-   });
+    type:
+     item.activityType,
 
+    timestamp:
+     item.occurredAt,
+
+    lead,
+
+    company,
+
+    entry:
+     item,
+
+    manual:
+     true
+   });
   }
  );
 
  activities.sort(
-  (a,b)=>
+  (
+   a,
+   b
+  )=>
    new Date(
     b.timestamp
-   ) -
+   )
+   -
    new Date(
     a.timestamp
    )
@@ -3996,35 +6820,54 @@ function renderDashboard(){
   .innerHTML=
 
   activities
-   .slice(0,8)
+   .slice(
+    0,
+    8
+   )
    .map(
     activity=>{
 
      const name=
-      activity.lead?.firstName ||
-      activity.company?.name ||
+      activity.lead
+       ?.firstName
+      ||
+      activity.company
+       ?.name
+      ||
       "CRM";
 
      const title=
       activity.manual
        ? (
-        activity.entry.title ||
+        activity.entry.title
+        ||
         timelineTypeLabel(
          activity.type
         )
        )
-       : activity.type==="email"
-        ? activity.entry.subject ||
-          "Email sent"
-        : activity.entry.outcome ||
-          "Call logged";
+       :
+       activity.type===
+       "email"
+        ? (
+         activity.entry.subject
+         ||
+         "Email sent"
+        )
+        :
+        (
+         activity.entry.outcome
+         ||
+         "Call logged"
+        );
 
      return`
 
      <div class="activity-row">
 
       <div class="activity-icon">
-       ${timelineTypeIcon(activity.type)}
+       ${timelineTypeIcon(
+        activity.type
+       )}
       </div>
 
       <div>
@@ -4046,7 +6889,8 @@ function renderDashboard(){
          activity.timestamp
           ? new Date(
              activity.timestamp
-            ).toLocaleString()
+            )
+            .toLocaleString()
           : ""
         )
        }
@@ -4054,13 +6898,16 @@ function renderDashboard(){
       </div>
 
      </div>
-
      `;
     }
    )
    .join("")
    ||
-   '<div class="empty">No activity recorded yet.</div>';
+   `
+   <div class="empty">
+    No activity recorded yet.
+   </div>
+   `;
 
  const followups=
   leads
@@ -4069,15 +6916,22 @@ function renderDashboard(){
      lead.nextFollowUpDate
    )
    .sort(
-    (a,b)=>
+    (
+     a,
+     b
+    )=>
      new Date(
       a.nextFollowUpDate
-     ) -
+     )
+     -
      new Date(
       b.nextFollowUpDate
      )
    )
-   .slice(0,7);
+   .slice(
+    0,
+    7
+   );
 
  document
   .getElementById(
@@ -4090,7 +6944,9 @@ function renderDashboard(){
     lead=>{
 
      const currentStatus=
-      status(lead);
+      status(
+       lead
+      );
 
      return`
 
@@ -4107,31 +6963,42 @@ function renderDashboard(){
        </div>
 
        <div class="follow-action">
-        ${e(lead.nextAction || "Follow up")}
+        ${e(
+         lead.nextAction
+         ||
+         "Follow up"
+        )}
        </div>
 
       </div>
 
       <div class="follow-date">
 
-       ${e(lead.nextFollowUpDate)}
+       ${e(
+        lead.nextFollowUpDate
+       )}
 
        <br>
 
-       <span class="status-badge ${currentStatus[1]}">
+       <span
+        class="status-badge ${currentStatus[1]}"
+       >
         ${currentStatus[0]}
        </span>
 
       </div>
 
      </div>
-
      `;
     }
    )
    .join("")
    ||
-   '<div class="empty">No follow-ups scheduled.</div>';
+   `
+   <div class="empty">
+    No follow-ups scheduled.
+   </div>
+   `;
 }
 
 /* =====================================================
@@ -4156,14 +7023,19 @@ function renderCompanies(){
       company.stateRegion,
       company.country
      ]
-      .filter(Boolean)
-      .join(", ");
+     .filter(
+      Boolean
+     )
+     .join(
+      ", "
+     );
 
      return`
 
      <button
       class="company-row ${
-       selectedCompanyId===company.id
+       selectedCompanyId===
+       company.id
         ? "selected"
         : ""
       }"
@@ -4177,17 +7049,31 @@ function renderCompanies(){
        </div>
 
        <div class="company-sub">
-        ${e(company.website || company.email || "")}
+        ${e(
+         company.website
+         ||
+         company.email
+         ||
+         ""
+        )}
        </div>
 
       </div>
 
       <div class="company-cell">
-       ${e(company.industry || "—")}
+       ${e(
+        company.industry
+        ||
+        "—"
+       )}
       </div>
 
       <div class="company-cell">
-       ${e(location || "—")}
+       ${e(
+        location
+        ||
+        "—"
+       )}
       </div>
 
       <div>
@@ -4201,20 +7087,26 @@ function renderCompanies(){
       </div>
 
      </button>
-
      `;
     }
    )
    .join("")
    ||
-   '<div class="empty">No matching companies.</div>';
+   `
+   <div class="empty">
+    No matching companies.
+   </div>
+   `;
 
  renderCompanyDetail();
 }
 
-function selectCompany(id){
+function selectCompany(
+ id
+){
 
- selectedCompanyId=id;
+ selectedCompanyId=
+  id;
 
  renderCompanies();
 }
@@ -4234,7 +7126,11 @@ function renderCompanyDetail(){
  if(!company){
 
   box.innerHTML=
-   '<div class="empty">Select a company to view the record.</div>';
+   `
+   <div class="empty">
+    Select a company to view the record.
+   </div>
+   `;
 
   return;
  }
@@ -4242,23 +7138,41 @@ function renderCompanyDetail(){
  const companyContacts=
   leads.filter(
    lead=>
-    lead.companyId===company.id ||
+    lead.companyId===
+    company.id
+    ||
     (
-     !lead.companyId &&
-     lead.company &&
-     lead.company.trim().toLowerCase()===
-     company.name.trim().toLowerCase()
+     !lead.companyId
+     &&
+     lead.company
+     &&
+     lead.company
+      .trim()
+      .toLowerCase()
+     ===
+     company.name
+      .trim()
+      .toLowerCase()
     )
   );
 
  const initials=
   (
-   company.name.match(/\b\w/g) ||
-   ["E","X"]
+   company.name.match(
+    /\b\w/g
+   )
+   ||
+   [
+    "E",
+    "X"
+   ]
   )
-   .slice(0,2)
-   .join("")
-   .toUpperCase();
+  .slice(
+   0,
+   2
+  )
+  .join("")
+  .toUpperCase();
 
  const fullAddress=[
   company.addressLine1,
@@ -4268,8 +7182,12 @@ function renderCompanyDetail(){
   company.postalCode,
   company.country
  ]
-  .filter(Boolean)
-  .join(", ");
+ .filter(
+  Boolean
+ )
+ .join(
+  ", "
+ );
 
  const companyTimeline=
   timelineForCompany(
@@ -4279,8 +7197,11 @@ function renderCompanyDetail(){
  const companyTasks=
   tasks.filter(
    task=>
-    task.companyId===company.id &&
-    task.status==="Open"
+    task.companyId===
+    company.id
+    &&
+    task.status===
+    "Open"
   );
 
  box.innerHTML=`
@@ -4297,7 +7218,11 @@ function renderCompanyDetail(){
 
   <div class="detail-company">
 
-   ${e(company.industry || "Company")}
+   ${e(
+    company.industry
+    ||
+    "Company"
+   )}
 
    ·
 
@@ -4343,8 +7268,20 @@ function renderCompanyDetail(){
 
     ${
      company.website
-      ? `<a href="${e(normalizeWebsite(company.website))}" target="_blank">${e(company.website)}</a>`
-      : "Not provided"
+      ? `
+      <a
+       href="${e(
+        normalizeWebsite(
+         company.website
+        )
+       )}"
+       target="_blank"
+      >
+       ${e(company.website)}
+      </a>
+      `
+      :
+      "Not provided"
     }
 
    </div>
@@ -4358,7 +7295,11 @@ function renderCompanyDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(company.industry || "Not provided")}
+    ${e(
+     company.industry
+     ||
+     "Not provided"
+    )}
    </div>
 
   </div>
@@ -4370,7 +7311,11 @@ function renderCompanyDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(company.phone || "Not provided")}
+    ${e(
+     company.phone
+     ||
+     "Not provided"
+    )}
    </div>
 
   </div>
@@ -4382,7 +7327,11 @@ function renderCompanyDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(company.email || "Not provided")}
+    ${e(
+     company.email
+     ||
+     "Not provided"
+    )}
    </div>
 
   </div>
@@ -4394,7 +7343,11 @@ function renderCompanyDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(fullAddress || "Not provided")}
+    ${e(
+     fullAddress
+     ||
+     "Not provided"
+    )}
    </div>
 
   </div>
@@ -4406,7 +7359,11 @@ function renderCompanyDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(company.notes || "No company notes yet.")}
+    ${e(
+     company.notes
+     ||
+     "No company notes yet."
+    )}
    </div>
 
   </div>
@@ -4442,7 +7399,10 @@ function renderCompanyDetail(){
 
   ${
    companyTasks
-    .slice(0,5)
+    .slice(
+     0,
+     5
+    )
     .map(
      task=>`
 
@@ -4458,11 +7418,19 @@ function renderCompanyDetail(){
        </div>
 
        <div class="linked-contact-role">
+
         ${
          task.dueAt
-          ? e(new Date(task.dueAt).toLocaleString())
-          : "No due date"
+          ? e(
+           new Date(
+            task.dueAt
+           )
+           .toLocaleString()
+          )
+          :
+          "No due date"
         }
+
        </div>
 
       </div>
@@ -4472,12 +7440,15 @@ function renderCompanyDetail(){
       </div>
 
      </button>
-
      `
     )
     .join("")
    ||
-   '<div class="history-sub">No open tasks.</div>'
+   `
+   <div class="history-sub">
+    No open tasks.
+   </div>
+   `
   }
 
   <div class="history-title">
@@ -4497,11 +7468,21 @@ function renderCompanyDetail(){
       <div>
 
        <div class="linked-contact-name">
-        ${e(lead.firstName || "Unknown")}
+        ${e(
+         lead.firstName
+         ||
+         "Unknown"
+        )}
        </div>
 
        <div class="linked-contact-role">
-        ${e(lead.role || lead.title || "Contact")}
+        ${e(
+         lead.role
+         ||
+         lead.title
+         ||
+         "Contact"
+        )}
        </div>
 
       </div>
@@ -4511,12 +7492,15 @@ function renderCompanyDetail(){
       </div>
 
      </button>
-
      `
     )
     .join("")
    ||
-   '<div class="history-sub">No contacts linked to this company yet.</div>'
+   `
+   <div class="history-sub">
+    No contacts linked to this company yet.
+   </div>
+   `
   }
 
   <div class="timeline-toolbar">
@@ -4534,27 +7518,38 @@ function renderCompanyDetail(){
 
   </div>
 
-  ${renderTimelineItems(companyTimeline)}
+  ${renderTimelineItems(
+   companyTimeline
+  )}
 
  </div>
-
  `;
 }
 
-function normalizeWebsite(value){
+function normalizeWebsite(
+ value
+){
 
  if(
-  /^https?:\/\//i.test(value)
+  /^https?:\/\//i
+   .test(
+    value
+   )
  ){
   return value;
  }
 
- return `https://${value}`;
+ return(
+  `https://${value}`
+ );
 }
 
-function openLinkedContact(id){
+function openLinkedContact(
+ id
+){
 
- selectedLeadId=id;
+ selectedLeadId=
+  id;
 
  switchView(
   "contacts"
@@ -4579,13 +7574,16 @@ function renderContacts(){
     lead=>{
 
      const currentStatus=
-      status(lead);
+      status(
+       lead
+      );
 
      return`
 
      <button
       class="contact-row ${
-       selectedLeadId===lead.id
+       selectedLeadId===
+       lead.id
         ? "selected"
         : ""
       }"
@@ -4595,11 +7593,19 @@ function renderContacts(){
       <div>
 
        <div class="contact-name">
-        ${e(lead.firstName || "Unknown")}
+        ${e(
+         lead.firstName
+         ||
+         "Unknown"
+        )}
        </div>
 
        <div class="contact-sub">
-        ${e(lead.title || "")}
+        ${e(
+         lead.title
+         ||
+         ""
+        )}
        </div>
 
       </div>
@@ -4607,11 +7613,19 @@ function renderContacts(){
       <div>
 
        <div class="contact-cell">
-        ${e(lead.company || "")}
+        ${e(
+         lead.company
+         ||
+         ""
+        )}
        </div>
 
        <div class="contact-sub">
-        ${e(lead.role || "")}
+        ${e(
+         lead.role
+         ||
+         ""
+        )}
        </div>
 
       </div>
@@ -4619,11 +7633,21 @@ function renderContacts(){
       <div>
 
        <div class="contact-cell">
-        ${e(lead.phone || lead.directPhone || "No phone")}
+        ${e(
+         lead.phone
+         ||
+         lead.directPhone
+         ||
+         "No phone"
+        )}
        </div>
 
        <div class="contact-sub">
-        ${e(lead.email || "No email")}
+        ${e(
+         lead.email
+         ||
+         "No email"
+        )}
        </div>
 
       </div>
@@ -4631,38 +7655,54 @@ function renderContacts(){
       <div>
 
        <div class="contact-cell">
-        ${e(lead.nextFollowUpDate || "None")}
+        ${e(
+         lead.nextFollowUpDate
+         ||
+         "None"
+        )}
        </div>
 
        <div class="contact-sub">
-        ${e(lead.nextAction || "")}
+        ${e(
+         lead.nextAction
+         ||
+         ""
+        )}
        </div>
 
       </div>
 
       <div>
 
-       <span class="status-badge ${currentStatus[1]}">
+       <span
+        class="status-badge ${currentStatus[1]}"
+       >
         ${currentStatus[0]}
        </span>
 
       </div>
 
      </button>
-
      `;
     }
    )
    .join("")
    ||
-   '<div class="empty">No matching contacts.</div>';
+   `
+   <div class="empty">
+    No matching contacts.
+   </div>
+   `;
 
  renderDetail();
 }
 
-function selectContact(id){
+function selectContact(
+ id
+){
 
- selectedLeadId=id;
+ selectedLeadId=
+  id;
 
  renderContacts();
 }
@@ -4686,7 +7726,11 @@ function renderDetail(){
  if(!lead){
 
   box.innerHTML=
-   '<div class="empty">Select a contact to view the record.</div>';
+   `
+   <div class="empty">
+    Select a contact to view the record.
+   </div>
+   `;
 
   return;
  }
@@ -4694,19 +7738,32 @@ function renderDetail(){
  const initials=
   (
    (
-    lead.firstName ||
-    lead.company ||
+    lead.firstName
+    ||
+    lead.company
+    ||
     "EX"
-   ).match(/\b\w/g)
+   )
+   .match(
+    /\b\w/g
+   )
    ||
-   ["E","X"]
+   [
+    "E",
+    "X"
+   ]
   )
-   .slice(0,2)
-   .join("")
-   .toUpperCase();
+  .slice(
+   0,
+   2
+  )
+  .join("")
+  .toUpperCase();
 
  const currentStatus=
-  status(lead);
+  status(
+   lead
+  );
 
  const linkedCompany=
   getCompanyForLead(
@@ -4721,8 +7778,11 @@ function renderDetail(){
  const contactTasks=
   tasks.filter(
    task=>
-    task.contactId===lead.id &&
-    task.status==="Open"
+    task.contactId===
+    lead.id
+    &&
+    task.status===
+    "Open"
   );
 
  box.innerHTML=`
@@ -4734,12 +7794,20 @@ function renderDetail(){
   </div>
 
   <div class="detail-name">
-   ${e(lead.firstName || "Unknown")}
+   ${e(
+    lead.firstName
+    ||
+    "Unknown"
+   )}
   </div>
 
   <div class="detail-company">
 
-   ${e(lead.title || "")}
+   ${e(
+    lead.title
+    ||
+    ""
+   )}
 
    ${
     lead.title &&
@@ -4748,7 +7816,11 @@ function renderDetail(){
      : ""
    }
 
-   ${e(lead.company || "")}
+   ${e(
+    lead.company
+    ||
+    ""
+   )}
 
   </div>
 
@@ -4780,7 +7852,8 @@ function renderDetail(){
 
     </div>
     `
-    : ""
+    :
+    ""
   }
 
   <div class="detail-item">
@@ -4790,7 +7863,11 @@ function renderDetail(){
    </div>
 
    <div class="detail-value detail-gold">
-    ${e(timeFor(lead))}
+    ${e(
+     timeFor(
+      lead
+     )
+    )}
    </div>
 
   </div>
@@ -4802,7 +7879,11 @@ function renderDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(lead.role || "Not provided")}
+    ${e(
+     lead.role
+     ||
+     "Not provided"
+    )}
    </div>
 
   </div>
@@ -4814,7 +7895,13 @@ function renderDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(lead.phone || lead.directPhone || "Not provided")}
+    ${e(
+     lead.phone
+     ||
+     lead.directPhone
+     ||
+     "Not provided"
+    )}
    </div>
 
   </div>
@@ -4826,7 +7913,11 @@ function renderDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(lead.email || "Not provided")}
+    ${e(
+     lead.email
+     ||
+     "Not provided"
+    )}
    </div>
 
   </div>
@@ -4838,7 +7929,11 @@ function renderDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(lead.lastOutcome || "None")}
+    ${e(
+     lead.lastOutcome
+     ||
+     "None"
+    )}
    </div>
 
   </div>
@@ -4850,7 +7945,11 @@ function renderDetail(){
    </div>
 
    <div class="detail-value">
-    ${e(lead.nextAction || "None")}
+    ${e(
+     lead.nextAction
+     ||
+     "None"
+    )}
    </div>
 
   </div>
@@ -4863,11 +7962,17 @@ function renderDetail(){
 
    <div class="detail-value">
 
-    ${e(lead.nextFollowUpDate || "None")}
+    ${e(
+     lead.nextFollowUpDate
+     ||
+     "None"
+    )}
 
     &nbsp;
 
-    <span class="status-badge ${currentStatus[1]}">
+    <span
+     class="status-badge ${currentStatus[1]}"
+    >
      ${currentStatus[0]}
     </span>
 
@@ -4895,7 +8000,8 @@ function renderDetail(){
         ${
          stage===
          (
-          lead.pipelineStage ||
+          lead.pipelineStage
+          ||
           "New"
          )
           ? "selected"
@@ -4904,7 +8010,6 @@ function renderDetail(){
        >
         ${e(stage)}
        </option>
-
        `
       )
       .join("")
@@ -4959,7 +8064,10 @@ function renderDetail(){
 
   ${
    contactTasks
-    .slice(0,5)
+    .slice(
+     0,
+     5
+    )
     .map(
      task=>`
 
@@ -4975,11 +8083,19 @@ function renderDetail(){
        </div>
 
        <div class="linked-contact-role">
+
         ${
          task.dueAt
-          ? e(new Date(task.dueAt).toLocaleString())
-          : "No due date"
+          ? e(
+           new Date(
+            task.dueAt
+           )
+           .toLocaleString()
+          )
+          :
+          "No due date"
         }
+
        </div>
 
       </div>
@@ -4989,12 +8105,15 @@ function renderDetail(){
       </div>
 
      </button>
-
      `
     )
     .join("")
    ||
-   '<div class="history-sub">No open tasks.</div>'
+   `
+   <div class="history-sub">
+    No open tasks.
+   </div>
+   `
   }
 
   <div class="timeline-toolbar">
@@ -5012,16 +8131,20 @@ function renderDetail(){
 
   </div>
 
-  ${renderTimelineItems(contactTimeline)}
+  ${renderTimelineItems(
+   contactTimeline
+  )}
 
  </div>
-
  `;
 }
 
-function openCompanyFromContact(id){
+function openCompanyFromContact(
+ id
+){
 
- selectedCompanyId=id;
+ selectedCompanyId=
+  id;
 
  switchView(
   "companies"
@@ -5049,9 +8172,12 @@ function renderPipeline(){
        .filter(
         lead=>
          (
-          lead.pipelineStage ||
+          lead.pipelineStage
+          ||
           "New"
-         )===stage
+         )
+         ===
+         stage
        );
 
      return`
@@ -5080,30 +8206,46 @@ function renderPipeline(){
           <div class="pipeline-card">
 
            <div class="pipeline-card-name">
-            ${e(lead.firstName || "Unknown")}
+            ${e(
+             lead.firstName
+             ||
+             "Unknown"
+            )}
            </div>
 
            <div class="pipeline-card-company">
-            ${e(lead.company || "")}
+            ${e(
+             lead.company
+             ||
+             ""
+            )}
            </div>
 
            <div class="pipeline-card-action">
-            ${e(lead.nextAction || lead.role || "")}
+            ${e(
+             lead.nextAction
+             ||
+             lead.role
+             ||
+             ""
+            )}
            </div>
 
           </div>
-
           `
          )
          .join("")
         ||
-        '<div class="history-sub">No prospects</div>'
+        `
+        <div class="history-sub">
+         No prospects
+        </div>
+        `
        }
 
       </div>
 
      </div>
-
      `;
     }
    )
@@ -5123,10 +8265,14 @@ function renderFollowups(){
      lead.nextFollowUpDate
    )
    .sort(
-    (a,b)=>
+    (
+     a,
+     b
+    )=>
      new Date(
       a.nextFollowUpDate
-     ) -
+     )
+     -
      new Date(
       b.nextFollowUpDate
      )
@@ -5143,7 +8289,9 @@ function renderFollowups(){
     lead=>{
 
      const currentStatus=
-      status(lead);
+      status(
+       lead
+      );
 
      return`
 
@@ -5152,73 +8300,103 @@ function renderFollowups(){
       <div>
 
        <div class="follow-name">
-        ${e(lead.firstName || "Unknown")}
+        ${e(
+         lead.firstName
+         ||
+         "Unknown"
+        )}
        </div>
 
        <div class="follow-company">
-        ${e(lead.company || "")}
+
+        ${e(
+         lead.company
+         ||
+         ""
+        )}
+
         ·
-        ${e(lead.role || "")}
+
+        ${e(
+         lead.role
+         ||
+         ""
+        )}
+
        </div>
 
        <div class="follow-action">
-        ${e(lead.nextAction || "Follow up")}
+        ${e(
+         lead.nextAction
+         ||
+         "Follow up"
+        )}
        </div>
 
       </div>
 
       <div class="follow-date">
 
-       ${e(lead.nextFollowUpDate)}
+       ${e(
+        lead.nextFollowUpDate
+       )}
 
        <br>
 
-       <span class="status-badge ${currentStatus[1]}">
+       <span
+        class="status-badge ${currentStatus[1]}"
+       >
         ${currentStatus[0]}
        </span>
 
       </div>
 
      </div>
-
      `;
     }
    )
    .join("")
    ||
-   '<div class="empty">No follow-ups currently scheduled.</div>';
+   `
+   <div class="empty">
+    No follow-ups currently scheduled.
+   </div>
+   `;
 }
 
 /* =====================================================
    TASKS
 ===================================================== */
 
-function setTaskFilter(value){
+function setTaskFilter(
+ value
+){
 
- taskFilter=value;
+ taskFilter=
+  value;
 
  [
   "Open",
   "All",
   "Completed"
  ]
-  .forEach(
-   filter=>{
+ .forEach(
+  filter=>{
 
-    const element=
-     document.getElementById(
-      `taskFilter${filter}`
-     );
+   const element=
+    document.getElementById(
+     `taskFilter${filter}`
+    );
 
-    if(element){
+   if(element){
 
-     element.classList.toggle(
-      "active",
-      filter===value
-     );
-    }
+    element.classList.toggle(
+     "active",
+     filter===value
+    );
    }
-  );
+  }
+ );
 
  renderTasks();
 }
@@ -5240,14 +8418,24 @@ function renderTasks(){
     task=>{
 
      const target=
-      taskTargetName(task);
+      taskTargetName(
+       task
+      );
 
      const overdue=
-      taskIsOverdue(task);
+      taskIsOverdue(
+       task
+      );
 
      return`
 
-     <div class="task-row ${overdue ? "overdue" : ""}">
+     <div
+      class="task-row ${
+       overdue
+        ? "overdue"
+        : ""
+      }"
+     >
 
       <div>
 
@@ -5256,12 +8444,31 @@ function renderTasks(){
        </div>
 
        <div class="task-description">
+
         ${
-         isSmartFollowUpTask(task)
-          ? `<span class="detail-gold">SMART FOLLOW-UP</span>${task.description ? " · " : ""}`
-          : ""
+         isSmartFollowUpTask(
+          task
+         )
+          ? `
+          <span class="detail-gold">
+           SMART FOLLOW-UP
+          </span>
+          ${
+           task.description
+            ? " · "
+            : ""
+          }
+          `
+          :
+          ""
         }
-        ${e(task.description || "")}
+
+        ${e(
+         task.description
+         ||
+         ""
+        )}
+
        </div>
 
       </div>
@@ -5272,28 +8479,40 @@ function renderTasks(){
         class="task-target"
         onclick="openTaskTarget('${task.id}')"
        >
+
         ${
-         target.type==="company"
+         target.type===
+         "company"
           ? "◆"
           : "●"
         }
+
         ${e(target.name)}
+
        </button>
 
       </div>
 
       <div
-       class="task-due ${overdue ? "overdue-text" : ""}"
+       class="task-due ${
+        overdue
+         ? "overdue-text"
+         : ""
+       }"
       >
+
        ${
         task.dueAt
          ? e(
           new Date(
            task.dueAt
-          ).toLocaleString()
+          )
+          .toLocaleString()
          )
-         : "No due date"
+         :
+         "No due date"
        }
+
       </div>
 
       <div>
@@ -5310,7 +8529,8 @@ function renderTasks(){
 
        <span
         class="status-badge ${
-         task.status==="Completed"
+         task.status===
+         "Completed"
           ? "task-status-completed"
           : "task-status-open"
         }"
@@ -5323,7 +8543,8 @@ function renderTasks(){
       <div class="task-actions task-hide-small">
 
        ${
-        task.status==="Open"
+        task.status===
+        "Open"
          ? `
          <button
           class="mini-btn complete"
@@ -5332,7 +8553,8 @@ function renderTasks(){
           Complete
          </button>
          `
-         : `
+         :
+         `
          <button
           class="mini-btn"
           onclick="setTaskStatus('${task.id}','Open')"
@@ -5343,9 +8565,12 @@ function renderTasks(){
        }
 
        ${
-        isSmartFollowUpTask(task)
+        isSmartFollowUpTask(
+         task
+        )
          ? ""
          : `
+
          <button
           class="mini-btn"
           onclick="openTaskModal('${task.id}')"
@@ -5365,18 +8590,24 @@ function renderTasks(){
       </div>
 
      </div>
-
      `;
     }
    )
    .join("")
    ||
-   '<div class="empty">No tasks match this view.</div>';
+   `
+   <div class="empty">
+    No tasks match this view.
+   </div>
+   `;
 }
 
-function openTaskFromRecord(id){
+function openTaskFromRecord(
+ id
+){
 
- taskFilter="Open";
+ taskFilter=
+  "Open";
 
  switchView(
   "tasks"
@@ -5386,15 +8617,21 @@ function openTaskFromRecord(id){
   ()=>{
 
    const task=
-    getTaskById(id);
+    getTaskById(
+     id
+    );
 
    if(
     task &&
-    !isSmartFollowUpTask(task)
+    !isSmartFollowUpTask(
+     task
+    )
    ){
-    openTaskModal(id);
-   }
 
+    openTaskModal(
+     id
+    );
+   }
   },
   50
  );
@@ -5416,45 +8653,74 @@ function populateTaskTargets(
 
  let options=[];
 
- if(type==="contact"){
+ if(
+  type===
+  "contact"
+ ){
 
   options=
-   [...leads]
-    .sort(
-     (a,b)=>
-      (a.firstName || "")
-       .localeCompare(
-        b.firstName || ""
-       )
-    )
-    .map(
-     lead=>({
-      id:lead.id,
-      name:
-       `${lead.firstName || "Unknown"}${
-        lead.company
-         ? ` — ${lead.company}`
-         : ""
-       }`
-     })
-    );
+   [
+    ...leads
+   ]
+   .sort(
+    (
+     a,
+     b
+    )=>
+     (
+      a.firstName
+      ||
+      ""
+     )
+     .localeCompare(
+      b.firstName
+      ||
+      ""
+     )
+   )
+   .map(
+    lead=>({
+
+     id:
+      lead.id,
+
+     name:
+      `${
+       lead.firstName
+       ||
+       "Unknown"
+      }${
+       lead.company
+        ? ` — ${lead.company}`
+        : ""
+      }`
+    })
+   );
 
  }else{
 
   options=
-   [...companies]
-    .sort(
-     (a,b)=>
-      a.name.localeCompare(
-       b.name
-      )
-    )
-    .map(
-     company=>({
-      id:company.id,
-      name:company.name
-     })
-    );
+   [
+    ...companies
+   ]
+   .sort(
+    (
+     a,
+     b
+    )=>
+     a.name.localeCompare(
+      b.name
+     )
+   )
+   .map(
+    company=>({
+     id:
+      company.id,
+
+     name:
+      company.name
+    })
+   );
  }
 
  select.innerHTML=`
@@ -5471,14 +8737,14 @@ function populateTaskTargets(
     <option
      value="${e(option.id)}"
      ${
-      option.id===selectedId
+      option.id===
+      selectedId
        ? "selected"
        : ""
      }
     >
      ${e(option.name)}
     </option>
-
     `
    )
    .join("")
@@ -5507,7 +8773,8 @@ function openTaskModal(
  targetId=null
 ){
 
- editingTaskId=id;
+ editingTaskId=
+  id;
 
  presetTaskTargetType=
   targetType;
@@ -5517,14 +8784,20 @@ function openTaskModal(
 
  const task=
   id
-   ? getTaskById(id)
+   ? getTaskById(
+      id
+     )
    : null;
 
  if(
   task &&
-  isSmartFollowUpTask(task)
+  isSmartFollowUpTask(
+   task
+  )
  ){
-  editingTaskId=null;
+
+  editingTaskId=
+   null;
 
   alert(
    "This Smart Follow-Up task is managed from the contact's Follow-Up Date and Next Action."
@@ -5547,28 +8820,36 @@ function openTaskModal(
    "taskTitle"
   )
   .value=
-   task?.title || "";
+   task?.title
+   ||
+   "";
 
  document
   .getElementById(
    "taskDescription"
   )
   .value=
-   task?.description || "";
+   task?.description
+   ||
+   "";
 
  document
   .getElementById(
    "taskPriority"
   )
   .value=
-   task?.priority || "Medium";
+   task?.priority
+   ||
+   "Medium";
 
  document
   .getElementById(
    "taskStatus"
   )
   .value=
-   task?.status || "Open";
+   task?.status
+   ||
+   "Open";
 
  document
   .getElementById(
@@ -5584,16 +8865,28 @@ function openTaskModal(
  let resolvedType=
   "contact";
 
- let resolvedId="";
+ let resolvedId=
+  "";
 
  if(task){
 
-  if(task.contactId){
-   resolvedType="contact";
-   resolvedId=task.contactId;
+  if(
+   task.contactId
+  ){
+
+   resolvedType=
+    "contact";
+
+   resolvedId=
+    task.contactId;
+
   }else{
-   resolvedType="company";
-   resolvedId=task.companyId;
+
+   resolvedType=
+    "company";
+
+   resolvedId=
+    task.companyId;
   }
 
  }else if(
@@ -5639,15 +8932,24 @@ function closeTaskModal(){
    "show"
   );
 
- editingTaskId=null;
- presetTaskTargetType=null;
- presetTaskTargetId=null;
+ editingTaskId=
+  null;
+
+ presetTaskTargetType=
+  null;
+
+ presetTaskTargetId=
+  null;
 }
 
-function toDateTimeLocal(value){
+function toDateTimeLocal(
+ value
+){
 
  const date=
-  new Date(value);
+  new Date(
+   value
+  );
 
  if(
   Number.isNaN(
@@ -5662,13 +8964,17 @@ function toDateTimeLocal(value){
 
  const local=
   new Date(
-   date.getTime() -
+   date.getTime()
+   -
    offset*60000
   );
 
  return local
   .toISOString()
-  .slice(0,16);
+  .slice(
+   0,
+   16
+  );
 }
 
 async function saveTaskForm(){
@@ -5742,7 +9048,8 @@ async function saveTaskForm(){
   return;
  }
 
- let dueAt="";
+ let dueAt=
+  "";
 
  if(dueValue){
 
@@ -5756,6 +9063,7 @@ async function saveTaskForm(){
     parsed.getTime()
    )
   ){
+
    dueAt=
     parsed.toISOString();
   }
@@ -5763,7 +9071,9 @@ async function saveTaskForm(){
 
  let task;
 
- if(editingTaskId){
+ if(
+  editingTaskId
+ ){
 
   task=
    getTaskById(
@@ -5778,7 +9088,8 @@ async function saveTaskForm(){
 
   task=
    taskDefaults({
-    id:uuid()
+    id:
+     uuid()
    });
 
   tasks.push(
@@ -5786,33 +9097,48 @@ async function saveTaskForm(){
   );
  }
 
- task.title=title;
- task.description=description;
- task.dueAt=dueAt;
- task.priority=priority;
- task.status=taskStatus;
+ task.title=
+  title;
+
+ task.description=
+  description;
+
+ task.dueAt=
+  dueAt;
+
+ task.priority=
+  priority;
+
+ task.status=
+  taskStatus;
 
  task.contactId=
-  targetType==="contact"
+  targetType===
+  "contact"
    ? targetId
    : "";
 
  task.companyId=
-  targetType==="company"
+  targetType===
+  "company"
    ? targetId
    : "";
 
  if(
-  taskStatus==="Completed"
+  taskStatus===
+  "Completed"
  ){
 
   task.completedAt=
-   task.completedAt ||
-   new Date().toISOString();
+   task.completedAt
+   ||
+   new Date()
+    .toISOString();
 
  }else{
 
-  task.completedAt="";
+  task.completedAt=
+   "";
  }
 
  closeTaskModal();
@@ -5838,6 +9164,10 @@ async function saveTaskForm(){
    }
   );
 
+  await reloadCloudState();
+
+  renderAll();
+
   setSync(
    "synced",
    "Cloud synced"
@@ -5852,11 +9182,11 @@ async function saveTaskForm(){
 
   setSync(
    "error",
-   "Local cache active"
+   "Task sync failed"
   );
 
   alert(
-   "The task was saved locally, but cloud sync failed."
+   "The task could not be synced."
   );
  }
 }
@@ -5871,82 +9201,53 @@ async function setTaskStatus(
 ){
 
  const task=
-  getTaskById(id);
+  getTaskById(
+   id
+  );
 
  if(!task){
   return;
  }
 
- const smartFollowUp=
-  isSmartFollowUpTask(task);
-
  setSync(
   "syncing",
-  newStatus==="Completed"
+  newStatus===
+  "Completed"
    ? "Completing task..."
    : "Reopening task..."
  );
 
  try{
 
-  const result=
-   await cloud(
-    "setTaskStatus",
-    {
-     externalId:id,
-     status:newStatus
-    }
-   );
+  await cloud(
+   "setTaskStatus",
+   {
+    externalId:
+     id,
 
-  task.status=
-   newStatus;
-
-  task.completedAt=
-   result.completedAt || "";
-
-  if(
-   smartFollowUp &&
-   result.leadExternalId
-  ){
-
-   const lead=
-    getLeadById(
-     result.leadExternalId
-    );
-
-   if(lead){
-
-    if(
-     newStatus==="Completed"
-    ){
-     lead.nextAction="";
-     lead.nextFollowUpDate="";
-    }else{
-     lead.nextAction=
-      result.nextAction ||
-      task.title ||
-      "";
-
-     lead.nextFollowUpDate=
-      result.nextFollowUpDate ||
-      "";
-    }
+    status:
+     newStatus
    }
-  }
+  );
 
   await reloadCloudState();
 
   if(
-   newStatus==="Open"
+   newStatus===
+   "Open"
   ){
-   taskFilter="Open";
+
+   taskFilter=
+    "Open";
   }
 
   renderAll();
 
   if(
-   newStatus==="Open"
+   newStatus===
+   "Open"
   ){
+
    setTaskFilter(
     "Open"
    );
@@ -5975,10 +9276,14 @@ async function setTaskStatus(
  }
 }
 
-async function deleteTask(id){
+async function deleteTask(
+ id
+){
 
  const task=
-  getTaskById(id);
+  getTaskById(
+   id
+  );
 
  if(!task){
   return;
@@ -6002,17 +9307,12 @@ async function deleteTask(id){
   await cloud(
    "deleteTask",
    {
-    externalId:id
+    externalId:
+     id
    }
   );
 
-  tasks=
-   tasks.filter(
-    item=>
-     item.id!==id
-   );
-
-  saveCache();
+  await reloadCloudState();
 
   renderAll();
 
@@ -6057,23 +9357,65 @@ function renderAll(){
    PIPELINE CHANGE
 ===================================================== */
 
-function changeStage(
+async function changeStage(
  id,
  stage
 ){
 
  const lead=
-  getLeadById(id);
+  getLeadById(
+   id
+  );
 
  if(!lead){
   return;
  }
 
- lead.pipelineStage=stage;
+ lead.pipelineStage=
+  stage;
 
- scheduleSync();
+ saveCache();
 
  renderAll();
+
+ setSync(
+  "syncing",
+  "Saving..."
+ );
+
+ try{
+
+  await cloud(
+   "sync",
+   {
+    companies,
+    leads,
+    timeline,
+    tasks
+   }
+  );
+
+  await reloadCloudState();
+
+  renderAll();
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   "Pipeline update failed:",
+   error
+  );
+
+  setSync(
+   "error",
+   "Sync failed"
+  );
+ }
 }
 
 /* =====================================================
@@ -6096,30 +9438,35 @@ function populateCompanyDropdown(
  </option>
 
  ${
-  [...companies]
-   .sort(
-    (a,b)=>
-     a.name.localeCompare(
-      b.name
-     )
-   )
-   .map(
-    company=>`
+  [
+   ...companies
+  ]
+  .sort(
+   (
+    a,
+    b
+   )=>
+    a.name.localeCompare(
+     b.name
+    )
+  )
+  .map(
+   company=>`
 
-    <option
-     value="${e(company.id)}"
-     ${
-      company.id===selectedId
-       ? "selected"
-       : ""
-     }
-    >
-     ${e(company.name)}
-    </option>
-
-    `
-   )
-   .join("")
+   <option
+    value="${e(company.id)}"
+    ${
+     company.id===
+     selectedId
+      ? "selected"
+      : ""
+    }
+   >
+    ${e(company.name)}
+   </option>
+   `
+  )
+  .join("")
  }
 
  `;
@@ -6148,8 +9495,12 @@ function contactCompanyChanged(){
   company.stateRegion,
   company.country
  ]
-  .filter(Boolean)
-  .join(", ");
+ .filter(
+  Boolean
+ )
+ .join(
+  ", "
+ );
 
  if(
   location &&
@@ -6159,6 +9510,7 @@ function contactCompanyChanged(){
    )
    .value
  ){
+
   document
    .getElementById(
     "formLocation"
@@ -6175,6 +9527,7 @@ function contactCompanyChanged(){
    )
    .value
  ){
+
   document
    .getElementById(
     "formTimezone"
@@ -6191,6 +9544,7 @@ function contactCompanyChanged(){
    )
    .value
  ){
+
   document
    .getElementById(
     "formTimezoneLabel"
@@ -6204,11 +9558,14 @@ function openContactModal(
  id=null
 ){
 
- editingLeadId=id;
+ editingLeadId=
+  id;
 
  const lead=
   id
-   ? getLeadById(id)
+   ? getLeadById(
+      id
+     )
    : null;
 
  document
@@ -6222,63 +9579,99 @@ function openContactModal(
 
  const linkedCompany=
   lead
-   ? getCompanyForLead(lead)
+   ? getCompanyForLead(
+      lead
+     )
    : null;
 
  populateCompanyDropdown(
-  linkedCompany?.id || ""
+  linkedCompany?.id
+  ||
+  ""
  );
 
  const fields={
 
   formFirstName:
-   lead?.firstName || "",
+   lead?.firstName
+   ||
+   "",
 
   formTitle:
-   lead?.title || "",
+   lead?.title
+   ||
+   "",
 
   formRole:
-   lead?.role || "",
+   lead?.role
+   ||
+   "",
 
   formLocation:
-   lead?.location || "",
+   lead?.location
+   ||
+   "",
 
   formPhone:
-   lead?.phone || "",
+   lead?.phone
+   ||
+   "",
 
   formDirectPhone:
-   lead?.directPhone || "",
+   lead?.directPhone
+   ||
+   "",
 
   formEmail:
-   lead?.email || "",
+   lead?.email
+   ||
+   "",
 
   formTimezone:
-   lead?.timezone || "",
+   lead?.timezone
+   ||
+   "",
 
   formTimezoneLabel:
-   lead?.timezoneLabel || "",
+   lead?.timezoneLabel
+   ||
+   "",
 
   formPipelineStage:
-   lead?.pipelineStage || "New",
+   lead?.pipelineStage
+   ||
+   "New",
 
   formFollowUpDate:
-   lead?.nextFollowUpDate || "",
+   lead?.nextFollowUpDate
+   ||
+   "",
 
   formNextAction:
-   lead?.nextAction || ""
+   lead?.nextAction
+   ||
+   ""
  };
 
- Object
-  .entries(fields)
-  .forEach(
-   ([fieldId,value])=>{
+ Object.entries(
+  fields
+ )
+ .forEach(
+  (
+   [
+    fieldId,
+    value
+   ]
+  )=>{
 
-    document
-     .getElementById(fieldId)
-     .value=value;
-
-   }
-  );
+   document
+    .getElementById(
+     fieldId
+    )
+    .value=
+     value;
+  }
+ );
 
  document
   .getElementById(
@@ -6299,13 +9692,18 @@ function closeContactModal(){
    "show"
   );
 
- editingLeadId=null;
+ editingLeadId=
+  null;
 }
 
-function formValue(id){
+function formValue(
+ id
+){
 
  return document
-  .getElementById(id)
+  .getElementById(
+   id
+  )
   .value
   .trim();
 }
@@ -6335,6 +9733,7 @@ async function saveContactForm(){
   !firstName &&
   !selectedCompany
  ){
+
   alert(
    "Please enter a contact name or select a company."
   );
@@ -6344,7 +9743,9 @@ async function saveContactForm(){
 
  let lead;
 
- if(editingLeadId){
+ if(
+  editingLeadId
+ ){
 
   lead=
    getLeadById(
@@ -6359,12 +9760,23 @@ async function saveContactForm(){
 
   lead=
    defaults({
-    id:uuid(),
-    callHistory:[],
-    emailHistory:[],
-    callCount:0,
-    lastOutcome:"",
-    lastCalled:""
+    id:
+     uuid(),
+
+    callHistory:
+     [],
+
+    emailHistory:
+     [],
+
+    callCount:
+     0,
+
+    lastOutcome:
+     "",
+
+    lastCalled:
+     ""
    });
 
   leads.push(
@@ -6384,11 +9796,13 @@ async function saveContactForm(){
   );
 
  lead.companyId=
-  selectedCompany?.id ||
+  selectedCompany?.id
+  ||
   "";
 
  lead.company=
-  selectedCompany?.name ||
+  selectedCompany?.name
+  ||
   "";
 
  lead.role=
@@ -6429,7 +9843,9 @@ async function saveContactForm(){
  lead.pipelineStage=
   formValue(
    "formPipelineStage"
-  ) || "New";
+  )
+  ||
+  "New";
 
  lead.nextFollowUpDate=
   formValue(
@@ -6488,11 +9904,11 @@ async function saveContactForm(){
 
   setSync(
    "error",
-   "Local cache active"
+   "Save failed"
   );
 
   alert(
-   "The contact was saved locally, but cloud sync failed."
+   "The contact could not be synced."
   );
  }
 }
@@ -6501,18 +9917,24 @@ async function saveContactForm(){
    DELETE CONTACT
 ===================================================== */
 
-async function deleteContact(id){
+async function deleteContact(
+ id
+){
 
  const lead=
-  getLeadById(id);
+  getLeadById(
+   id
+  );
 
  if(!lead){
   return;
  }
 
  const label=
-  lead.firstName ||
-  lead.company ||
+  lead.firstName
+  ||
+  lead.company
+  ||
   "this contact";
 
  if(
@@ -6533,33 +9955,17 @@ async function deleteContact(id){
   await cloud(
    "delete",
    {
-    externalId:id
+    externalId:
+     id
    }
   );
 
-  leads=
-   leads.filter(
-    item=>
-     item.id!==id
-   );
-
-  timeline=
-   timeline.filter(
-    item=>
-     item.contactId!==id
-   );
-
-  tasks=
-   tasks.filter(
-    task=>
-     task.contactId!==id
-   );
+  await reloadCloudState();
 
   selectedLeadId=
-   leads[0]?.id ||
+   leads[0]?.id
+   ||
    null;
-
-  saveCache();
 
   renderAll();
 
@@ -6594,11 +10000,14 @@ function openCompanyModal(
  id=null
 ){
 
- editingCompanyId=id;
+ editingCompanyId=
+  id;
 
  const company=
   id
-   ? getCompanyById(id)
+   ? getCompanyById(
+      id
+     )
    : null;
 
  document
@@ -6613,62 +10022,100 @@ function openCompanyModal(
  const fields={
 
   companyFormName:
-   company?.name || "",
+   company?.name
+   ||
+   "",
 
   companyFormWebsite:
-   company?.website || "",
+   company?.website
+   ||
+   "",
 
   companyFormIndustry:
-   company?.industry || "",
+   company?.industry
+   ||
+   "",
 
   companyFormPhone:
-   company?.phone || "",
+   company?.phone
+   ||
+   "",
 
   companyFormEmail:
-   company?.email || "",
+   company?.email
+   ||
+   "",
 
   companyFormStatus:
-   company?.status || "Prospect",
+   company?.status
+   ||
+   "Prospect",
 
   companyFormTimezone:
-   company?.timezone || "",
+   company?.timezone
+   ||
+   "",
 
   companyFormTimezoneLabel:
-   company?.timezoneLabel || "",
+   company?.timezoneLabel
+   ||
+   "",
 
   companyFormAddress1:
-   company?.addressLine1 || "",
+   company?.addressLine1
+   ||
+   "",
 
   companyFormAddress2:
-   company?.addressLine2 || "",
+   company?.addressLine2
+   ||
+   "",
 
   companyFormCity:
-   company?.city || "",
+   company?.city
+   ||
+   "",
 
   companyFormState:
-   company?.stateRegion || "",
+   company?.stateRegion
+   ||
+   "",
 
   companyFormPostal:
-   company?.postalCode || "",
+   company?.postalCode
+   ||
+   "",
 
   companyFormCountry:
-   company?.country || "",
+   company?.country
+   ||
+   "",
 
   companyFormNotes:
-   company?.notes || ""
+   company?.notes
+   ||
+   ""
  };
 
- Object
-  .entries(fields)
-  .forEach(
-   ([fieldId,value])=>{
+ Object.entries(
+  fields
+ )
+ .forEach(
+  (
+   [
+    fieldId,
+    value
+   ]
+  )=>{
 
-    document
-     .getElementById(fieldId)
-     .value=value;
-
-   }
-  );
+   document
+    .getElementById(
+     fieldId
+    )
+    .value=
+     value;
+  }
+ );
 
  document
   .getElementById(
@@ -6689,13 +10136,18 @@ function closeCompanyModal(){
    "show"
   );
 
- editingCompanyId=null;
+ editingCompanyId=
+  null;
 }
 
-function companyFormValue(id){
+function companyFormValue(
+ id
+){
 
  return document
-  .getElementById(id)
+  .getElementById(
+   id
+  )
   .value
   .trim();
 }
@@ -6746,7 +10198,9 @@ async function saveCompanyForm(){
 
  let company;
 
- if(editingCompanyId){
+ if(
+  editingCompanyId
+ ){
 
   company=
    getCompanyById(
@@ -6761,7 +10215,8 @@ async function saveCompanyForm(){
 
   company=
    companyDefaults({
-    id:uuid()
+    id:
+     uuid()
    });
 
   companies.push(
@@ -6773,7 +10228,9 @@ async function saveCompanyForm(){
  }
 
  const oldName=
-  company.name || "";
+  company.name
+  ||
+  "";
 
  company.name=
   name;
@@ -6801,7 +10258,9 @@ async function saveCompanyForm(){
  company.status=
   companyFormValue(
    "companyFormStatus"
-  ) || "Prospect";
+  )
+  ||
+  "Prospect";
 
  company.timezone=
   companyFormValue(
@@ -6852,11 +10311,14 @@ async function saveCompanyForm(){
   lead=>{
 
    if(
-    lead.companyId===company.id
+    lead.companyId===
+    company.id
     ||
     (
-     !lead.companyId &&
-     oldName &&
+     !lead.companyId
+     &&
+     oldName
+     &&
      lead.company
       ?.trim()
       .toLowerCase()
@@ -6899,6 +10361,10 @@ async function saveCompanyForm(){
    }
   );
 
+  await reloadCloudState();
+
+  renderAll();
+
   setSync(
    "synced",
    "Cloud synced"
@@ -6913,11 +10379,11 @@ async function saveCompanyForm(){
 
   setSync(
    "error",
-   "Local cache active"
+   "Save failed"
   );
 
   alert(
-   "The company was saved locally, but cloud sync failed."
+   "The company could not be synced."
   );
  }
 }
@@ -6926,10 +10392,14 @@ async function saveCompanyForm(){
    DELETE COMPANY
 ===================================================== */
 
-async function deleteCompany(id){
+async function deleteCompany(
+ id
+){
 
  const company=
-  getCompanyById(id);
+  getCompanyById(
+   id
+  );
 
  if(!company){
   return;
@@ -6938,13 +10408,16 @@ async function deleteCompany(id){
  const linkedContacts=
   leads.filter(
    lead=>
-    lead.companyId===id
+    lead.companyId===
+    id
   );
 
  let warning=
   `Delete ${company.name} from the CRM?`;
 
- if(linkedContacts.length){
+ if(
+  linkedContacts.length
+ ){
 
   warning+=
    `\n\n${linkedContacts.length} contact${
@@ -6957,7 +10430,11 @@ async function deleteCompany(id){
  warning+=
   "\n\nCompany timeline activity and company tasks will also be removed.";
 
- if(!confirm(warning)){
+ if(
+  !confirm(
+   warning
+  )
+ ){
   return;
  }
 
@@ -6971,56 +10448,19 @@ async function deleteCompany(id){
   await cloud(
    "deleteCompany",
    {
-    externalId:id
+    externalId:
+     id
    }
   );
 
-  leads.forEach(
-   lead=>{
-
-    if(
-     lead.companyId===id
-    ){
-     lead.companyId="";
-    }
-   }
-  );
-
-  timeline=
-   timeline.filter(
-    item=>
-     item.companyId!==id
-   );
-
-  tasks=
-   tasks.filter(
-    task=>
-     task.companyId!==id
-   );
-
-  companies=
-   companies.filter(
-    item=>
-     item.id!==id
-   );
+  await reloadCloudState();
 
   selectedCompanyId=
-   companies[0]?.id ||
+   companies[0]?.id
+   ||
    null;
 
-  saveCache();
-
   renderAll();
-
-  await cloud(
-   "sync",
-   {
-    companies,
-    leads,
-    timeline,
-    tasks
-   }
-  );
 
   setSync(
    "synced",
@@ -7059,13 +10499,17 @@ function currentDateTimeLocal(){
 
  const local=
   new Date(
-   now.getTime() -
+   now.getTime()
+   -
    offset*60000
   );
 
  return local
   .toISOString()
-  .slice(0,16);
+  .slice(
+   0,
+   16
+  );
 }
 
 function openTimelineModal(
@@ -7079,10 +10523,12 @@ function openTimelineModal(
  timelineTargetId=
   targetId;
 
- let targetName="";
+ let targetName=
+  "";
 
  if(
-  targetType==="contact"
+  targetType===
+  "contact"
  ){
 
   const lead=
@@ -7091,13 +10537,16 @@ function openTimelineModal(
    );
 
   targetName=
-   lead?.firstName ||
-   lead?.company ||
+   lead?.firstName
+   ||
+   lead?.company
+   ||
    "Contact";
  }
 
  if(
-  targetType==="company"
+  targetType===
+  "company"
  ){
 
   const company=
@@ -7106,7 +10555,8 @@ function openTimelineModal(
    );
 
   targetName=
-   company?.name ||
+   company?.name
+   ||
    "Company";
  }
 
@@ -7135,25 +10585,29 @@ function openTimelineModal(
   .getElementById(
    "timelineTitle"
   )
-  .value="";
+  .value=
+   "";
 
  document
   .getElementById(
    "timelineBody"
   )
-  .value="";
+  .value=
+   "";
 
  document
   .getElementById(
    "timelineOutcome"
   )
-  .value="";
+  .value=
+   "";
 
  document
   .getElementById(
    "timelineNextAction"
   )
-  .value="";
+  .value=
+   "";
 
  document
   .getElementById(
@@ -7174,8 +10628,11 @@ function closeTimelineModal(){
    "show"
   );
 
- timelineTargetType=null;
- timelineTargetId=null;
+ timelineTargetType=
+  null;
+
+ timelineTargetId=
+  null;
 }
 
 async function saveTimelineItem(){
@@ -7239,6 +10696,7 @@ async function saveTimelineItem(){
   !outcome &&
   !nextAction
  ){
+
   alert(
    "Please enter some activity details."
   );
@@ -7247,9 +10705,12 @@ async function saveTimelineItem(){
  }
 
  let occurredAt=
-  new Date().toISOString();
+  new Date()
+   .toISOString();
 
- if(occurredValue){
+ if(
+  occurredValue
+ ){
 
   const parsed=
    new Date(
@@ -7261,6 +10722,7 @@ async function saveTimelineItem(){
     parsed.getTime()
    )
   ){
+
    occurredAt=
     parsed.toISOString();
   }
@@ -7268,21 +10730,31 @@ async function saveTimelineItem(){
 
  const item=
   timelineDefaults({
-   id:uuid(),
+
+   id:
+    uuid(),
+
    activityType,
+
    occurredAt,
+
    title,
+
    body,
+
    outcome,
+
    nextAction,
 
    contactId:
-    timelineTargetType==="contact"
+    timelineTargetType===
+    "contact"
      ? timelineTargetId
      : "",
 
    companyId:
-    timelineTargetType==="company"
+    timelineTargetType===
+    "company"
      ? timelineTargetId
      : ""
   });
@@ -7314,6 +10786,10 @@ async function saveTimelineItem(){
    }
   );
 
+  await reloadCloudState();
+
+  renderAll();
+
   setSync(
    "synced",
    "Cloud synced"
@@ -7328,16 +10804,18 @@ async function saveTimelineItem(){
 
   setSync(
    "error",
-   "Local cache active"
+   "Save failed"
   );
 
   alert(
-   "The activity was saved locally, but cloud sync failed."
+   "The activity could not be synced."
   );
  }
 }
 
-async function deleteTimelineItem(id){
+async function deleteTimelineItem(
+ id
+){
 
  const item=
   timeline.find(
@@ -7367,17 +10845,12 @@ async function deleteTimelineItem(id){
   await cloud(
    "deleteTimeline",
    {
-    externalId:id
+    externalId:
+     id
    }
   );
 
-  timeline=
-   timeline.filter(
-    entry=>
-     entry.id!==id
-   );
-
-  saveCache();
+  await reloadCloudState();
 
   renderAll();
 
@@ -7416,7 +10889,9 @@ function openCallAssist(){
  );
 }
 
-function openLeadInCallAssist(id){
+function openLeadInCallAssist(
+ id
+){
 
  localStorage.setItem(
   "excedereSelectedLeadId",
@@ -7429,10 +10904,14 @@ function openLeadInCallAssist(id){
  );
 }
 
-function emailLead(id){
+function emailLead(
+ id
+){
 
  const lead=
-  getLeadById(id);
+  getLeadById(
+   id
+  );
 
  if(!lead){
   return;
@@ -7440,10 +10919,26 @@ function emailLead(id){
 
  const query=
   new URLSearchParams({
-   leadId:lead.id || "",
-   name:lead.firstName || "",
-   company:lead.company || "",
-   email:lead.email || ""
+
+   leadId:
+    lead.id
+    ||
+    "",
+
+   name:
+    lead.firstName
+    ||
+    "",
+
+   company:
+    lead.company
+    ||
+    "",
+
+   email:
+    lead.email
+    ||
+    ""
   });
 
  window.open(
@@ -7465,9 +10960,54 @@ document
   event=>{
 
    currentSearch=
-    event.target.value.trim();
+    event.target.value
+     .trim();
 
    renderAll();
+  }
+ );
+
+/* =====================================================
+   LOGIN KEYBOARD
+===================================================== */
+
+document
+ .getElementById(
+  "loginEmail"
+ )
+ .addEventListener(
+  "keydown",
+  event=>{
+
+   if(
+    event.key===
+    "Enter"
+   ){
+
+    document
+     .getElementById(
+      "loginPassword"
+     )
+     .focus();
+   }
+  }
+ );
+
+document
+ .getElementById(
+  "loginPassword"
+ )
+ .addEventListener(
+  "keydown",
+  event=>{
+
+   if(
+    event.key===
+    "Enter"
+   ){
+
+    signInCRM();
+   }
   }
  );
 
@@ -7476,21 +11016,47 @@ document
 ===================================================== */
 
 [
- ["contactModal",closeContactModal],
- ["companyModal",closeCompanyModal],
- ["timelineModal",closeTimelineModal],
- ["taskModal",closeTaskModal]
+ [
+  "contactModal",
+  closeContactModal
+ ],
+
+ [
+  "companyModal",
+  closeCompanyModal
+ ],
+
+ [
+  "timelineModal",
+  closeTimelineModal
+ ],
+
+ [
+  "taskModal",
+  closeTaskModal
+ ]
 ]
 .forEach(
- ([id,closer])=>{
+ (
+  [
+   id,
+   closer
+  ]
+ )=>{
 
   document
-   .getElementById(id)
+   .getElementById(
+    id
+   )
    .addEventListener(
     "click",
     event=>{
 
-     if(event.target.id===id){
+     if(
+      event.target.id===
+      id
+     ){
+
       closer();
      }
     }
@@ -7522,8 +11088,10 @@ window.addEventListener(
     selectedLeadId
    )
   ){
+
    selectedLeadId=
-    leads[0]?.id ||
+    leads[0]?.id
+    ||
     null;
   }
 
@@ -7539,7 +11107,9 @@ window.addEventListener(
 
 async function verifySessionWhenReturning(){
 
- if(document.hidden){
+ if(
+  document.hidden
+ ){
   return;
  }
 
@@ -7550,6 +11120,8 @@ async function verifySessionWhenReturning(){
 
   if(session){
 
+   hideLogin();
+
    setSync(
     "synced",
     "Cloud synced"
@@ -7557,10 +11129,7 @@ async function verifySessionWhenReturning(){
 
   }else{
 
-   setSync(
-    "error",
-    "Login required"
-   );
+   showLogin();
   }
 
  }catch(error){
@@ -7570,10 +11139,7 @@ async function verifySessionWhenReturning(){
    error
   );
 
-  setSync(
-   "error",
-   "Login required"
-  );
+  showLogin();
  }
 }
 
