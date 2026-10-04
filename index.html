@@ -2196,6 +2196,19 @@ function taskDefaults(task){
  return task;
 }
 
+function isSmartFollowUpTask(task){
+
+ if(!task){
+  return false;
+ }
+
+ return(
+  task.autoFollowUp===true ||
+  String(task.id || "")
+   .startsWith("followup:")
+ );
+}
+
 function getLeadById(id){
 
  return leads.find(
@@ -2662,6 +2675,34 @@ async function syncCloud(){
  }finally{
   cloudSyncRunning=false;
  }
+}
+
+async function reloadCloudState(){
+
+ const result=
+  await cloud("load");
+
+ leads=
+  Array.isArray(result.leads)
+   ? result.leads.map(defaults)
+   : [];
+
+ companies=
+  Array.isArray(result.companies)
+   ? result.companies.map(companyDefaults)
+   : [];
+
+ timeline=
+  Array.isArray(result.timeline)
+   ? result.timeline.map(timelineDefaults)
+   : [];
+
+ tasks=
+  Array.isArray(result.tasks)
+   ? result.tasks.map(taskDefaults)
+   : [];
+
+ saveCache();
 }
 
 /* =====================================================
@@ -5215,6 +5256,11 @@ function renderTasks(){
        </div>
 
        <div class="task-description">
+        ${
+         isSmartFollowUpTask(task)
+          ? `<span class="detail-gold">SMART FOLLOW-UP</span>${task.description ? " · " : ""}`
+          : ""
+        }
         ${e(task.description || "")}
        </div>
 
@@ -5296,19 +5342,25 @@ function renderTasks(){
          `
        }
 
-       <button
-        class="mini-btn"
-        onclick="openTaskModal('${task.id}')"
-       >
-        Edit
-       </button>
+       ${
+        isSmartFollowUpTask(task)
+         ? ""
+         : `
+         <button
+          class="mini-btn"
+          onclick="openTaskModal('${task.id}')"
+         >
+          Edit
+         </button>
 
-       <button
-        class="mini-btn delete"
-        onclick="deleteTask('${task.id}')"
-       >
-        Delete
-       </button>
+         <button
+          class="mini-btn delete"
+          onclick="deleteTask('${task.id}')"
+         >
+          Delete
+         </button>
+         `
+       }
 
       </div>
 
@@ -5336,7 +5388,10 @@ function openTaskFromRecord(id){
    const task=
     getTaskById(id);
 
-   if(task){
+   if(
+    task &&
+    !isSmartFollowUpTask(task)
+   ){
     openTaskModal(id);
    }
 
@@ -5464,6 +5519,19 @@ function openTaskModal(
   id
    ? getTaskById(id)
    : null;
+
+ if(
+  task &&
+  isSmartFollowUpTask(task)
+ ){
+  editingTaskId=null;
+
+  alert(
+   "This Smart Follow-Up task is managed from the contact's Follow-Up Date and Next Action."
+  );
+
+  return;
+ }
 
  document
   .getElementById(
@@ -5809,6 +5877,9 @@ async function setTaskStatus(
   return;
  }
 
+ const smartFollowUp=
+  isSmartFollowUpTask(task);
+
  setSync(
   "syncing",
   newStatus==="Completed"
@@ -5833,12 +5904,38 @@ async function setTaskStatus(
   task.completedAt=
    result.completedAt || "";
 
-  saveCache();
+  if(
+   smartFollowUp &&
+   result.leadExternalId
+  ){
 
-  /*
-   When a completed task is reopened,
-   automatically return to the Open filter.
-  */
+   const lead=
+    getLeadById(
+     result.leadExternalId
+    );
+
+   if(lead){
+
+    if(
+     newStatus==="Completed"
+    ){
+     lead.nextAction="";
+     lead.nextFollowUpDate="";
+    }else{
+     lead.nextAction=
+      result.nextAction ||
+      task.title ||
+      "";
+
+     lead.nextFollowUpDate=
+      result.nextFollowUpDate ||
+      "";
+    }
+   }
+  }
+
+  await reloadCloudState();
+
   if(
    newStatus==="Open"
   ){
@@ -6357,6 +6454,9 @@ async function saveContactForm(){
 
  try{
 
+  const savedLeadId=
+   lead.id;
+
   await cloud(
    "sync",
    {
@@ -6366,6 +6466,13 @@ async function saveContactForm(){
     tasks
    }
   );
+
+  await reloadCloudState();
+
+  selectedLeadId=
+   savedLeadId;
+
+  renderAll();
 
   setSync(
    "synced",
