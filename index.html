@@ -2764,10 +2764,12 @@ async function loadLeadsFromCloud(){
 
 
 /* =====================================================
-   INITIAL CLOUD VERIFICATION
+   CLOUD-FIRST STARTUP
 ===================================================== */
 
-async function initialiseCloudCRM(){
+async function initialiseCloudCRM(
+  localFallback = []
+){
 
   const accessToken =
     getSupabaseAccessToken();
@@ -2775,16 +2777,25 @@ async function initialiseCloudCRM(){
 
   if(!accessToken){
 
+    leads =
+      localFallback;
+
+
+    selectedLeadId =
+      leads[0]?.id ||
+      null;
+
+
+    renderAll();
+
+
     setSyncStatus(
       "local",
-      "Local backup only"
+      "Local cache active"
     );
 
     return;
   }
-
-
-  backupCurrentLocalLeads();
 
 
   setSyncStatus(
@@ -2797,28 +2808,15 @@ async function initialiseCloudCRM(){
 
 
     /*
-      SAFETY ORDER:
+      STAGE 3 SOURCE-OF-TRUTH ORDER:
 
-      1. Existing local data is backed up.
-      2. Local CRM is uploaded first.
-      3. Cloud CRM is loaded back.
-      4. Only verified cloud data replaces
-         the working local copy.
+      1. Supabase is loaded first.
+      2. Verified cloud data becomes the working CRM.
+      3. The cloud copy refreshes localStorage as a cache.
+      4. Local data is used only as a recovery fallback.
+      5. If the cloud is genuinely empty on first use,
+         the existing local cache can seed it safely.
     */
-
-
-    if(
-      leads.length
-    ){
-
-      await cloudRequest(
-        "sync",
-        {
-          leads:
-            leads
-        }
-      );
-    }
 
 
     const cloudLeads =
@@ -2860,7 +2858,95 @@ async function initialiseCloudCRM(){
 
 
       renderAll();
+
+
+      setSyncStatus(
+        "synced",
+        "Cloud synced"
+      );
+
+
+      return;
     }
+
+
+    if(
+      localFallback.length
+    ){
+
+      leads =
+        localFallback;
+
+
+      selectedLeadId =
+        leads[0]?.id ||
+        null;
+
+
+      renderAll();
+
+
+      setSyncStatus(
+        "syncing",
+        "Restoring cloud..."
+      );
+
+
+      await cloudRequest(
+        "sync",
+        {
+          leads:
+            leads
+        }
+      );
+
+
+      const verifiedCloudLeads =
+        await loadLeadsFromCloud();
+
+
+      if(
+        verifiedCloudLeads.length
+      ){
+
+        leads =
+          verifiedCloudLeads;
+
+
+        saveLocalLeads();
+
+
+        selectedLeadId =
+          leads[0]?.id ||
+          null;
+
+
+        renderAll();
+      }
+
+
+      setSyncStatus(
+        "synced",
+        "Cloud synced"
+      );
+
+
+      return;
+    }
+
+
+    leads =
+      [];
+
+
+    selectedLeadId =
+      null;
+
+
+    saveLocalLeads();
+
+
+    renderAll();
 
 
     setSyncStatus(
@@ -2879,16 +2965,28 @@ async function initialiseCloudCRM(){
 
 
     /*
-      IMPORTANT:
-      Nothing is removed here.
-      Existing localStorage remains the
-      working CRM if Supabase is unavailable.
+      Supabase is the primary source, but the CRM
+      remains usable if the connection is temporarily
+      unavailable. The last verified local cache is
+      loaded without deleting or overwriting it.
     */
+
+
+    leads =
+      localFallback;
+
+
+    selectedLeadId =
+      leads[0]?.id ||
+      null;
+
+
+    renderAll();
 
 
     setSyncStatus(
       "error",
-      "Local backup safe"
+      "Local cache active"
     );
 
   }
@@ -4676,39 +4774,40 @@ window.addEventListener(
 
 
     /*
-      Local data always loads FIRST.
-      This guarantees the existing CRM
-      continues working before any cloud
-      request takes place.
+      STAGE 3:
+      Supabase is now the primary CRM source.
+
+      The existing browser copy is backed up and read
+      only as a recovery cache. It is not allowed to
+      overwrite valid cloud data during startup.
     */
 
 
     backupCurrentLocalLeads();
 
 
-    leads =
+    const localFallback =
       loadLeads();
 
 
-    if(
-      leads.length
-    ){
+    setSyncStatus(
+      getSupabaseAccessToken()
+        ?
+        "syncing"
+        :
+        "local",
 
-      selectedLeadId =
-        leads[0].id;
-    }
-
-
-    renderAll();
-
-
-    /*
-      Once local CRM is safely visible,
-      connect to Supabase.
-    */
+      getSupabaseAccessToken()
+        ?
+        "Connecting..."
+        :
+        "Local cache active"
+    );
 
 
-    await initialiseCloudCRM();
+    await initialiseCloudCRM(
+      localFallback
+    );
 
   }
 );
