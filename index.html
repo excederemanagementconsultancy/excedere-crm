@@ -1310,10 +1310,6 @@ a{
 
 <div class="content">
 
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
-
 <section id="dashboardView" class="view active">
 
 <div class="stat-grid">
@@ -1392,10 +1388,6 @@ a{
 
 </section>
 
-<!-- =====================================================
-     COMPANIES
-===================================================== -->
-
 <section id="companiesView" class="view">
 
 <div class="section-heading">
@@ -1433,10 +1425,6 @@ a{
 </div>
 
 </section>
-
-<!-- =====================================================
-     CONTACTS
-===================================================== -->
 
 <section id="contactsView" class="view">
 
@@ -1477,10 +1465,6 @@ a{
 
 </section>
 
-<!-- =====================================================
-     PIPELINE
-===================================================== -->
-
 <section id="pipelineView" class="view">
 
 <div class="section-heading">
@@ -1493,10 +1477,6 @@ a{
 <div id="pipelineBoard" class="pipeline-board"></div>
 
 </section>
-
-<!-- =====================================================
-     FOLLOW UPS
-===================================================== -->
 
 <section id="followupsView" class="view">
 
@@ -1512,10 +1492,6 @@ a{
 </div>
 
 </section>
-
-<!-- =====================================================
-     TASKS
-===================================================== -->
 
 <section id="tasksView" class="view">
 
@@ -1586,10 +1562,6 @@ a{
 </section>
 
 </div>
-
-<!-- =====================================================
-     CONTACT MODAL
-===================================================== -->
 
 <div id="contactModal" class="modal">
 
@@ -1693,10 +1665,6 @@ a{
 
 </div>
 
-<!-- =====================================================
-     COMPANY MODAL
-===================================================== -->
-
 <div id="companyModal" class="modal">
 
 <div class="modal-box">
@@ -1799,10 +1767,6 @@ a{
 
 </div>
 
-<!-- =====================================================
-     TIMELINE MODAL
-===================================================== -->
-
 <div id="timelineModal" class="modal">
 
 <div class="modal-box">
@@ -1870,10 +1834,6 @@ a{
 </div>
 
 </div>
-
-<!-- =====================================================
-     TASK MODAL
-===================================================== -->
 
 <div id="taskModal" class="modal">
 
@@ -5833,6 +5793,10 @@ async function saveTaskForm(){
  }
 }
 
+/* =====================================================
+   TASK COMPLETE / REOPEN
+===================================================== */
+
 async function setTaskStatus(
  id,
  newStatus
@@ -5871,7 +5835,25 @@ async function setTaskStatus(
 
   saveCache();
 
+  /*
+   When a completed task is reopened,
+   automatically return to the Open filter.
+  */
+  if(
+   newStatus==="Open"
+  ){
+   taskFilter="Open";
+  }
+
   renderAll();
+
+  if(
+   newStatus==="Open"
+  ){
+   setTaskFilter(
+    "Open"
+   );
+  }
 
   setSync(
    "synced",
