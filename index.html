@@ -184,7 +184,6 @@ button{cursor:pointer}
  width:100%;min-height:38px;padding:8px 9px;border:1px solid #2d4656;
  border-radius:8px;outline:none;background:#07151f;color:var(--text)
 }
-textarea.form-input{min-height:80px;resize:vertical}
 .detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
 .history-title{margin:17px 0 7px;color:var(--gold);font-size:8px;font-weight:850;letter-spacing:.12em}
 .history-entry{padding:8px 0;border-bottom:1px solid var(--line2)}
@@ -202,7 +201,6 @@ textarea.form-input{min-height:80px;resize:vertical}
 .pipeline-card-name{font-size:10px;font-weight:800}.pipeline-card-company{margin-top:3px;color:var(--muted);font-size:8px}
 .pipeline-card-action{margin-top:8px;color:#c4d0d9;font-size:8px}
 
-/* modal */
 .modal{
  position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
  padding:20px;background:rgba(0,0,0,.72);backdrop-filter:blur(5px)
@@ -356,8 +354,6 @@ textarea.form-input{min-height:80px;resize:vertical}
 </div>
 
 
-<!-- CONTACT EDITOR -->
-
 <div id="contactModal" class="modal">
  <div class="modal-box">
 
@@ -472,11 +468,18 @@ let currentSearch="";
 let editingLeadId=null;
 let cloudSyncTimer=null;
 let cloudSyncRunning=false;
+let refreshRunning=null;
+
+/* =====================================================
+   GENERAL HELPERS
+===================================================== */
 
 function e(v){
  return String(v??"")
-  .replace(/&/g,"&amp;").replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
   .replace(/'/g,"&#039;");
 }
 
@@ -496,7 +499,10 @@ function getLeadById(id){
 }
 
 function uuid(){
- if(crypto.randomUUID) return crypto.randomUUID();
+ if(crypto.randomUUID){
+  return crypto.randomUUID();
+ }
+
  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
   .replace(/[xy]/g,c=>{
    const r=Math.random()*16|0;
@@ -505,565 +511,2487 @@ function uuid(){
   });
 }
 
-function token(){
- const exact=localStorage.getItem(`sb-${SUPABASE_PROJECT_REF}-auth-token`);
+/* =====================================================
+   SUPABASE SESSION STORAGE
+===================================================== */
 
- if(exact){
-  try{
-   const p=JSON.parse(exact);
-   if(p?.access_token) return p.access_token;
-   if(p?.currentSession?.access_token) return p.currentSession.access_token;
-  }catch{}
+function sessionStorageRecord(){
+
+ const expectedKey=
+  `sb-${SUPABASE_PROJECT_REF}-auth-token`;
+
+ const candidateKeys=[];
+
+ if(
+  localStorage.getItem(expectedKey)
+ ){
+  candidateKeys.push(expectedKey);
  }
 
- for(let i=0;i<localStorage.length;i++){
-  const key=localStorage.key(i);
-  if(!key?.includes(SUPABASE_PROJECT_REF)) continue;
+ for(
+  let i=0;
+  i<localStorage.length;
+  i++
+ ){
+  const key=
+   localStorage.key(i);
 
+  if(
+   key &&
+   key.includes(
+    SUPABASE_PROJECT_REF
+   ) &&
+   !candidateKeys.includes(key)
+  ){
+   candidateKeys.push(key);
+  }
+ }
+
+ for(
+  const key of candidateKeys
+ ){
   try{
-   const p=JSON.parse(localStorage.getItem(key));
-   if(p?.access_token) return p.access_token;
-   if(p?.currentSession?.access_token) return p.currentSession.access_token;
+
+   const raw=
+    localStorage.getItem(key);
+
+   if(!raw){
+    continue;
+   }
+
+   const parsed=
+    JSON.parse(raw);
+
+   const session=
+    parsed?.access_token
+     ?
+     parsed
+     :
+     parsed?.currentSession
+       ?
+       parsed.currentSession
+       :
+       null;
+
+   if(
+    session?.access_token ||
+    session?.refresh_token
+   ){
+    return {
+     key,
+     parsed,
+     session,
+     nested:
+      !parsed?.access_token &&
+      !!parsed?.currentSession
+    };
+   }
+
   }catch{}
  }
 
  return null;
 }
 
-async function cloud(action,extra={}){
- const accessToken=token();
- if(!accessToken) throw new Error("No active Excedere login session.");
+function token(){
+ return (
+  sessionStorageRecord()
+   ?.session
+   ?.access_token
+  ||
+  null
+ );
+}
 
- const r=await fetch(CLOUD_FUNCTION_URL,{
-  method:"POST",
-  headers:{
-   Authorization:`Bearer ${accessToken}`,
-   "Content-Type":"application/json"
-  },
-  body:JSON.stringify({action,...extra})
- });
+function refreshToken(){
+ return (
+  sessionStorageRecord()
+   ?.session
+   ?.refresh_token
+  ||
+  null
+ );
+}
 
- const result=await r.json();
+/* =====================================================
+   TOKEN EXPIRY
+===================================================== */
 
- if(!r.ok||!result.success){
-  throw new Error(result.error||"CRM cloud request failed.");
+function decodeJwtPayload(
+ accessToken
+){
+ try{
+
+  const parts=
+   String(accessToken||"")
+    .split(".");
+
+  if(
+   parts.length<2
+  ){
+   return null;
+  }
+
+  let payload=
+   parts[1]
+    .replace(/-/g,"+")
+    .replace(/_/g,"/");
+
+  while(
+   payload.length%4
+  ){
+   payload+="=";
+  }
+
+  return JSON.parse(
+   decodeURIComponent(
+    atob(payload)
+     .split("")
+     .map(
+      char =>
+       "%" +
+       (
+        "00"+
+        char
+         .charCodeAt(0)
+         .toString(16)
+       )
+        .slice(-2)
+     )
+     .join("")
+   )
+  );
+
+ }catch{
+  return null;
+ }
+}
+
+function accessTokenExpiresAt(){
+
+ const record=
+  sessionStorageRecord();
+
+ if(!record){
+  return null;
+ }
+
+ const session=
+  record.session;
+
+ if(
+  Number(
+   session?.expires_at
+  )
+ ){
+  return Number(
+   session.expires_at
+  );
+ }
+
+ const payload=
+  decodeJwtPayload(
+   session?.access_token
+  );
+
+ if(
+  Number(
+   payload?.exp
+  )
+ ){
+  return Number(
+   payload.exp
+  );
+ }
+
+ return null;
+}
+
+function tokenNeedsRefresh(){
+
+ const accessToken=
+  token();
+
+ if(!accessToken){
+  return true;
+ }
+
+ const expiresAt=
+  accessTokenExpiresAt();
+
+ if(!expiresAt){
+  return false;
+ }
+
+ const nowSeconds=
+  Math.floor(
+   Date.now()/1000
+  );
+
+ /*
+   Refresh five minutes before expiry.
+ */
+ return (
+  expiresAt-nowSeconds
+  <=
+  300
+ );
+}
+
+/* =====================================================
+   SAVE REFRESHED SESSION
+===================================================== */
+
+function storeRefreshedSession(
+ result
+){
+
+ const record=
+  sessionStorageRecord();
+
+ if(!record){
+  throw new Error(
+   "Supabase session storage could not be found."
+  );
+ }
+
+ const {
+  key,
+  parsed,
+  nested
+ }=record;
+
+ const updatedSession={
+  ...record.session,
+
+  access_token:
+   result.accessToken,
+
+  refresh_token:
+   result.refreshToken,
+
+  expires_at:
+   result.expiresAt,
+
+  expires_in:
+   result.expiresIn,
+
+  token_type:
+   result.tokenType ||
+   record.session.token_type ||
+   "bearer"
+ };
+
+ let updated;
+
+ if(nested){
+
+  updated={
+   ...parsed,
+
+   currentSession:
+    updatedSession
+  };
+
+ }else{
+
+  updated={
+   ...parsed,
+   ...updatedSession
+  };
+ }
+
+ localStorage.setItem(
+  key,
+  JSON.stringify(
+   updated
+  )
+ );
+}
+
+/* =====================================================
+   REFRESH SESSION
+===================================================== */
+
+async function refreshSupabaseSession(){
+
+ if(refreshRunning){
+  return refreshRunning;
+ }
+
+ refreshRunning=
+  (async()=>{
+
+   const storedRefreshToken=
+    refreshToken();
+
+   if(!storedRefreshToken){
+    throw new Error(
+     "No refresh token is available."
+    );
+   }
+
+   setSync(
+    "syncing",
+    "Refreshing session..."
+   );
+
+   const response=
+    await fetch(
+     CLOUD_FUNCTION_URL,
+     {
+      method:"POST",
+
+      headers:{
+       "Content-Type":
+        "application/json"
+      },
+
+      body:
+       JSON.stringify({
+        action:"refresh",
+
+        refreshToken:
+         storedRefreshToken
+       })
+     }
+    );
+
+   let result;
+
+   try{
+    result=
+     await response.json();
+   }catch{
+    throw new Error(
+     "Invalid session refresh response."
+    );
+   }
+
+   if(
+    !response.ok ||
+    !result.success
+   ){
+    throw new Error(
+     result.error ||
+     "Session refresh failed."
+    );
+   }
+
+   storeRefreshedSession(
+    result
+   );
+
+   return result;
+
+  })();
+
+ try{
+  return await refreshRunning;
+ }finally{
+  refreshRunning=null;
+ }
+}
+
+/* =====================================================
+   ENSURE SESSION IS CURRENT
+===================================================== */
+
+async function ensureFreshSession(){
+
+ if(
+  !token()
+ ){
+  if(
+   refreshToken()
+  ){
+   await refreshSupabaseSession();
+  }
+
+  return;
+ }
+
+ if(
+  tokenNeedsRefresh() &&
+  refreshToken()
+ ){
+  await refreshSupabaseSession();
+ }
+}
+
+/* =====================================================
+   CLOUD REQUEST
+===================================================== */
+
+async function cloud(
+ action,
+ extra={},
+ retry=true
+){
+
+ /*
+   Refresh proactively before normal cloud work.
+   The refresh action itself is handled separately.
+ */
+ await ensureFreshSession();
+
+ const accessToken=
+  token();
+
+ if(!accessToken){
+  throw new Error(
+   "No active Excedere login session."
+  );
+ }
+
+ const response=
+  await fetch(
+   CLOUD_FUNCTION_URL,
+   {
+    method:"POST",
+
+    headers:{
+     Authorization:
+      `Bearer ${accessToken}`,
+
+     "Content-Type":
+      "application/json"
+    },
+
+    body:
+     JSON.stringify({
+      action,
+      ...extra
+     })
+   }
+  );
+
+ let result;
+
+ try{
+  result=
+   await response.json();
+ }catch{
+  throw new Error(
+   "Invalid CRM cloud response."
+  );
+ }
+
+ /*
+   If the access token expired between our check
+   and the request reaching Supabase, refresh once
+   and automatically repeat the request.
+ */
+ if(
+  response.status===401 &&
+  retry &&
+  refreshToken()
+ ){
+  await refreshSupabaseSession();
+
+  return cloud(
+   action,
+   extra,
+   false
+  );
+ }
+
+ if(
+  !response.ok ||
+  !result.success
+ ){
+  throw new Error(
+   result.error ||
+   "CRM cloud request failed."
+  );
  }
 
  return result;
 }
 
-function setSync(type,text){
- const b=document.getElementById("syncStatus");
- b.className=`sync-status ${type}`;
- document.getElementById("syncStatusText").textContent=text;
+/* =====================================================
+   CLOUD STATUS
+===================================================== */
+
+function setSync(
+ type,
+ text
+){
+ const box=
+  document.getElementById(
+   "syncStatus"
+  );
+
+ box.className=
+  `sync-status ${type}`;
+
+ document
+  .getElementById(
+   "syncStatusText"
+  )
+  .textContent=
+   text;
 }
 
+/* =====================================================
+   LOCAL CACHE
+===================================================== */
+
 function saveCache(){
- localStorage.setItem(LEAD_STORAGE_KEY,JSON.stringify(leads));
+ localStorage.setItem(
+  LEAD_STORAGE_KEY,
+  JSON.stringify(leads)
+ );
 }
 
 function loadCache(){
  try{
-  const p=JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY)||"[]");
-  return Array.isArray(p)?p.map(defaults):[];
- }catch{return[]}
-}
 
-function backupCache(){
- const raw=localStorage.getItem(LEAD_STORAGE_KEY);
- if(raw&&!localStorage.getItem(LEAD_BACKUP_KEY)){
-  localStorage.setItem(LEAD_BACKUP_KEY,raw);
+  const parsed=
+   JSON.parse(
+    localStorage.getItem(
+     LEAD_STORAGE_KEY
+    )||"[]"
+   );
+
+  return Array.isArray(parsed)
+   ?
+   parsed.map(defaults)
+   :
+   [];
+
+ }catch{
+  return [];
  }
 }
 
-function scheduleSync(){
- saveCache();
- clearTimeout(cloudSyncTimer);
- setSync("syncing","Waiting to sync...");
+function backupCache(){
 
- cloudSyncTimer=setTimeout(syncCloud,600);
+ const raw=
+  localStorage.getItem(
+   LEAD_STORAGE_KEY
+  );
+
+ if(
+  raw &&
+  !localStorage.getItem(
+   LEAD_BACKUP_KEY
+  )
+ ){
+  localStorage.setItem(
+   LEAD_BACKUP_KEY,
+   raw
+  );
+ }
+}
+
+/* =====================================================
+   SYNC
+===================================================== */
+
+function scheduleSync(){
+
+ saveCache();
+
+ clearTimeout(
+  cloudSyncTimer
+ );
+
+ setSync(
+  "syncing",
+  "Waiting to sync..."
+ );
+
+ cloudSyncTimer=
+  setTimeout(
+   syncCloud,
+   600
+  );
 }
 
 async function syncCloud(){
- if(cloudSyncRunning) return;
+
+ if(cloudSyncRunning){
+  return;
+ }
 
  cloudSyncRunning=true;
- setSync("syncing","Syncing...");
+
+ setSync(
+  "syncing",
+  "Syncing..."
+ );
 
  try{
-  await cloud("sync",{leads});
-  setSync("synced","Cloud synced");
- }catch(err){
-  console.error(err);
-  setSync("error","Local cache active");
+
+  await cloud(
+   "sync",
+   {leads}
+  );
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   error
+  );
+
+  setSync(
+   "error",
+   "Local cache active"
+  );
+
  }finally{
+
   cloudSyncRunning=false;
  }
 }
 
+/* =====================================================
+   STARTUP
+===================================================== */
+
 async function initialise(){
+
  backupCache();
- const fallback=loadCache();
 
- if(!token()){
-  leads=fallback;
-  selectedLeadId=leads[0]?.id||null;
-  renderAll();
-  setSync("error","Local cache active");
-  return;
- }
+ const fallback=
+  loadCache();
 
- setSync("syncing","Connecting...");
+ setSync(
+  "syncing",
+  "Connecting..."
+ );
 
  try{
-  const result=await cloud("load");
-  const cloudLeads=Array.isArray(result.leads)?result.leads.map(defaults):[];
 
-  if(cloudLeads.length){
-   leads=cloudLeads;
+  /*
+    Automatic refresh happens inside cloud().
+  */
+
+  const result=
+   await cloud(
+    "load"
+   );
+
+  const cloudLeads=
+   Array.isArray(
+    result.leads
+   )
+    ?
+    result.leads.map(
+     defaults
+    )
+    :
+    [];
+
+  if(
+   cloudLeads.length
+  ){
+
+   leads=
+    cloudLeads;
+
    saveCache();
-  }else if(fallback.length){
-   leads=fallback;
-   await cloud("sync",{leads});
+
+  }else if(
+   fallback.length
+  ){
+
+   leads=
+    fallback;
+
+   await cloud(
+    "sync",
+    {leads}
+   );
+
   }else{
+
    leads=[];
   }
 
-  selectedLeadId=leads[0]?.id||null;
-  renderAll();
-  setSync("synced","Cloud synced");
+  selectedLeadId=
+   leads[0]?.id ||
+   null;
 
- }catch(err){
-  console.error(err);
-  leads=fallback;
-  selectedLeadId=leads[0]?.id||null;
   renderAll();
-  setSync("error","Local cache active");
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   "CRM startup failed:",
+   error
+  );
+
+  leads=
+   fallback;
+
+  selectedLeadId=
+   leads[0]?.id ||
+   null;
+
+  renderAll();
+
+  setSync(
+   "error",
+   "Local cache active"
+  );
  }
 }
 
-function days(dateString){
- if(!dateString)return null;
- const t=new Date();t.setHours(0,0,0,0);
- return Math.ceil((new Date(`${dateString}T00:00:00`)-t)/86400000);
-}
+/* =====================================================
+   STATUS HELPERS
+===================================================== */
 
-function status(l){
- if(!l.lastCalled&&!l.nextFollowUpDate)return["NEW","status-new"];
- if(l.nextFollowUpDate){
-  const d=days(l.nextFollowUpDate);
-  if(d<0)return["OVERDUE","status-overdue"];
-  if(d<=2)return["DUE SOON","status-due"];
+function days(
+ dateString
+){
+ if(!dateString){
+  return null;
  }
- return["CURRENT","status-current"];
-}
 
-function timeFor(l){
- try{
-  const x=new Intl.DateTimeFormat("en-US",{
-   timeZone:l.timezone||"America/Los_Angeles",
-   hour:"numeric",minute:"2-digit"
-  }).format(new Date());
+ const today=
+  new Date();
 
-  return x+(l.timezoneLabel?` ${l.timezoneLabel}`:"");
- }catch{return"Time unavailable"}
-}
+ today.setHours(
+  0,0,0,0
+ );
 
-function filtered(){
- if(!currentSearch)return leads;
-
- const q=currentSearch.toLowerCase();
-
- return leads.filter(l=>
-  [
-   l.firstName,l.title,l.company,l.role,l.location,l.phone,
-   l.directPhone,l.email,l.lastOutcome,l.nextAction,l.pipelineStage
-  ].join(" ").toLowerCase().includes(q)
+ return Math.ceil(
+  (
+   new Date(
+    `${dateString}T00:00:00`
+   )
+   -
+   today
+  )
+  /
+  86400000
  );
 }
 
-function switchView(view,button){
- document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
- document.querySelectorAll(".nav-btn").forEach(x=>x.classList.remove("active"));
+function status(l){
 
- document.getElementById(`${view}View`).classList.add("active");
- button.classList.add("active");
+ if(
+  !l.lastCalled &&
+  !l.nextFollowUpDate
+ ){
+  return [
+   "NEW",
+   "status-new"
+  ];
+ }
+
+ if(
+  l.nextFollowUpDate
+ ){
+
+  const d=
+   days(
+    l.nextFollowUpDate
+   );
+
+  if(d<0){
+   return [
+    "OVERDUE",
+    "status-overdue"
+   ];
+  }
+
+  if(d<=2){
+   return [
+    "DUE SOON",
+    "status-due"
+   ];
+  }
+ }
+
+ return [
+  "CURRENT",
+  "status-current"
+ ];
+}
+
+function timeFor(l){
+
+ try{
+
+  const value=
+   new Intl.DateTimeFormat(
+    "en-US",
+    {
+     timeZone:
+      l.timezone ||
+      "America/Los_Angeles",
+
+     hour:
+      "numeric",
+
+     minute:
+      "2-digit"
+    }
+   )
+    .format(
+     new Date()
+    );
+
+  return (
+   value+
+   (
+    l.timezoneLabel
+     ?
+     ` ${l.timezoneLabel}`
+     :
+     ""
+   )
+  );
+
+ }catch{
+
+  return "Time unavailable";
+ }
+}
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function filtered(){
+
+ if(!currentSearch){
+  return leads;
+ }
+
+ const q=
+  currentSearch
+   .toLowerCase();
+
+ return leads.filter(
+  l=>
+   [
+    l.firstName,
+    l.title,
+    l.company,
+    l.role,
+    l.location,
+    l.phone,
+    l.directPhone,
+    l.email,
+    l.lastOutcome,
+    l.nextAction,
+    l.pipelineStage
+   ]
+    .join(" ")
+    .toLowerCase()
+    .includes(q)
+ );
+}
+
+/* =====================================================
+   VIEW SWITCHING
+===================================================== */
+
+function switchView(
+ view,
+ button
+){
+
+ document
+  .querySelectorAll(
+   ".view"
+  )
+  .forEach(
+   element =>
+    element
+     .classList
+     .remove(
+      "active"
+     )
+  );
+
+ document
+  .querySelectorAll(
+   ".nav-btn"
+  )
+  .forEach(
+   element =>
+    element
+     .classList
+     .remove(
+      "active"
+     )
+  );
+
+ document
+  .getElementById(
+   `${view}View`
+  )
+  .classList
+  .add(
+   "active"
+  );
+
+ button
+  .classList
+  .add(
+   "active"
+  );
 
  const titles={
-  dashboard:["Dashboard","Your Excedere sales activity at a glance."],
-  contacts:["Contacts","Manage prospects, communication and follow-ups."],
-  pipeline:["Pipeline","Track prospects through the sales process."],
-  followups:["Follow-Ups","See who needs your attention next."]
+
+  dashboard:[
+   "Dashboard",
+   "Your Excedere sales activity at a glance."
+  ],
+
+  contacts:[
+   "Contacts",
+   "Manage prospects, communication and follow-ups."
+  ],
+
+  pipeline:[
+   "Pipeline",
+   "Track prospects through the sales process."
+  ],
+
+  followups:[
+   "Follow-Ups",
+   "See who needs your attention next."
+  ]
  };
 
- document.getElementById("pageTitle").textContent=titles[view][0];
- document.getElementById("pageSubtitle").textContent=titles[view][1];
+ document
+  .getElementById(
+   "pageTitle"
+  )
+  .textContent=
+   titles[view][0];
+
+ document
+  .getElementById(
+   "pageSubtitle"
+  )
+  .textContent=
+   titles[view][1];
 
  renderAll();
 }
 
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
 function renderDashboard(){
- let due=0,overdue=0,meetings=0,calls=0;
 
- leads.forEach(l=>{
-  const s=status(l)[0];
-  if(s==="DUE SOON")due++;
-  if(s==="OVERDUE")overdue++;
-  if(l.lastOutcome==="Appointment booked"||l.pipelineStage==="Meeting Booked")meetings++;
-  calls+=Number(l.callCount||0);
- });
+ let due=0;
+ let overdue=0;
+ let meetings=0;
+ let calls=0;
 
- document.getElementById("statProspects").textContent=leads.length;
- document.getElementById("statDue").textContent=due;
- document.getElementById("statOverdue").textContent=overdue;
- document.getElementById("statMeetings").textContent=meetings;
- document.getElementById("statCalls").textContent=calls;
+ leads.forEach(
+  lead=>{
+
+   const currentStatus=
+    status(lead)[0];
+
+   if(
+    currentStatus==="DUE SOON"
+   ){
+    due++;
+   }
+
+   if(
+    currentStatus==="OVERDUE"
+   ){
+    overdue++;
+   }
+
+   if(
+    lead.lastOutcome===
+     "Appointment booked"
+    ||
+    lead.pipelineStage===
+     "Meeting Booked"
+   ){
+    meetings++;
+   }
+
+   calls+=
+    Number(
+     lead.callCount||0
+    );
+  }
+ );
+
+ document
+  .getElementById(
+   "statProspects"
+  )
+  .textContent=
+   leads.length;
+
+ document
+  .getElementById(
+   "statDue"
+  )
+  .textContent=
+   due;
+
+ document
+  .getElementById(
+   "statOverdue"
+  )
+  .textContent=
+   overdue;
+
+ document
+  .getElementById(
+   "statMeetings"
+  )
+  .textContent=
+   meetings;
+
+ document
+  .getElementById(
+   "statCalls"
+  )
+  .textContent=
+   calls;
 
  const activities=[];
 
- leads.forEach(l=>{
-  (l.callHistory||[]).forEach(a=>activities.push({type:"call",timestamp:a.timestamp,lead:l,entry:a}));
-  (l.emailHistory||[]).forEach(a=>activities.push({type:"email",timestamp:a.timestamp,lead:l,entry:a}));
- });
+ leads.forEach(
+  lead=>{
 
- activities.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+   (
+    lead.callHistory||
+    []
+   )
+    .forEach(
+     entry =>
+      activities.push({
+       type:"call",
+       timestamp:
+        entry.timestamp,
+       lead,
+       entry
+      })
+    );
 
- document.getElementById("recentActivity").innerHTML=
-  activities.slice(0,7).map(a=>`
-   <div class="activity-row">
-    <div class="activity-icon">${a.type==="email"?"✉":"☎"}</div>
-    <div>
-     <div class="activity-title">${a.type==="email"?"Email sent to":"Call with"} ${e(a.lead.firstName||a.lead.company)}</div>
-     <div class="activity-subtitle">${e(a.type==="email"?(a.entry.subject||"Email"):(a.entry.outcome||"Call logged"))}</div>
+   (
+    lead.emailHistory||
+    []
+   )
+    .forEach(
+     entry =>
+      activities.push({
+       type:"email",
+       timestamp:
+        entry.timestamp,
+       lead,
+       entry
+      })
+    );
+  }
+ );
+
+ activities.sort(
+  (a,b)=>
+   new Date(
+    b.timestamp
+   )
+   -
+   new Date(
+    a.timestamp
+   )
+ );
+
+ document
+  .getElementById(
+   "recentActivity"
+  )
+  .innerHTML=
+
+  activities
+   .slice(0,7)
+   .map(
+    activity=>`
+
+    <div class="activity-row">
+
+     <div class="activity-icon">
+      ${
+       activity.type==="email"
+        ?
+        "✉"
+        :
+        "☎"
+      }
+     </div>
+
+     <div>
+
+      <div class="activity-title">
+
+       ${
+        activity.type==="email"
+         ?
+         "Email sent to"
+         :
+         "Call with"
+       }
+
+       ${
+        e(
+         activity.lead.firstName ||
+         activity.lead.company
+        )
+       }
+
+      </div>
+
+      <div class="activity-subtitle">
+
+       ${
+        e(
+         activity.type==="email"
+          ?
+          (
+           activity.entry.subject ||
+           "Email"
+          )
+          :
+          (
+           activity.entry.outcome ||
+           "Call logged"
+          )
+        )
+       }
+
+      </div>
+
+     </div>
+
+     <div class="activity-time">
+
+      ${
+       e(
+        activity.timestamp
+         ?
+         new Date(
+          activity.timestamp
+         )
+          .toLocaleString()
+         :
+         ""
+       )
+      }
+
+     </div>
+
     </div>
-    <div class="activity-time">${e(a.timestamp?new Date(a.timestamp).toLocaleString():"")}</div>
-   </div>
-  `).join("")||'<div class="empty">No activity recorded yet.</div>';
+   `
+   )
+   .join("")
+   ||
+   '<div class="empty">No activity recorded yet.</div>';
 
- const fs=leads.filter(l=>l.nextFollowUpDate)
-  .sort((a,b)=>new Date(a.nextFollowUpDate)-new Date(b.nextFollowUpDate))
-  .slice(0,7);
+ const followups=
+  leads
+   .filter(
+    lead =>
+     lead.nextFollowUpDate
+   )
+   .sort(
+    (a,b)=>
+     new Date(
+      a.nextFollowUpDate
+     )
+     -
+     new Date(
+      b.nextFollowUpDate
+     )
+   )
+   .slice(0,7);
 
- document.getElementById("dashboardFollowups").innerHTML=
-  fs.map(l=>{
-   const s=status(l);
-   return `<div class="follow-row"><div><div class="follow-name">${e(l.firstName)}</div>
-   <div class="follow-company">${e(l.company)}</div><div class="follow-action">${e(l.nextAction||"Follow up")}</div></div>
-   <div class="follow-date">${e(l.nextFollowUpDate)}<br><span class="status-badge ${s[1]}">${s[0]}</span></div></div>`;
-  }).join("")||'<div class="empty">No follow-ups scheduled.</div>';
+ document
+  .getElementById(
+   "dashboardFollowups"
+  )
+  .innerHTML=
+
+  followups
+   .map(
+    lead=>{
+
+     const currentStatus=
+      status(lead);
+
+     return `
+
+      <div class="follow-row">
+
+       <div>
+
+        <div class="follow-name">
+         ${e(lead.firstName)}
+        </div>
+
+        <div class="follow-company">
+         ${e(lead.company)}
+        </div>
+
+        <div class="follow-action">
+         ${e(lead.nextAction||"Follow up")}
+        </div>
+
+       </div>
+
+       <div class="follow-date">
+
+        ${e(lead.nextFollowUpDate)}
+
+        <br>
+
+        <span class="status-badge ${currentStatus[1]}">
+         ${currentStatus[0]}
+        </span>
+
+       </div>
+
+      </div>
+     `;
+    }
+   )
+   .join("")
+   ||
+   '<div class="empty">No follow-ups scheduled.</div>';
 }
 
+/* =====================================================
+   CONTACTS
+===================================================== */
+
 function renderContacts(){
- const area=document.getElementById("contactsList");
 
- area.innerHTML=filtered().map(l=>{
-  const s=status(l);
+ const area=
+  document.getElementById(
+   "contactsList"
+  );
 
-  return `<button class="contact-row ${selectedLeadId===l.id?"selected":""}" onclick="selectContact('${l.id}')">
-   <div><div class="contact-name">${e(l.firstName||"Unknown")}</div><div class="contact-sub">${e(l.title||"")}</div></div>
-   <div><div class="contact-cell">${e(l.company||"")}</div><div class="contact-sub">${e(l.role||"")}</div></div>
-   <div><div class="contact-cell">${e(l.phone||l.directPhone||"No phone")}</div><div class="contact-sub">${e(l.email||"No email")}</div></div>
-   <div><div class="contact-cell">${e(l.nextFollowUpDate||"None")}</div><div class="contact-sub">${e(l.nextAction||"")}</div></div>
-   <div><span class="status-badge ${s[1]}">${s[0]}</span></div>
-  </button>`;
- }).join("")||'<div class="empty">No matching contacts.</div>';
+ area.innerHTML=
+
+  filtered()
+   .map(
+    lead=>{
+
+     const currentStatus=
+      status(lead);
+
+     return `
+
+      <button
+       class="contact-row ${
+        selectedLeadId===lead.id
+         ?
+         "selected"
+         :
+         ""
+       }"
+       onclick="selectContact('${lead.id}')"
+      >
+
+       <div>
+
+        <div class="contact-name">
+         ${e(lead.firstName||"Unknown")}
+        </div>
+
+        <div class="contact-sub">
+         ${e(lead.title||"")}
+        </div>
+
+       </div>
+
+       <div>
+
+        <div class="contact-cell">
+         ${e(lead.company||"")}
+        </div>
+
+        <div class="contact-sub">
+         ${e(lead.role||"")}
+        </div>
+
+       </div>
+
+       <div>
+
+        <div class="contact-cell">
+         ${e(lead.phone||lead.directPhone||"No phone")}
+        </div>
+
+        <div class="contact-sub">
+         ${e(lead.email||"No email")}
+        </div>
+
+       </div>
+
+       <div>
+
+        <div class="contact-cell">
+         ${e(lead.nextFollowUpDate||"None")}
+        </div>
+
+        <div class="contact-sub">
+         ${e(lead.nextAction||"")}
+        </div>
+
+       </div>
+
+       <div>
+
+        <span class="status-badge ${currentStatus[1]}">
+         ${currentStatus[0]}
+        </span>
+
+       </div>
+
+      </button>
+     `;
+    }
+   )
+   .join("")
+   ||
+   '<div class="empty">No matching contacts.</div>';
 
  renderDetail();
 }
 
 function selectContact(id){
- selectedLeadId=id;
+
+ selectedLeadId=
+  id;
+
  renderContacts();
 }
 
-function renderDetail(){
- const box=document.getElementById("contactDetail");
- const l=getLeadById(selectedLeadId);
+/* =====================================================
+   CONTACT DETAIL
+===================================================== */
 
- if(!l){
-  box.innerHTML='<div class="empty">Select a contact to view the record.</div>';
+function renderDetail(){
+
+ const box=
+  document.getElementById(
+   "contactDetail"
+  );
+
+ const lead=
+  getLeadById(
+   selectedLeadId
+  );
+
+ if(!lead){
+
+  box.innerHTML=
+   '<div class="empty">Select a contact to view the record.</div>';
+
   return;
  }
 
- const initials=((l.firstName||l.company||"EX").match(/\b\w/g)||["E","X"]).slice(0,2).join("").toUpperCase();
- const s=status(l);
+ const initials=
+  (
+   (
+    lead.firstName||
+    lead.company||
+    "EX"
+   )
+    .match(/\b\w/g)
+   ||
+   ["E","X"]
+  )
+   .slice(0,2)
+   .join("")
+   .toUpperCase();
+
+ const currentStatus=
+  status(lead);
 
  const activity=[
-  ...(l.callHistory||[]).map(x=>({type:"call",...x})),
-  ...(l.emailHistory||[]).map(x=>({type:"email",...x}))
- ].sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+  ...(
+   lead.callHistory||
+   []
+  )
+   .map(
+    entry=>({
+     type:"call",
+     ...entry
+    })
+   ),
+
+  ...(
+   lead.emailHistory||
+   []
+  )
+   .map(
+    entry=>({
+     type:"email",
+     ...entry
+    })
+   )
+ ]
+  .sort(
+   (a,b)=>
+    new Date(
+     b.timestamp
+    )
+    -
+    new Date(
+     a.timestamp
+    )
+  );
 
  box.innerHTML=`
+
  <div class="detail-top">
-  <div class="detail-avatar">${e(initials)}</div>
-  <div class="detail-name">${e(l.firstName||"Unknown")}</div>
-  <div class="detail-company">${e(l.title||"")}${l.title&&l.company?" · ":""}${e(l.company||"")}</div>
+
+  <div class="detail-avatar">
+   ${e(initials)}
+  </div>
+
+  <div class="detail-name">
+   ${e(lead.firstName||"Unknown")}
+  </div>
+
+  <div class="detail-company">
+
+   ${e(lead.title||"")}
+
+   ${
+    lead.title &&
+    lead.company
+     ?
+     " · "
+     :
+     ""
+   }
+
+   ${e(lead.company||"")}
+
+  </div>
+
  </div>
 
  <div class="detail-body">
 
-  <div class="detail-item"><div class="detail-label">LOCAL TIME</div><div class="detail-value detail-gold">${e(timeFor(l))}</div></div>
-  <div class="detail-item"><div class="detail-label">ROLE</div><div class="detail-value">${e(l.role||"Not provided")}</div></div>
-  <div class="detail-item"><div class="detail-label">PHONE</div><div class="detail-value">${e(l.phone||l.directPhone||"Not provided")}</div></div>
-  <div class="detail-item"><div class="detail-label">EMAIL</div><div class="detail-value">${e(l.email||"Not provided")}</div></div>
-  <div class="detail-item"><div class="detail-label">LAST OUTCOME</div><div class="detail-value">${e(l.lastOutcome||"None")}</div></div>
-  <div class="detail-item"><div class="detail-label">NEXT ACTION</div><div class="detail-value">${e(l.nextAction||"None")}</div></div>
-  <div class="detail-item"><div class="detail-label">FOLLOW-UP</div><div class="detail-value">${e(l.nextFollowUpDate||"None")} &nbsp;<span class="status-badge ${s[1]}">${s[0]}</span></div></div>
+  <div class="detail-item">
+   <div class="detail-label">LOCAL TIME</div>
+   <div class="detail-value detail-gold">${e(timeFor(lead))}</div>
+  </div>
 
   <div class="detail-item">
-   <div class="detail-label">PIPELINE STAGE</div>
-   <select class="pipeline-select" onchange="changeStage('${l.id}',this.value)">
-    ${PIPELINE_STAGES.map(x=>`<option ${x===(l.pipelineStage||"New")?"selected":""}>${e(x)}</option>`).join("")}
+   <div class="detail-label">ROLE</div>
+   <div class="detail-value">${e(lead.role||"Not provided")}</div>
+  </div>
+
+  <div class="detail-item">
+   <div class="detail-label">PHONE</div>
+   <div class="detail-value">${e(lead.phone||lead.directPhone||"Not provided")}</div>
+  </div>
+
+  <div class="detail-item">
+   <div class="detail-label">EMAIL</div>
+   <div class="detail-value">${e(lead.email||"Not provided")}</div>
+  </div>
+
+  <div class="detail-item">
+   <div class="detail-label">LAST OUTCOME</div>
+   <div class="detail-value">${e(lead.lastOutcome||"None")}</div>
+  </div>
+
+  <div class="detail-item">
+   <div class="detail-label">NEXT ACTION</div>
+   <div class="detail-value">${e(lead.nextAction||"None")}</div>
+  </div>
+
+  <div class="detail-item">
+   <div class="detail-label">FOLLOW-UP</div>
+
+   <div class="detail-value">
+
+    ${e(lead.nextFollowUpDate||"None")}
+
+    &nbsp;
+
+    <span class="status-badge ${currentStatus[1]}">
+     ${currentStatus[0]}
+    </span>
+
+   </div>
+  </div>
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    PIPELINE STAGE
+   </div>
+
+   <select
+    class="pipeline-select"
+    onchange="changeStage('${lead.id}',this.value)"
+   >
+
+    ${
+     PIPELINE_STAGES
+      .map(
+       stage=>`
+
+        <option
+         ${
+          stage===
+          (
+           lead.pipelineStage||
+           "New"
+          )
+           ?
+           "selected"
+           :
+           ""
+         }
+        >
+         ${e(stage)}
+        </option>
+       `
+      )
+      .join("")
+    }
+
    </select>
+
   </div>
 
   <div class="detail-actions">
-   <button class="primary-btn" onclick="openLeadInCallAssist('${l.id}')">☎ Open in Call Assist</button>
-   <button class="secondary-btn" onclick="emailLead('${l.id}')">✉ Send Email</button>
-   <button class="secondary-btn" onclick="openContactModal('${l.id}')">✎ Edit Contact</button>
-   <button class="danger-btn" onclick="deleteContact('${l.id}')">Delete Contact</button>
+
+   <button
+    class="primary-btn"
+    onclick="openLeadInCallAssist('${lead.id}')"
+   >
+    ☎ Open in Call Assist
+   </button>
+
+   <button
+    class="secondary-btn"
+    onclick="emailLead('${lead.id}')"
+   >
+    ✉ Send Email
+   </button>
+
+   <button
+    class="secondary-btn"
+    onclick="openContactModal('${lead.id}')"
+   >
+    ✎ Edit Contact
+   </button>
+
+   <button
+    class="danger-btn"
+    onclick="deleteContact('${lead.id}')"
+   >
+    Delete Contact
+   </button>
+
   </div>
 
-  <div class="history-title">ACTIVITY HISTORY</div>
+  <div class="history-title">
+   ACTIVITY HISTORY
+  </div>
 
-  ${activity.slice(0,8).map(a=>`
-   <div class="history-entry">
-    <div class="history-date">${e(a.timestamp?new Date(a.timestamp).toLocaleString():"")}</div>
-    <div class="history-main">${a.type==="email"?"✉ Email sent":"☎ "+e(a.outcome||"Call")}</div>
-    <div class="history-sub">${e(a.type==="email"?(a.subject||"Email"):(a.nextAction||""))}</div>
-   </div>
-  `).join("")||'<div class="history-sub">No activity recorded yet.</div>'}
+  ${
+   activity
+    .slice(0,8)
+    .map(
+     item=>`
 
- </div>`;
+      <div class="history-entry">
+
+       <div class="history-date">
+
+        ${
+         e(
+          item.timestamp
+           ?
+           new Date(
+            item.timestamp
+           )
+            .toLocaleString()
+           :
+           ""
+         )
+        }
+
+       </div>
+
+       <div class="history-main">
+
+        ${
+         item.type==="email"
+          ?
+          "✉ Email sent"
+          :
+          "☎ "+
+          e(
+           item.outcome||
+           "Call"
+          )
+        }
+
+       </div>
+
+       <div class="history-sub">
+
+        ${
+         e(
+          item.type==="email"
+           ?
+           (
+            item.subject||
+            "Email"
+           )
+           :
+           (
+            item.nextAction||
+            ""
+           )
+         )
+        }
+
+       </div>
+
+      </div>
+     `
+    )
+    .join("")
+   ||
+   '<div class="history-sub">No activity recorded yet.</div>'
+  }
+
+ </div>
+ `;
 }
+
+/* =====================================================
+   PIPELINE
+===================================================== */
 
 function renderPipeline(){
- document.getElementById("pipelineBoard").innerHTML=
-  PIPELINE_STAGES.map(stage=>{
-   const items=filtered().filter(l=>(l.pipelineStage||"New")===stage);
 
-   return `<div class="pipeline-column">
-    <div class="pipeline-head"><div class="pipeline-title">${e(stage)}</div><div class="pipeline-count">${items.length}</div></div>
-    <div class="pipeline-body">${items.map(l=>`
-     <div class="pipeline-card">
-      <div class="pipeline-card-name">${e(l.firstName||"Unknown")}</div>
-      <div class="pipeline-card-company">${e(l.company||"")}</div>
-      <div class="pipeline-card-action">${e(l.nextAction||l.role||"")}</div>
-     </div>`).join("")||'<div class="history-sub">No prospects</div>'}
-    </div>
-   </div>`;
-  }).join("");
+ document
+  .getElementById(
+   "pipelineBoard"
+  )
+  .innerHTML=
+
+  PIPELINE_STAGES
+   .map(
+    stage=>{
+
+     const items=
+      filtered()
+       .filter(
+        lead =>
+         (
+          lead.pipelineStage||
+          "New"
+         )
+         ===
+         stage
+       );
+
+     return `
+
+      <div class="pipeline-column">
+
+       <div class="pipeline-head">
+
+        <div class="pipeline-title">
+         ${e(stage)}
+        </div>
+
+        <div class="pipeline-count">
+         ${items.length}
+        </div>
+
+       </div>
+
+       <div class="pipeline-body">
+
+        ${
+         items
+          .map(
+           lead=>`
+
+            <div class="pipeline-card">
+
+             <div class="pipeline-card-name">
+              ${e(lead.firstName||"Unknown")}
+             </div>
+
+             <div class="pipeline-card-company">
+              ${e(lead.company||"")}
+             </div>
+
+             <div class="pipeline-card-action">
+              ${e(lead.nextAction||lead.role||"")}
+             </div>
+
+            </div>
+           `
+          )
+          .join("")
+         ||
+         '<div class="history-sub">No prospects</div>'
+        }
+
+       </div>
+
+      </div>
+     `;
+    }
+   )
+   .join("");
 }
+
+/* =====================================================
+   FOLLOW UPS
+===================================================== */
 
 function renderFollowups(){
- const items=filtered().filter(l=>l.nextFollowUpDate)
-  .sort((a,b)=>new Date(a.nextFollowUpDate)-new Date(b.nextFollowUpDate));
 
- document.getElementById("followupList").innerHTML=
-  items.map(l=>{
-   const s=status(l);
+ const items=
+  filtered()
+   .filter(
+    lead =>
+     lead.nextFollowUpDate
+   )
+   .sort(
+    (a,b)=>
+     new Date(
+      a.nextFollowUpDate
+     )
+     -
+     new Date(
+      b.nextFollowUpDate
+     )
+   );
 
-   return `<div class="follow-row">
-    <div><div class="follow-name">${e(l.firstName||"Unknown")}</div>
-    <div class="follow-company">${e(l.company||"")} · ${e(l.role||"")}</div>
-    <div class="follow-action">${e(l.nextAction||"Follow up")}</div></div>
-    <div class="follow-date">${e(l.nextFollowUpDate)}<br><span class="status-badge ${s[1]}">${s[0]}</span></div>
-   </div>`;
-  }).join("")||'<div class="empty">No follow-ups currently scheduled.</div>';
+ document
+  .getElementById(
+   "followupList"
+  )
+  .innerHTML=
+
+  items
+   .map(
+    lead=>{
+
+     const currentStatus=
+      status(lead);
+
+     return `
+
+      <div class="follow-row">
+
+       <div>
+
+        <div class="follow-name">
+         ${e(lead.firstName||"Unknown")}
+        </div>
+
+        <div class="follow-company">
+
+         ${e(lead.company||"")}
+
+         ·
+
+         ${e(lead.role||"")}
+
+        </div>
+
+        <div class="follow-action">
+         ${e(lead.nextAction||"Follow up")}
+        </div>
+
+       </div>
+
+       <div class="follow-date">
+
+        ${e(lead.nextFollowUpDate)}
+
+        <br>
+
+        <span class="status-badge ${currentStatus[1]}">
+         ${currentStatus[0]}
+        </span>
+
+       </div>
+
+      </div>
+     `;
+    }
+   )
+   .join("")
+   ||
+   '<div class="empty">No follow-ups currently scheduled.</div>';
 }
 
+/* =====================================================
+   RENDER
+===================================================== */
+
 function renderAll(){
+
  renderDashboard();
  renderContacts();
  renderPipeline();
  renderFollowups();
 }
 
-function changeStage(id,stage){
- const l=getLeadById(id);
- if(!l)return;
+/* =====================================================
+   PIPELINE CHANGE
+===================================================== */
 
- l.pipelineStage=stage;
+function changeStage(
+ id,
+ stage
+){
+
+ const lead=
+  getLeadById(id);
+
+ if(!lead){
+  return;
+ }
+
+ lead.pipelineStage=
+  stage;
+
  scheduleSync();
  renderAll();
 }
 
-/* CONTACT EDITOR */
+/* =====================================================
+   CONTACT EDITOR
+===================================================== */
 
-function openContactModal(id=null){
- editingLeadId=id;
+function openContactModal(
+ id=null
+){
 
- const l=id?getLeadById(id):null;
+ editingLeadId=
+  id;
 
- document.getElementById("contactModalTitle").textContent=
-  l?"Edit Contact":"New Contact";
+ const lead=
+  id
+   ?
+   getLeadById(id)
+   :
+   null;
+
+ document
+  .getElementById(
+   "contactModalTitle"
+  )
+  .textContent=
+   lead
+    ?
+    "Edit Contact"
+    :
+    "New Contact";
 
  const fields={
-  formFirstName:l?.firstName||"",
-  formTitle:l?.title||"",
-  formCompany:l?.company||"",
-  formRole:l?.role||"",
-  formLocation:l?.location||"",
-  formPhone:l?.phone||"",
-  formDirectPhone:l?.directPhone||"",
-  formEmail:l?.email||"",
-  formTimezone:l?.timezone||"America/Los_Angeles",
-  formTimezoneLabel:l?.timezoneLabel||"",
-  formPipelineStage:l?.pipelineStage||"New",
-  formFollowUpDate:l?.nextFollowUpDate||"",
-  formNextAction:l?.nextAction||""
+
+  formFirstName:
+   lead?.firstName||
+   "",
+
+  formTitle:
+   lead?.title||
+   "",
+
+  formCompany:
+   lead?.company||
+   "",
+
+  formRole:
+   lead?.role||
+   "",
+
+  formLocation:
+   lead?.location||
+   "",
+
+  formPhone:
+   lead?.phone||
+   "",
+
+  formDirectPhone:
+   lead?.directPhone||
+   "",
+
+  formEmail:
+   lead?.email||
+   "",
+
+  formTimezone:
+   lead?.timezone||
+   "America/Los_Angeles",
+
+  formTimezoneLabel:
+   lead?.timezoneLabel||
+   "",
+
+  formPipelineStage:
+   lead?.pipelineStage||
+   "New",
+
+  formFollowUpDate:
+   lead?.nextFollowUpDate||
+   "",
+
+  formNextAction:
+   lead?.nextAction||
+   ""
  };
 
- Object.entries(fields).forEach(([id,value])=>{
-  document.getElementById(id).value=value;
- });
+ Object
+  .entries(fields)
+  .forEach(
+   ([id,value])=>{
 
- document.getElementById("contactModal").classList.add("show");
+    document
+     .getElementById(id)
+     .value=
+      value;
+   }
+  );
+
+ document
+  .getElementById(
+   "contactModal"
+  )
+  .classList
+  .add(
+   "show"
+  );
 }
 
 function closeContactModal(){
- document.getElementById("contactModal").classList.remove("show");
- editingLeadId=null;
+
+ document
+  .getElementById(
+   "contactModal"
+  )
+  .classList
+  .remove(
+   "show"
+  );
+
+ editingLeadId=
+  null;
 }
 
 function formValue(id){
- return document.getElementById(id).value.trim();
+
+ return document
+  .getElementById(id)
+  .value
+  .trim();
 }
 
 async function saveContactForm(){
- const firstName=formValue("formFirstName");
- const company=formValue("formCompany");
 
- if(!firstName&&!company){
-  alert("Please enter a contact name or company.");
+ const firstName=
+  formValue(
+   "formFirstName"
+  );
+
+ const company=
+  formValue(
+   "formCompany"
+  );
+
+ if(
+  !firstName &&
+  !company
+ ){
+  alert(
+   "Please enter a contact name or company."
+  );
+
   return;
  }
 
- let l;
+ let lead;
 
  if(editingLeadId){
-  l=getLeadById(editingLeadId);
-  if(!l)return;
- }else{
-  l=defaults({
-   id:uuid(),
-   callHistory:[],
-   emailHistory:[],
-   callCount:0,
-   lastOutcome:"",
-   lastCalled:""
-  });
 
-  leads.push(l);
-  selectedLeadId=l.id;
+  lead=
+   getLeadById(
+    editingLeadId
+   );
+
+  if(!lead){
+   return;
+  }
+
+ }else{
+
+  lead=
+   defaults({
+    id:uuid(),
+    callHistory:[],
+    emailHistory:[],
+    callCount:0,
+    lastOutcome:"",
+    lastCalled:""
+   });
+
+  leads.push(
+   lead
+  );
+
+  selectedLeadId=
+   lead.id;
  }
 
- l.firstName=firstName;
- l.title=formValue("formTitle");
- l.company=company;
- l.role=formValue("formRole");
- l.location=formValue("formLocation");
- l.phone=formValue("formPhone");
- l.directPhone=formValue("formDirectPhone");
- l.email=formValue("formEmail");
- l.timezone=formValue("formTimezone");
- l.timezoneLabel=formValue("formTimezoneLabel");
- l.pipelineStage=formValue("formPipelineStage")||"New";
- l.nextFollowUpDate=formValue("formFollowUpDate");
- l.nextAction=formValue("formNextAction");
+ lead.firstName=
+  firstName;
+
+ lead.title=
+  formValue(
+   "formTitle"
+  );
+
+ lead.company=
+  company;
+
+ lead.role=
+  formValue(
+   "formRole"
+  );
+
+ lead.location=
+  formValue(
+   "formLocation"
+  );
+
+ lead.phone=
+  formValue(
+   "formPhone"
+  );
+
+ lead.directPhone=
+  formValue(
+   "formDirectPhone"
+  );
+
+ lead.email=
+  formValue(
+   "formEmail"
+  );
+
+ lead.timezone=
+  formValue(
+   "formTimezone"
+  );
+
+ lead.timezoneLabel=
+  formValue(
+   "formTimezoneLabel"
+  );
+
+ lead.pipelineStage=
+  formValue(
+   "formPipelineStage"
+  )
+  ||
+  "New";
+
+ lead.nextFollowUpDate=
+  formValue(
+   "formFollowUpDate"
+  );
+
+ lead.nextAction=
+  formValue(
+   "formNextAction"
+  );
 
  closeContactModal();
+
  saveCache();
+
  renderAll();
 
- setSync("syncing","Saving...");
+ setSync(
+  "syncing",
+  "Saving..."
+ );
 
  try{
-  await cloud("sync",{leads});
-  setSync("synced","Cloud synced");
- }catch(err){
-  console.error(err);
-  setSync("error","Local cache active");
-  alert("The contact was saved locally, but cloud sync failed.");
+
+  await cloud(
+   "sync",
+   {leads}
+  );
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+ }catch(error){
+
+  console.error(
+   error
+  );
+
+  setSync(
+   "error",
+   "Local cache active"
+  );
+
+  alert(
+   "The contact was saved locally, but cloud sync failed."
+  );
  }
 }
 
+/* =====================================================
+   DELETE CONTACT
+===================================================== */
+
 async function deleteContact(id){
- const l=getLeadById(id);
- if(!l)return;
 
- const label=l.firstName||l.company||"this contact";
+ const lead=
+  getLeadById(id);
 
- if(!confirm(`Delete ${label} from the CRM?\n\nThis will also remove the record from Supabase.`)){
+ if(!lead){
   return;
  }
 
- setSync("syncing","Deleting...");
+ const label=
+  lead.firstName||
+  lead.company||
+  "this contact";
+
+ if(
+  !confirm(
+   `Delete ${label} from the CRM?\n\nThis will also remove the record from Supabase.`
+  )
+ ){
+  return;
+ }
+
+ setSync(
+  "syncing",
+  "Deleting..."
+ );
 
  try{
-  await cloud("delete",{externalId:id});
 
-  leads=leads.filter(x=>x.id!==id);
-  selectedLeadId=leads[0]?.id||null;
+  await cloud(
+   "delete",
+   {
+    externalId:id
+   }
+  );
+
+  leads=
+   leads.filter(
+    item =>
+     item.id!==id
+   );
+
+  selectedLeadId=
+   leads[0]?.id||
+   null;
 
   saveCache();
+
   renderAll();
 
-  setSync("synced","Cloud synced");
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
 
- }catch(err){
-  console.error(err);
-  setSync("error","Delete failed");
-  alert("The contact was not deleted. Your existing data has been left unchanged.");
+ }catch(error){
+
+  console.error(
+   error
+  );
+
+  setSync(
+   "error",
+   "Delete failed"
+  );
+
+  alert(
+   "The contact was not deleted. Your existing data has been left unchanged."
+  );
  }
 }
 
+/* =====================================================
+   CALL ASSIST
+===================================================== */
+
 function openCallAssist(){
- window.open(CALL_ASSIST_URL,"_blank");
+
+ window.open(
+  CALL_ASSIST_URL,
+  "_blank"
+ );
 }
 
 function openLeadInCallAssist(id){
- localStorage.setItem("excedereSelectedLeadId",id);
- window.open(CALL_ASSIST_URL,"_blank");
+
+ localStorage.setItem(
+  "excedereSelectedLeadId",
+  id
+ );
+
+ window.open(
+  CALL_ASSIST_URL,
+  "_blank"
+ );
 }
+
+/* =====================================================
+   EMAIL
+===================================================== */
 
 function emailLead(id){
- const l=getLeadById(id);
- if(!l)return;
 
- const q=new URLSearchParams({
-  leadId:l.id||"",
-  name:l.firstName||"",
-  company:l.company||"",
-  email:l.email||""
- });
+ const lead=
+  getLeadById(id);
 
- window.open(`${CALL_ASSIST_URL}email.html?${q}`,"_blank");
-}
-
-document.getElementById("globalSearch").addEventListener("input",event=>{
- currentSearch=event.target.value.trim();
- renderAll();
-});
-
-document.getElementById("contactModal").addEventListener("click",event=>{
- if(event.target.id==="contactModal")closeContactModal();
-});
-
-window.addEventListener("storage",event=>{
- if(event.key!==LEAD_STORAGE_KEY)return;
-
- leads=loadCache();
-
- if(selectedLeadId&&!getLeadById(selectedLeadId)){
-  selectedLeadId=leads[0]?.id||null;
+ if(!lead){
+  return;
  }
 
- renderAll();
- scheduleSync();
-});
+ const query=
+  new URLSearchParams({
+   leadId:
+    lead.id||
+    "",
 
-window.addEventListener("load",initialise);
+   name:
+    lead.firstName||
+    "",
+
+   company:
+    lead.company||
+    "",
+
+   email:
+    lead.email||
+    ""
+  });
+
+ window.open(
+  `${CALL_ASSIST_URL}email.html?${query}`,
+  "_blank"
+ );
+}
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+document
+ .getElementById(
+  "globalSearch"
+ )
+ .addEventListener(
+  "input",
+  event=>{
+
+   currentSearch=
+    event.target
+     .value
+     .trim();
+
+   renderAll();
+  }
+ );
+
+/* =====================================================
+   MODAL BACKDROP
+===================================================== */
+
+document
+ .getElementById(
+  "contactModal"
+ )
+ .addEventListener(
+  "click",
+  event=>{
+
+   if(
+    event.target.id===
+    "contactModal"
+   ){
+    closeContactModal();
+   }
+  }
+ );
+
+/* =====================================================
+   CALL ASSIST STORAGE CHANGES
+===================================================== */
+
+window.addEventListener(
+ "storage",
+ event=>{
+
+  if(
+   event.key!==
+   LEAD_STORAGE_KEY
+  ){
+   return;
+  }
+
+  leads=
+   loadCache();
+
+  if(
+   selectedLeadId &&
+   !getLeadById(
+    selectedLeadId
+   )
+  ){
+   selectedLeadId=
+    leads[0]?.id||
+    null;
+  }
+
+  renderAll();
+
+  scheduleSync();
+ }
+);
+
+/* =====================================================
+   AUTOMATIC SESSION REFRESH ON RETURN
+===================================================== */
+
+async function refreshWhenReturning(){
+
+ /*
+   Do nothing while the page remains hidden.
+ */
+ if(
+  document.hidden
+ ){
+  return;
+ }
+
+ /*
+   If the token is still comfortably valid,
+   no network request is needed.
+ */
+ if(
+  !tokenNeedsRefresh()
+ ){
+  return;
+ }
+
+ try{
+
+  await ensureFreshSession();
+
+  /*
+    Verify cloud connectivity after refreshing.
+  */
+  if(
+   token()
+  ){
+   setSync(
+    "synced",
+    "Cloud synced"
+   );
+  }
+
+ }catch(error){
+
+  console.error(
+   "Automatic session refresh failed:",
+   error
+  );
+
+  setSync(
+   "error",
+   "Login required"
+  );
+ }
+}
+
+document.addEventListener(
+ "visibilitychange",
+ ()=>{
+  refreshWhenReturning();
+ }
+);
+
+window.addEventListener(
+ "focus",
+ ()=>{
+  refreshWhenReturning();
+ }
+);
+
+/* =====================================================
+   PERIODIC SESSION CHECK
+===================================================== */
+
+/*
+  Check every five minutes while the CRM is open.
+  No refresh request is made unless the token is
+  actually close to expiry.
+*/
+
+setInterval(
+ ()=>{
+  if(
+   !document.hidden
+  ){
+   refreshWhenReturning();
+  }
+ },
+  5*60*1000
+);
+
+/* =====================================================
+   START
+===================================================== */
+
+window.addEventListener(
+ "load",
+ initialise
+);
 
 </script>
 
