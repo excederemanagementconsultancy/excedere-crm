@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Excedere CRM</title>
 
 <link rel="icon" type="image/png" href="excedere-favicon.png">
@@ -11,659 +13,3113 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 :root{
- --bg:#050b12;--bg2:#07131d;--panel:#0a1620;--panel2:#0d1b27;
- --panel3:#102332;--line:#203341;--line2:#172a37;--text:#f4f5f7;
- --muted:#91a4b3;--gold:#e3b15d;--gold2:#f4d08a;--silver:#c9d5df;
- --blue:#61b7ff;--green:#4fce8b;--amber:#e4ad58;--red:#ee7373
+
+ --bg:#050b12;
+ --bg2:#07131d;
+
+ --panel:#0a1620;
+ --panel2:#0d1b27;
+ --panel3:#102332;
+
+ --line:#203341;
+ --line2:#172a37;
+
+ --text:#f4f5f7;
+ --muted:#91a4b3;
+
+ --gold:#e3b15d;
+ --gold2:#f4d08a;
+
+ --silver:#c9d5df;
+ --blue:#61b7ff;
+
+ --green:#4fce8b;
+ --amber:#e4ad58;
+ --red:#ee7373;
 }
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%}
+
+
+*{
+ box-sizing:border-box
+}
+
+
+html,
 body{
+ margin:0;
+ min-height:100%
+}
+
+
+body{
+
  color:var(--text);
+
  background:
- radial-gradient(circle at 78% -5%,rgba(40,108,145,.20),transparent 34%),
- radial-gradient(circle at 6% 96%,rgba(211,164,83,.09),transparent 30%),
- linear-gradient(145deg,var(--bg),var(--bg2));
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+ radial-gradient(
+  circle at 78% -5%,
+  rgba(40,108,145,.20),
+  transparent 34%
+ ),
+ radial-gradient(
+  circle at 6% 96%,
+  rgba(211,164,83,.09),
+  transparent 30%
+ ),
+ linear-gradient(
+  145deg,
+  var(--bg),
+  var(--bg2)
+ );
+
+ font-family:
+ -apple-system,
+ BlinkMacSystemFont,
+ "Segoe UI",
+ sans-serif;
 }
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.app{min-height:100vh;display:grid;grid-template-columns:250px minmax(0,1fr)}
+
+
+button,
+input,
+select,
+textarea{
+ font:inherit
+}
+
+
+button{
+ cursor:pointer
+}
+
+
+textarea{
+ resize:vertical
+}
+
+
+a{
+ color:inherit
+}
+
+
+.app{
+
+ min-height:100vh;
+
+ display:grid;
+
+ grid-template-columns:
+ 250px
+ minmax(0,1fr);
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
 .sidebar{
- min-height:100vh;height:100vh;position:sticky;top:0;padding:24px 18px;
- border-right:1px solid var(--line);
- background:linear-gradient(180deg,rgba(4,13,20,.99),rgba(6,18,27,.98))
+
+ min-height:100vh;
+
+ height:100vh;
+
+ position:sticky;
+
+ top:0;
+
+ padding:
+ 24px
+ 18px;
+
+ border-right:
+ 1px solid
+ var(--line);
+
+ background:
+ linear-gradient(
+ 180deg,
+ rgba(4,13,20,.99),
+ rgba(6,18,27,.98)
+ );
 }
-.brand{padding:4px 8px 26px;border-bottom:1px solid var(--line);margin-bottom:22px}
-.brand-top{display:flex;align-items:center;gap:12px}
+
+
+.brand{
+
+ padding:
+ 4px
+ 8px
+ 26px;
+
+ border-bottom:
+ 1px solid
+ var(--line);
+
+ margin-bottom:
+ 22px;
+}
+
+
+.brand-top{
+
+ display:flex;
+
+ align-items:center;
+
+ gap:12px;
+}
+
+
 .brand-icon{
- width:54px;height:54px;border-radius:15px;object-fit:cover;
- box-shadow:0 0 24px rgba(226,177,93,.15)
+
+ width:54px;
+ height:54px;
+
+ border-radius:15px;
+
+ object-fit:cover;
+
+ box-shadow:
+ 0 0 24px
+ rgba(226,177,93,.15);
 }
+
+
 .brand-word{
- font-family:Georgia,"Times New Roman",serif;font-size:20px;letter-spacing:.22em;
- background:linear-gradient(90deg,var(--gold2),#fff,var(--silver));
- -webkit-background-clip:text;background-clip:text;color:transparent
+
+ font-family:
+ Georgia,
+ "Times New Roman",
+ serif;
+
+ font-size:20px;
+
+ letter-spacing:.22em;
+
+ background:
+ linear-gradient(
+ 90deg,
+ var(--gold2),
+ #fff,
+ var(--silver)
+ );
+
+ -webkit-background-clip:text;
+
+ background-clip:text;
+
+ color:transparent;
 }
-.brand-sub{margin-top:4px;color:var(--silver);font-size:8px;letter-spacing:.20em}
-.nav{display:flex;flex-direction:column;gap:7px}
+
+
+.brand-sub{
+
+ margin-top:4px;
+
+ color:var(--silver);
+
+ font-size:8px;
+
+ letter-spacing:.20em;
+}
+
+
+.nav{
+
+ display:flex;
+
+ flex-direction:column;
+
+ gap:7px;
+}
+
+
 .nav-btn{
- width:100%;min-height:48px;padding:0 14px;display:flex;align-items:center;
- gap:12px;border:1px solid transparent;border-radius:10px;background:transparent;
- color:#b6c4cf;text-align:left;font-weight:650
+
+ width:100%;
+
+ min-height:48px;
+
+ padding:
+ 0
+ 14px;
+
+ display:flex;
+
+ align-items:center;
+
+ gap:12px;
+
+ border:
+ 1px solid
+ transparent;
+
+ border-radius:10px;
+
+ background:transparent;
+
+ color:#b6c4cf;
+
+ text-align:left;
+
+ font-weight:650;
 }
-.nav-btn:hover{background:#0b1a25}
+
+
+.nav-btn:hover{
+
+ background:#0b1a25;
+}
+
+
 .nav-btn.active{
- color:#fff;border-color:#253b4a;
- background:linear-gradient(90deg,rgba(226,177,93,.16),rgba(26,52,69,.42));
- box-shadow:inset 3px 0 0 var(--gold)
+
+ color:#fff;
+
+ border-color:#253b4a;
+
+ background:
+ linear-gradient(
+ 90deg,
+ rgba(226,177,93,.16),
+ rgba(26,52,69,.42)
+ );
+
+ box-shadow:
+ inset 3px 0 0
+ var(--gold);
 }
-.nav-icon{width:22px;text-align:center;color:var(--gold)}
-.sidebar-footer{position:absolute;left:18px;right:18px;bottom:20px}
+
+
+.nav-icon{
+
+ width:22px;
+
+ text-align:center;
+
+ color:var(--gold);
+}
+
+
+.sidebar-footer{
+
+ position:absolute;
+
+ left:18px;
+ right:18px;
+ bottom:20px;
+}
+
+
 .sync-status{
- display:flex;align-items:center;gap:8px;min-height:34px;margin-bottom:10px;
- padding:8px 10px;border:1px solid var(--line);border-radius:8px;
- background:rgba(8,22,31,.70);color:var(--muted);font-size:9px;
- font-weight:700;letter-spacing:.04em
+
+ display:flex;
+
+ align-items:center;
+
+ gap:8px;
+
+ min-height:34px;
+
+ margin-bottom:10px;
+
+ padding:
+ 8px
+ 10px;
+
+ border:
+ 1px solid
+ var(--line);
+
+ border-radius:8px;
+
+ background:
+ rgba(8,22,31,.70);
+
+ color:var(--muted);
+
+ font-size:9px;
+
+ font-weight:700;
+
+ letter-spacing:.04em;
 }
-.sync-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#607786}
-.sync-status.syncing{color:var(--gold2)}
-.sync-status.syncing .sync-dot{
- background:var(--gold);box-shadow:0 0 10px rgba(226,177,93,.35)
+
+
+.sync-dot{
+
+ width:7px;
+ height:7px;
+
+ flex:
+ 0 0 7px;
+
+ border-radius:50%;
+
+ background:#607786;
 }
-.sync-status.synced{color:var(--green)}
-.sync-status.synced .sync-dot{
- background:var(--green);box-shadow:0 0 10px rgba(79,206,139,.35)
+
+
+.sync-status.syncing{
+
+ color:var(--gold2);
 }
-.sync-status.error{color:var(--amber)}
-.sync-status.error .sync-dot{background:var(--amber)}
+
+
+.sync-status.syncing
+.sync-dot{
+
+ background:var(--gold);
+
+ box-shadow:
+ 0 0 10px
+ rgba(226,177,93,.35);
+}
+
+
+.sync-status.synced{
+
+ color:var(--green);
+}
+
+
+.sync-status.synced
+.sync-dot{
+
+ background:var(--green);
+
+ box-shadow:
+ 0 0 10px
+ rgba(79,206,139,.35);
+}
+
+
+.sync-status.error{
+
+ color:var(--amber);
+}
+
+
+.sync-status.error
+.sync-dot{
+
+ background:var(--amber);
+}
+
+
 .call-assist-link{
- width:100%;min-height:48px;border:1px solid #e4b864;border-radius:10px;
- color:#10141a;font-weight:850;background:linear-gradient(135deg,#f1cd84,#dca64e)
+
+ width:100%;
+
+ min-height:48px;
+
+ border:
+ 1px solid
+ #e4b864;
+
+ border-radius:10px;
+
+ color:#10141a;
+
+ font-weight:850;
+
+ background:
+ linear-gradient(
+ 135deg,
+ #f1cd84,
+ #dca64e
+ );
 }
+
+
 .sidebar-tagline{
- margin-top:18px;padding-top:14px;border-top:1px solid var(--line);
- color:#7f93a3;font-family:Georgia,"Times New Roman",serif;font-size:9px;
- line-height:1.8;letter-spacing:.25em
+
+ margin-top:18px;
+
+ padding-top:14px;
+
+ border-top:
+ 1px solid
+ var(--line);
+
+ color:#7f93a3;
+
+ font-family:
+ Georgia,
+ "Times New Roman",
+ serif;
+
+ font-size:9px;
+
+ line-height:1.8;
+
+ letter-spacing:.25em;
 }
-.main{min-width:0}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+
+ min-width:0;
+}
+
+
 .topbar{
- min-height:78px;display:grid;grid-template-columns:1fr minmax(330px,520px);
- gap:22px;align-items:center;padding:11px 28px;border-bottom:1px solid var(--line);
- position:sticky;top:0;z-index:30;background:rgba(5,13,20,.92);
- backdrop-filter:blur(14px)
+
+ min-height:78px;
+
+ display:grid;
+
+ grid-template-columns:
+ 1fr
+ minmax(330px,520px);
+
+ gap:22px;
+
+ align-items:center;
+
+ padding:
+ 11px
+ 28px;
+
+ border-bottom:
+ 1px solid
+ var(--line);
+
+ position:sticky;
+
+ top:0;
+
+ z-index:30;
+
+ background:
+ rgba(5,13,20,.92);
+
+ backdrop-filter:
+ blur(14px);
 }
-.page-title{font-size:28px;font-weight:780}
-.page-subtitle{margin-top:4px;color:var(--muted);font-size:11px}
-.search-wrap{position:relative}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold)}
+
+
+.page-title{
+
+ font-size:28px;
+
+ font-weight:780;
+}
+
+
+.page-subtitle{
+
+ margin-top:4px;
+
+ color:var(--muted);
+
+ font-size:11px;
+}
+
+
+.search-wrap{
+
+ position:relative;
+}
+
+
+.search-icon{
+
+ position:absolute;
+
+ left:14px;
+
+ top:50%;
+
+ transform:
+ translateY(-50%);
+
+ color:var(--gold);
+}
+
+
 .search{
- width:100%;height:44px;padding:0 14px 0 42px;border:1px solid #2b4252;
- border-radius:10px;outline:none;background:#08141d;color:var(--text)
+
+ width:100%;
+
+ height:44px;
+
+ padding:
+ 0
+ 14px
+ 0
+ 42px;
+
+ border:
+ 1px solid
+ #2b4252;
+
+ border-radius:10px;
+
+ outline:none;
+
+ background:#08141d;
+
+ color:var(--text);
 }
-.content{padding:24px 28px 42px}
-.view{display:none}
-.view.active{display:block}
+
+
+.content{
+
+ padding:
+ 24px
+ 28px
+ 42px;
+}
+
+
+.view{
+
+ display:none;
+}
+
+
+.view.active{
+
+ display:block;
+}
+
+
+/* =====================================================
+   GENERAL COMPONENTS
+===================================================== */
+
 .card{
- border:1px solid var(--line);border-radius:12px;
- background:linear-gradient(155deg,rgba(12,28,39,.94),rgba(7,19,28,.96))
+
+ border:
+ 1px solid
+ var(--line);
+
+ border-radius:12px;
+
+ background:
+ linear-gradient(
+ 155deg,
+ rgba(12,28,39,.94),
+ rgba(7,19,28,.96)
+ );
 }
-.empty{padding:28px;color:var(--muted);text-align:center}
-.stat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
-.stat-card{
- padding:16px 17px;display:grid;grid-template-columns:38px 1fr;gap:12px;
- align-items:center;border:1px solid var(--line);border-radius:12px;
- background:linear-gradient(145deg,#0a1823,#0c1e2b)
+
+
+.empty{
+
+ padding:28px;
+
+ color:var(--muted);
+
+ text-align:center;
 }
-.stat-icon{
- width:38px;height:38px;display:grid;place-items:center;
- border:1px solid rgba(226,177,93,.55);border-radius:10px;color:var(--gold);
- background:rgba(226,177,93,.07);font-size:18px
-}
-.stat-label{color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.11em}
-.stat-number{margin-top:3px;font-size:27px;font-weight:850}
-.gold{color:var(--gold2)}
-.red{color:var(--red)}
-.blue{color:var(--blue)}
-.dashboard-grid{
- display:grid;grid-template-columns:minmax(0,1.3fr) minmax(330px,.8fr);gap:14px
-}
-.card-header{
- padding:14px 16px;border-bottom:1px solid var(--line);display:flex;
- justify-content:space-between;align-items:center;font-size:12px;font-weight:800
-}
-.card-header span{color:var(--gold)}
-.card-body{padding:10px 16px 14px}
-.activity-row{
- padding:11px 0;display:grid;grid-template-columns:38px minmax(0,1fr) auto;
- gap:11px;align-items:center;border-bottom:1px solid var(--line2)
-}
-.activity-icon{
- width:35px;height:35px;display:grid;place-items:center;border-radius:50%;
- background:#132737;color:var(--silver);border:1px solid #294354
-}
-.activity-title,.follow-name,.contact-name{font-size:11px;font-weight:800}
-.activity-subtitle,.follow-company,.contact-sub{
- margin-top:3px;color:var(--muted);font-size:9px
-}
-.activity-time{color:#8294a2;font-size:8px}
-.follow-row{
- padding:11px 0;display:grid;grid-template-columns:minmax(0,1fr) 105px;
- gap:12px;border-bottom:1px solid var(--line2)
-}
-.follow-action{margin-top:5px;font-size:9px}
-.follow-date{text-align:right;font-size:9px}
-.status-badge{
- display:inline-block;margin-top:4px;padding:4px 8px;border-radius:999px;
- font-size:8px;font-weight:850
-}
-.status-new{color:var(--silver);border:1px solid #536776;background:#162631}
-.status-current{
- color:var(--green);border:1px solid rgba(79,206,139,.55);
- background:rgba(79,206,139,.08)
-}
-.status-due{
- color:var(--gold2);border:1px solid rgba(226,177,93,.55);
- background:rgba(226,177,93,.09)
-}
-.status-overdue{
- color:var(--red);border:1px solid rgba(238,115,115,.55);
- background:rgba(238,115,115,.08)
-}
-.section-heading{
- display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:13px
-}
-.section-heading h2{margin:0;font-size:19px}
-.section-heading p{margin:4px 0 0;color:var(--muted);font-size:10px}
-.primary-btn,.secondary-btn,.danger-btn{
- min-height:40px;padding:0 15px;border-radius:8px;font-weight:800
-}
-.primary-btn{
- border:0;background:linear-gradient(135deg,#f0cc80,#d9a34a);color:#101318
-}
-.secondary-btn{border:1px solid #2d4656;background:#0d1f2c;color:var(--text)}
+
+
+.primary-btn,
+.secondary-btn,
 .danger-btn{
- border:1px solid rgba(238,115,115,.55);background:rgba(238,115,115,.08);color:var(--red)
+
+ min-height:40px;
+
+ padding:
+ 0
+ 15px;
+
+ border-radius:8px;
+
+ font-weight:800;
 }
-.contacts-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:14px}
-.contact-list{overflow:hidden}
-.contact-head,.contact-row{
- display:grid;grid-template-columns:1.1fr 1.3fr 1.2fr .85fr .72fr;gap:10px
+
+
+.primary-btn{
+
+ border:0;
+
+ background:
+ linear-gradient(
+ 135deg,
+ #f0cc80,
+ #d9a34a
+ );
+
+ color:#101318;
 }
-.contact-head{
- padding:10px 14px;border-bottom:1px solid var(--line);color:#8296a5;
- font-size:8px;font-weight:800
+
+
+.secondary-btn{
+
+ border:
+ 1px solid
+ #2d4656;
+
+ background:#0d1f2c;
+
+ color:var(--text);
 }
+
+
+.danger-btn{
+
+ border:
+ 1px solid
+ rgba(238,115,115,.55);
+
+ background:
+ rgba(238,115,115,.08);
+
+ color:var(--red);
+}
+
+
+.section-heading{
+
+ display:flex;
+
+ justify-content:
+ space-between;
+
+ align-items:center;
+
+ gap:18px;
+
+ margin-bottom:13px;
+}
+
+
+.section-heading h2{
+
+ margin:0;
+
+ font-size:19px;
+}
+
+
+.section-heading p{
+
+ margin:
+ 4px
+ 0
+ 0;
+
+ color:var(--muted);
+
+ font-size:10px;
+}
+
+
+.status-badge{
+
+ display:inline-block;
+
+ margin-top:4px;
+
+ padding:
+ 4px
+ 8px;
+
+ border-radius:999px;
+
+ font-size:8px;
+
+ font-weight:850;
+}
+
+
+.status-new{
+
+ color:var(--silver);
+
+ border:
+ 1px solid
+ #536776;
+
+ background:#162631;
+}
+
+
+.status-current{
+
+ color:var(--green);
+
+ border:
+ 1px solid
+ rgba(79,206,139,.55);
+
+ background:
+ rgba(79,206,139,.08);
+}
+
+
+.status-due{
+
+ color:var(--gold2);
+
+ border:
+ 1px solid
+ rgba(226,177,93,.55);
+
+ background:
+ rgba(226,177,93,.09);
+}
+
+
+.status-overdue{
+
+ color:var(--red);
+
+ border:
+ 1px solid
+ rgba(238,115,115,.55);
+
+ background:
+ rgba(238,115,115,.08);
+}
+
+
+.company-status-prospect{
+
+ color:var(--gold2);
+
+ border:
+ 1px solid
+ rgba(226,177,93,.55);
+
+ background:
+ rgba(226,177,93,.08);
+}
+
+
+.company-status-customer{
+
+ color:var(--green);
+
+ border:
+ 1px solid
+ rgba(79,206,139,.55);
+
+ background:
+ rgba(79,206,139,.08);
+}
+
+
+.company-status-inactive{
+
+ color:var(--muted);
+
+ border:
+ 1px solid
+ #536776;
+
+ background:#162631;
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+.stat-grid{
+
+ display:grid;
+
+ grid-template-columns:
+ repeat(5,1fr);
+
+ gap:12px;
+
+ margin-bottom:16px;
+}
+
+
+.stat-card{
+
+ padding:
+ 16px
+ 17px;
+
+ display:grid;
+
+ grid-template-columns:
+ 38px
+ 1fr;
+
+ gap:12px;
+
+ align-items:center;
+
+ border:
+ 1px solid
+ var(--line);
+
+ border-radius:12px;
+
+ background:
+ linear-gradient(
+ 145deg,
+ #0a1823,
+ #0c1e2b
+ );
+}
+
+
+.stat-icon{
+
+ width:38px;
+ height:38px;
+
+ display:grid;
+
+ place-items:center;
+
+ border:
+ 1px solid
+ rgba(226,177,93,.55);
+
+ border-radius:10px;
+
+ color:var(--gold);
+
+ background:
+ rgba(226,177,93,.07);
+
+ font-size:18px;
+}
+
+
+.stat-label{
+
+ color:var(--muted);
+
+ font-size:8px;
+
+ font-weight:800;
+
+ letter-spacing:.11em;
+}
+
+
+.stat-number{
+
+ margin-top:3px;
+
+ font-size:27px;
+
+ font-weight:850;
+}
+
+
+.gold{
+
+ color:var(--gold2);
+}
+
+
+.red{
+
+ color:var(--red);
+}
+
+
+.blue{
+
+ color:var(--blue);
+}
+
+
+.dashboard-grid{
+
+ display:grid;
+
+ grid-template-columns:
+ minmax(0,1.3fr)
+ minmax(330px,.8fr);
+
+ gap:14px;
+}
+
+
+.card-header{
+
+ padding:
+ 14px
+ 16px;
+
+ border-bottom:
+ 1px solid
+ var(--line);
+
+ display:flex;
+
+ justify-content:
+ space-between;
+
+ align-items:center;
+
+ font-size:12px;
+
+ font-weight:800;
+}
+
+
+.card-header span{
+
+ color:var(--gold);
+}
+
+
+.card-body{
+
+ padding:
+ 10px
+ 16px
+ 14px;
+}
+
+
+.activity-row{
+
+ padding:
+ 11px
+ 0;
+
+ display:grid;
+
+ grid-template-columns:
+ 38px
+ minmax(0,1fr)
+ auto;
+
+ gap:11px;
+
+ align-items:center;
+
+ border-bottom:
+ 1px solid
+ var(--line2);
+}
+
+
+.activity-icon{
+
+ width:35px;
+ height:35px;
+
+ display:grid;
+
+ place-items:center;
+
+ border-radius:50%;
+
+ background:#132737;
+
+ color:var(--silver);
+
+ border:
+ 1px solid
+ #294354;
+}
+
+
+.activity-title,
+.follow-name,
+.contact-name,
+.company-name{
+
+ font-size:11px;
+
+ font-weight:800;
+}
+
+
+.activity-subtitle,
+.follow-company,
+.contact-sub,
+.company-sub{
+
+ margin-top:3px;
+
+ color:var(--muted);
+
+ font-size:9px;
+}
+
+
+.activity-time{
+
+ color:#8294a2;
+
+ font-size:8px;
+}
+
+
+.follow-row{
+
+ padding:
+ 11px
+ 0;
+
+ display:grid;
+
+ grid-template-columns:
+ minmax(0,1fr)
+ 105px;
+
+ gap:12px;
+
+ border-bottom:
+ 1px solid
+ var(--line2);
+}
+
+
+.follow-action{
+
+ margin-top:5px;
+
+ font-size:9px;
+}
+
+
+.follow-date{
+
+ text-align:right;
+
+ font-size:9px;
+}
+
+
+/* =====================================================
+   CONTACTS
+===================================================== */
+
+.contacts-layout,
+.companies-layout{
+
+ display:grid;
+
+ grid-template-columns:
+ minmax(0,1fr)
+ 390px;
+
+ gap:14px;
+}
+
+
+.contact-list,
+.company-list{
+
+ overflow:hidden;
+}
+
+
+.contact-head,
 .contact-row{
- width:100%;align-items:center;padding:12px 14px;border:0;
- border-bottom:1px solid var(--line2);background:transparent;color:var(--text);
- text-align:left
+
+ display:grid;
+
+ grid-template-columns:
+ 1.1fr
+ 1.3fr
+ 1.2fr
+ .85fr
+ .72fr;
+
+ gap:10px;
 }
-.contact-row:hover{background:#0c1d29}
-.contact-row.selected{
- background:linear-gradient(90deg,rgba(226,177,93,.11),rgba(23,48,66,.34))
+
+
+.company-head,
+.company-row{
+
+ display:grid;
+
+ grid-template-columns:
+ 1.45fr
+ 1fr
+ 1fr
+ .8fr;
+
+ gap:10px;
 }
-.contact-cell{font-size:9px;line-height:1.45}
-.detail-panel{height:fit-content;position:sticky;top:102px}
+
+
+.contact-head,
+.company-head{
+
+ padding:
+ 10px
+ 14px;
+
+ border-bottom:
+ 1px solid
+ var(--line);
+
+ color:#8296a5;
+
+ font-size:8px;
+
+ font-weight:800;
+}
+
+
+.contact-row,
+.company-row{
+
+ width:100%;
+
+ align-items:center;
+
+ padding:
+ 12px
+ 14px;
+
+ border:0;
+
+ border-bottom:
+ 1px solid
+ var(--line2);
+
+ background:transparent;
+
+ color:var(--text);
+
+ text-align:left;
+}
+
+
+.contact-row:hover,
+.company-row:hover{
+
+ background:#0c1d29;
+}
+
+
+.contact-row.selected,
+.company-row.selected{
+
+ background:
+ linear-gradient(
+ 90deg,
+ rgba(226,177,93,.11),
+ rgba(23,48,66,.34)
+ );
+}
+
+
+.contact-cell,
+.company-cell{
+
+ font-size:9px;
+
+ line-height:1.45;
+}
+
+
+/* =====================================================
+   DETAIL PANEL
+===================================================== */
+
+.detail-panel{
+
+ height:fit-content;
+
+ position:sticky;
+
+ top:102px;
+}
+
+
 .detail-top{
- padding:18px;border-bottom:1px solid var(--line);
- background:linear-gradient(135deg,rgba(226,177,93,.07),transparent)
+
+ padding:18px;
+
+ border-bottom:
+ 1px solid
+ var(--line);
+
+ background:
+ linear-gradient(
+ 135deg,
+ rgba(226,177,93,.07),
+ transparent
+ );
 }
+
+
 .detail-avatar{
- width:48px;height:48px;margin-bottom:11px;display:grid;place-items:center;
- border-radius:50%;border:1px solid var(--gold);color:#15181c;font-weight:850;
- background:linear-gradient(135deg,#f1cf8b,#b98138)
+
+ width:48px;
+ height:48px;
+
+ margin-bottom:11px;
+
+ display:grid;
+
+ place-items:center;
+
+ border-radius:50%;
+
+ border:
+ 1px solid
+ var(--gold);
+
+ color:#15181c;
+
+ font-weight:850;
+
+ background:
+ linear-gradient(
+ 135deg,
+ #f1cf8b,
+ #b98138
+ );
 }
-.detail-name{font-size:22px;font-weight:850}
-.detail-company{margin-top:4px;color:var(--muted);font-size:11px}
-.detail-body{padding:13px 17px 18px}
-.detail-item{padding:9px 0;border-bottom:1px solid var(--line2)}
+
+
+.company-avatar{
+
+ border-radius:12px;
+}
+
+
+.detail-name{
+
+ font-size:22px;
+
+ font-weight:850;
+}
+
+
+.detail-company{
+
+ margin-top:4px;
+
+ color:var(--muted);
+
+ font-size:11px;
+}
+
+
+.detail-body{
+
+ padding:
+ 13px
+ 17px
+ 18px;
+}
+
+
+.detail-item{
+
+ padding:
+ 9px
+ 0;
+
+ border-bottom:
+ 1px solid
+ var(--line2);
+}
+
+
 .detail-label{
- margin-bottom:4px;color:#7f95a5;font-size:7px;font-weight:800;letter-spacing:.11em
+
+ margin-bottom:4px;
+
+ color:#7f95a5;
+
+ font-size:7px;
+
+ font-weight:800;
+
+ letter-spacing:.11em;
 }
-.detail-value{font-size:10px;line-height:1.45}
-.detail-gold{color:var(--gold2)}
-.pipeline-select,.form-input{
- width:100%;min-height:38px;padding:8px 9px;border:1px solid #2d4656;
- border-radius:8px;outline:none;background:#07151f;color:var(--text)
+
+
+.detail-value{
+
+ font-size:10px;
+
+ line-height:1.45;
+
+ overflow-wrap:anywhere;
 }
-.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
+
+
+.detail-gold{
+
+ color:var(--gold2);
+}
+
+
+.pipeline-select,
+.form-input{
+
+ width:100%;
+
+ min-height:38px;
+
+ padding:
+ 8px
+ 9px;
+
+ border:
+ 1px solid
+ #2d4656;
+
+ border-radius:8px;
+
+ outline:none;
+
+ background:#07151f;
+
+ color:var(--text);
+}
+
+
+.form-textarea{
+
+ min-height:110px;
+}
+
+
+.detail-actions{
+
+ display:grid;
+
+ grid-template-columns:
+ 1fr
+ 1fr;
+
+ gap:7px;
+
+ margin-top:13px;
+}
+
+
 .history-title{
- margin:17px 0 7px;color:var(--gold);font-size:8px;font-weight:850;
- letter-spacing:.12em
+
+ margin:
+ 17px
+ 0
+ 7px;
+
+ color:var(--gold);
+
+ font-size:8px;
+
+ font-weight:850;
+
+ letter-spacing:.12em;
 }
-.history-entry{padding:8px 0;border-bottom:1px solid var(--line2)}
-.history-date{color:var(--muted);font-size:7px}
-.history-main{margin-top:3px;font-size:9px;font-weight:750}
-.history-sub{margin-top:2px;color:var(--muted);font-size:8px}
+
+
+.history-entry{
+
+ padding:
+ 8px
+ 0;
+
+ border-bottom:
+ 1px solid
+ var(--line2);
+}
+
+
+.history-date{
+
+ color:var(--muted);
+
+ font-size:7px;
+}
+
+
+.history-main{
+
+ margin-top:3px;
+
+ font-size:9px;
+
+ font-weight:750;
+}
+
+
+.history-sub{
+
+ margin-top:2px;
+
+ color:var(--muted);
+
+ font-size:8px;
+}
+
+
+.linked-contact{
+
+ width:100%;
+
+ margin-bottom:7px;
+
+ padding:
+ 9px
+ 10px;
+
+ display:flex;
+
+ justify-content:
+ space-between;
+
+ align-items:center;
+
+ gap:10px;
+
+ border:
+ 1px solid
+ #243b4a;
+
+ border-radius:8px;
+
+ background:#0a1822;
+
+ color:var(--text);
+
+ text-align:left;
+}
+
+
+.linked-contact:hover{
+
+ border-color:
+ rgba(226,177,93,.55);
+
+ background:#0c1d29;
+}
+
+
+.linked-contact-name{
+
+ font-size:9px;
+
+ font-weight:800;
+}
+
+
+.linked-contact-role{
+
+ margin-top:2px;
+
+ color:var(--muted);
+
+ font-size:8px;
+}
+
+
+.linked-contact-arrow{
+
+ color:var(--gold);
+
+ font-size:16px;
+}
+
+
+/* =====================================================
+   PIPELINE
+===================================================== */
+
 .pipeline-board{
- display:grid;grid-template-columns:repeat(8,minmax(220px,1fr));gap:10px;
- overflow-x:auto;padding-bottom:10px
+
+ display:grid;
+
+ grid-template-columns:
+ repeat(
+  8,
+  minmax(220px,1fr)
+ );
+
+ gap:10px;
+
+ overflow-x:auto;
+
+ padding-bottom:10px;
 }
+
+
 .pipeline-column{
- min-height:500px;border:1px solid var(--line);border-radius:11px;
- background:rgba(7,20,29,.84)
+
+ min-height:500px;
+
+ border:
+ 1px solid
+ var(--line);
+
+ border-radius:11px;
+
+ background:
+ rgba(7,20,29,.84);
 }
+
+
 .pipeline-head{
- padding:11px 12px;display:flex;justify-content:space-between;
- border-bottom:1px solid var(--line)
+
+ padding:
+ 11px
+ 12px;
+
+ display:flex;
+
+ justify-content:
+ space-between;
+
+ border-bottom:
+ 1px solid
+ var(--line);
 }
-.pipeline-title{font-size:9px;font-weight:850;color:var(--gold2)}
-.pipeline-count{color:var(--muted);font-size:9px}
-.pipeline-body{padding:8px}
+
+
+.pipeline-title{
+
+ font-size:9px;
+
+ font-weight:850;
+
+ color:var(--gold2);
+}
+
+
+.pipeline-count{
+
+ color:var(--muted);
+
+ font-size:9px;
+}
+
+
+.pipeline-body{
+
+ padding:8px;
+}
+
+
 .pipeline-card{
- margin-bottom:8px;padding:11px;border:1px solid #263d4c;border-radius:8px;
- background:#0a1822
+
+ margin-bottom:8px;
+
+ padding:11px;
+
+ border:
+ 1px solid
+ #263d4c;
+
+ border-radius:8px;
+
+ background:#0a1822;
 }
-.pipeline-card-name{font-size:10px;font-weight:800}
-.pipeline-card-company{margin-top:3px;color:var(--muted);font-size:8px}
-.pipeline-card-action{margin-top:8px;color:#c4d0d9;font-size:8px}
+
+
+.pipeline-card-name{
+
+ font-size:10px;
+
+ font-weight:800;
+}
+
+
+.pipeline-card-company{
+
+ margin-top:3px;
+
+ color:var(--muted);
+
+ font-size:8px;
+}
+
+
+.pipeline-card-action{
+
+ margin-top:8px;
+
+ color:#c4d0d9;
+
+ font-size:8px;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
 .modal{
- position:fixed;inset:0;z-index:100;display:none;align-items:center;
- justify-content:center;padding:20px;background:rgba(0,0,0,.72);
- backdrop-filter:blur(5px)
+
+ position:fixed;
+
+ inset:0;
+
+ z-index:100;
+
+ display:none;
+
+ align-items:center;
+
+ justify-content:center;
+
+ padding:20px;
+
+ background:
+ rgba(0,0,0,.72);
+
+ backdrop-filter:
+ blur(5px);
 }
-.modal.show{display:flex}
+
+
+.modal.show{
+
+ display:flex;
+}
+
+
 .modal-box{
- width:min(720px,100%);max-height:90vh;overflow:auto;
- border:1px solid #30495a;border-radius:14px;background:#081620;
- box-shadow:0 25px 80px rgba(0,0,0,.5)
+
+ width:
+ min(760px,100%);
+
+ max-height:90vh;
+
+ overflow:auto;
+
+ border:
+ 1px solid
+ #30495a;
+
+ border-radius:14px;
+
+ background:#081620;
+
+ box-shadow:
+ 0 25px 80px
+ rgba(0,0,0,.5);
 }
+
+
 .modal-head{
- padding:18px 20px;display:flex;justify-content:space-between;align-items:center;
- border-bottom:1px solid var(--line)
+
+ padding:
+ 18px
+ 20px;
+
+ display:flex;
+
+ justify-content:
+ space-between;
+
+ align-items:center;
+
+ border-bottom:
+ 1px solid
+ var(--line);
 }
-.modal-title{font-size:18px;font-weight:850}
-.modal-close{border:0;background:transparent;color:var(--silver);font-size:22px}
-.form-grid{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-field.full{grid-column:1/-1}
+
+
+.modal-title{
+
+ font-size:18px;
+
+ font-weight:850;
+}
+
+
+.modal-close{
+
+ border:0;
+
+ background:transparent;
+
+ color:var(--silver);
+
+ font-size:22px;
+}
+
+
+.form-grid{
+
+ padding:20px;
+
+ display:grid;
+
+ grid-template-columns:
+ 1fr
+ 1fr;
+
+ gap:14px;
+}
+
+
+.form-field.full{
+
+ grid-column:
+ 1/-1;
+}
+
+
 .form-label{
- display:block;margin-bottom:6px;color:#8ca1b0;font-size:8px;font-weight:800;
- letter-spacing:.1em
+
+ display:block;
+
+ margin-bottom:6px;
+
+ color:#8ca1b0;
+
+ font-size:8px;
+
+ font-weight:800;
+
+ letter-spacing:.1em;
 }
+
+
 .modal-actions{
- padding:16px 20px;border-top:1px solid var(--line);display:flex;
- justify-content:flex-end;gap:8px
+
+ padding:
+ 16px
+ 20px;
+
+ border-top:
+ 1px solid
+ var(--line);
+
+ display:flex;
+
+ justify-content:flex-end;
+
+ gap:8px;
 }
-@media(max-width:1250px){
- .stat-grid{grid-template-columns:repeat(3,1fr)}
- .contacts-layout{grid-template-columns:1fr}
- .detail-panel{position:static}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(
+ max-width:1250px
+){
+
+ .stat-grid{
+
+  grid-template-columns:
+  repeat(3,1fr);
+ }
+
+
+ .contacts-layout,
+ .companies-layout{
+
+  grid-template-columns:
+  1fr;
+ }
+
+
+ .detail-panel{
+
+  position:static;
+ }
+
 }
+
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
 <aside class="sidebar">
 
+
 <div class="brand">
+
  <div class="brand-top">
-  <img class="brand-icon" src="excedere-favicon.png" alt="Excedere">
+
+  <img
+   class="brand-icon"
+   src="excedere-favicon.png"
+   alt="Excedere"
+  >
+
   <div>
-   <div class="brand-word">EXCEDERE</div>
-   <div class="brand-sub">MANAGEMENT CONSULTANCY</div>
+
+   <div class="brand-word">
+    EXCEDERE
+   </div>
+
+   <div class="brand-sub">
+    MANAGEMENT CONSULTANCY
+   </div>
+
   </div>
+
  </div>
+
 </div>
 
+
 <nav class="nav">
- <button class="nav-btn active" onclick="switchView('dashboard',this)">
-  <span class="nav-icon">⌂</span>Dashboard
- </button>
 
- <button class="nav-btn" onclick="switchView('contacts',this)">
-  <span class="nav-icon">●</span>Contacts
- </button>
 
- <button class="nav-btn" onclick="switchView('pipeline',this)">
-  <span class="nav-icon">▥</span>Pipeline
- </button>
+<button
+ class="nav-btn active"
+ onclick="switchView('dashboard',this)"
+>
 
- <button class="nav-btn" onclick="switchView('followups',this)">
-  <span class="nav-icon">▣</span>Follow-Ups
- </button>
+ <span class="nav-icon">
+  ⌂
+ </span>
+
+ Dashboard
+
+</button>
+
+
+<button
+ class="nav-btn"
+ onclick="switchView('companies',this)"
+>
+
+ <span class="nav-icon">
+  ◆
+ </span>
+
+ Companies
+
+</button>
+
+
+<button
+ class="nav-btn"
+ onclick="switchView('contacts',this)"
+>
+
+ <span class="nav-icon">
+  ●
+ </span>
+
+ Contacts
+
+</button>
+
+
+<button
+ class="nav-btn"
+ onclick="switchView('pipeline',this)"
+>
+
+ <span class="nav-icon">
+  ▥
+ </span>
+
+ Pipeline
+
+</button>
+
+
+<button
+ class="nav-btn"
+ onclick="switchView('followups',this)"
+>
+
+ <span class="nav-icon">
+  ▣
+ </span>
+
+ Follow-Ups
+
+</button>
+
+
 </nav>
+
 
 <div class="sidebar-footer">
 
- <div id="syncStatus" class="sync-status syncing">
-  <span class="sync-dot"></span>
-  <span id="syncStatusText">Connecting...</span>
- </div>
 
- <button class="call-assist-link" onclick="openCallAssist()">
-  ☎ &nbsp; Open Call Assist
- </button>
+<div
+ id="syncStatus"
+ class="sync-status syncing"
+>
 
- <div class="sidebar-tagline">
-  PEOPLE.<br>
-  PROCESS.<br>
-  PERFORMANCE.
- </div>
+ <span class="sync-dot"></span>
+
+ <span id="syncStatusText">
+  Connecting...
+ </span>
 
 </div>
+
+
+<button
+ class="call-assist-link"
+ onclick="openCallAssist()"
+>
+
+ ☎ &nbsp; Open Call Assist
+
+</button>
+
+
+<div class="sidebar-tagline">
+
+ PEOPLE.<br>
+ PROCESS.<br>
+ PERFORMANCE.
+
+</div>
+
+
+</div>
+
 
 </aside>
 
 
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
 <section class="main">
+
 
 <header class="topbar">
 
- <div>
-  <div id="pageTitle" class="page-title">Dashboard</div>
-  <div id="pageSubtitle" class="page-subtitle">
-   Your Excedere sales activity at a glance.
-  </div>
+
+<div>
+
+ <div
+  id="pageTitle"
+  class="page-title"
+ >
+  Dashboard
  </div>
 
- <div class="search-wrap">
-  <span class="search-icon">⌕</span>
-  <input
-   id="globalSearch"
-   class="search"
-   type="search"
-   placeholder="Search prospects, company, phone, email or role..."
-  >
+ <div
+  id="pageSubtitle"
+  class="page-subtitle"
+ >
+  Your Excedere sales activity at a glance.
  </div>
+
+</div>
+
+
+<div class="search-wrap">
+
+ <span class="search-icon">
+  ⌕
+ </span>
+
+ <input
+  id="globalSearch"
+  class="search"
+  type="search"
+  placeholder="Search companies, prospects, phone, email or role..."
+ >
+
+</div>
+
 
 </header>
 
 
 <div class="content">
 
-<section id="dashboardView" class="view active">
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<section
+ id="dashboardView"
+ class="view active"
+>
+
 
 <div class="stat-grid">
 
- <div class="stat-card">
-  <div class="stat-icon">♙</div>
-  <div>
-   <div class="stat-label">TOTAL PROSPECTS</div>
-   <div id="statProspects" class="stat-number">0</div>
-  </div>
+
+<div class="stat-card">
+
+ <div class="stat-icon">
+  ◆
  </div>
 
- <div class="stat-card">
-  <div class="stat-icon">▣</div>
-  <div>
-   <div class="stat-label">FOLLOW-UPS DUE</div>
-   <div id="statDue" class="stat-number gold">0</div>
+ <div>
+
+  <div class="stat-label">
+   COMPANIES
   </div>
+
+  <div
+   id="statCompanies"
+   class="stat-number"
+  >
+   0
+  </div>
+
  </div>
 
- <div class="stat-card">
-  <div class="stat-icon">◷</div>
-  <div>
-   <div class="stat-label">OVERDUE</div>
-   <div id="statOverdue" class="stat-number red">0</div>
-  </div>
+</div>
+
+
+<div class="stat-card">
+
+ <div class="stat-icon">
+  ♙
  </div>
 
- <div class="stat-card">
-  <div class="stat-icon">✓</div>
-  <div>
-   <div class="stat-label">MEETINGS BOOKED</div>
-   <div id="statMeetings" class="stat-number gold">0</div>
+ <div>
+
+  <div class="stat-label">
+   CONTACTS
   </div>
+
+  <div
+   id="statProspects"
+   class="stat-number"
+  >
+   0
+  </div>
+
  </div>
 
- <div class="stat-card">
-  <div class="stat-icon">☎</div>
-  <div>
-   <div class="stat-label">CALLS LOGGED</div>
-   <div id="statCalls" class="stat-number blue">0</div>
-  </div>
+</div>
+
+
+<div class="stat-card">
+
+ <div class="stat-icon">
+  ▣
  </div>
+
+ <div>
+
+  <div class="stat-label">
+   FOLLOW-UPS DUE
+  </div>
+
+  <div
+   id="statDue"
+   class="stat-number gold"
+  >
+   0
+  </div>
+
+ </div>
+
+</div>
+
+
+<div class="stat-card">
+
+ <div class="stat-icon">
+  ◷
+ </div>
+
+ <div>
+
+  <div class="stat-label">
+   OVERDUE
+  </div>
+
+  <div
+   id="statOverdue"
+   class="stat-number red"
+  >
+   0
+  </div>
+
+ </div>
+
+</div>
+
+
+<div class="stat-card">
+
+ <div class="stat-icon">
+  ☎
+ </div>
+
+ <div>
+
+  <div class="stat-label">
+   CALLS LOGGED
+  </div>
+
+  <div
+   id="statCalls"
+   class="stat-number blue"
+  >
+   0
+  </div>
+
+ </div>
+
+</div>
+
 
 </div>
 
 
 <div class="dashboard-grid">
 
- <div class="card">
-  <div class="card-header">
-   <div>Recent Activity</div>
-   <span>LIVE</span>
+
+<div class="card">
+
+ <div class="card-header">
+
+  <div>
+   Recent Activity
   </div>
-  <div id="recentActivity" class="card-body"></div>
+
+  <span>
+   LIVE
+  </span>
+
  </div>
 
- <div class="card">
-  <div class="card-header">
-   <div>Next Follow-Ups</div>
-   <span>UPCOMING</span>
-  </div>
-  <div id="dashboardFollowups" class="card-body"></div>
- </div>
+ <div
+  id="recentActivity"
+  class="card-body"
+ ></div>
 
 </div>
+
+
+<div class="card">
+
+ <div class="card-header">
+
+  <div>
+   Next Follow-Ups
+  </div>
+
+  <span>
+   UPCOMING
+  </span>
+
+ </div>
+
+ <div
+  id="dashboardFollowups"
+  class="card-body"
+ ></div>
+
+</div>
+
+
+</div>
+
 
 </section>
 
 
-<section id="contactsView" class="view">
+<!-- =====================================================
+     COMPANIES
+===================================================== -->
+
+<section
+ id="companiesView"
+ class="view"
+>
+
 
 <div class="section-heading">
 
  <div>
-  <h2>Contacts</h2>
-  <p>Prospects and customers in the Excedere database.</p>
+
+  <h2>
+   Companies
+  </h2>
+
+  <p>
+   Manage organisations and the people connected to them.
+  </p>
+
  </div>
 
- <button class="primary-btn" onclick="openContactModal()">
-  ＋ New Contact
+
+ <button
+  class="primary-btn"
+  onclick="openCompanyModal()"
+ >
+  ＋ New Company
  </button>
+
+</div>
+
+
+<div class="companies-layout">
+
+
+<div class="card company-list">
+
+
+<div class="company-head">
+
+ <div>
+  COMPANY
+ </div>
+
+ <div>
+  INDUSTRY
+ </div>
+
+ <div>
+  LOCATION
+ </div>
+
+ <div>
+  STATUS
+ </div>
+
+</div>
+
+
+<div id="companiesList"></div>
+
+
+</div>
+
+
+<div
+ id="companyDetail"
+ class="card detail-panel"
+>
+
+ <div class="empty">
+  Select a company to view the record.
+ </div>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+<!-- =====================================================
+     CONTACTS
+===================================================== -->
+
+<section
+ id="contactsView"
+ class="view"
+>
+
+
+<div class="section-heading">
+
+<div>
+
+ <h2>
+  Contacts
+ </h2>
+
+ <p>
+  Prospects and customers in the Excedere database.
+ </p>
+
+</div>
+
+
+<button
+ class="primary-btn"
+ onclick="openContactModal()"
+>
+
+ ＋ New Contact
+
+</button>
+
 
 </div>
 
 
 <div class="contacts-layout">
 
- <div class="card contact-list">
 
-  <div class="contact-head">
-   <div>CONTACT</div>
-   <div>COMPANY / ROLE</div>
-   <div>CONTACT DETAILS</div>
-   <div>FOLLOW-UP</div>
-   <div>STATUS</div>
-  </div>
+<div class="card contact-list">
 
-  <div id="contactsList"></div>
 
+<div class="contact-head">
+
+ <div>
+  CONTACT
  </div>
 
- <div id="contactDetail" class="card detail-panel">
-  <div class="empty">
-   Select a contact to view the record.
-  </div>
+ <div>
+  COMPANY / ROLE
+ </div>
+
+ <div>
+  CONTACT DETAILS
+ </div>
+
+ <div>
+  FOLLOW-UP
+ </div>
+
+ <div>
+  STATUS
  </div>
 
 </div>
+
+
+<div id="contactsList"></div>
+
+
+</div>
+
+
+<div
+ id="contactDetail"
+ class="card detail-panel"
+>
+
+ <div class="empty">
+  Select a contact to view the record.
+ </div>
+
+</div>
+
+
+</div>
+
 
 </section>
 
 
-<section id="pipelineView" class="view">
+<!-- =====================================================
+     PIPELINE
+===================================================== -->
+
+<section
+ id="pipelineView"
+ class="view"
+>
+
 
 <div class="section-heading">
- <div>
-  <h2>Pipeline</h2>
-  <p>Track prospects through the sales process.</p>
- </div>
+
+<div>
+
+ <h2>
+  Pipeline
+ </h2>
+
+ <p>
+  Track prospects through the sales process.
+ </p>
+
 </div>
 
-<div id="pipelineBoard" class="pipeline-board"></div>
+</div>
+
+
+<div
+ id="pipelineBoard"
+ class="pipeline-board"
+></div>
+
 
 </section>
 
 
-<section id="followupsView" class="view">
+<!-- =====================================================
+     FOLLOW UPS
+===================================================== -->
+
+<section
+ id="followupsView"
+ class="view"
+>
+
 
 <div class="section-heading">
- <div>
-  <h2>Follow-Ups</h2>
-  <p>Prospects requiring your attention.</p>
- </div>
+
+<div>
+
+ <h2>
+  Follow-Ups
+ </h2>
+
+ <p>
+  Prospects requiring your attention.
+ </p>
+
 </div>
+
+</div>
+
 
 <div class="card">
- <div id="followupList" class="card-body"></div>
+
+ <div
+  id="followupList"
+  class="card-body"
+ ></div>
+
 </div>
+
 
 </section>
 
+
 </div>
+
 
 </section>
 
+
 </div>
 
 
-<div id="contactModal" class="modal">
+<!-- =====================================================
+     CONTACT MODAL
+===================================================== -->
+
+<div
+ id="contactModal"
+ class="modal"
+>
+
 
 <div class="modal-box">
 
+
 <div class="modal-head">
- <div id="contactModalTitle" class="modal-title">New Contact</div>
- <button class="modal-close" onclick="closeContactModal()">×</button>
+
+ <div
+  id="contactModalTitle"
+  class="modal-title"
+ >
+  New Contact
+ </div>
+
+ <button
+  class="modal-close"
+  onclick="closeContactModal()"
+ >
+  ×
+ </button>
+
 </div>
+
 
 <div class="form-grid">
 
- <div class="form-field">
-  <label class="form-label">FIRST NAME</label>
-  <input id="formFirstName" class="form-input">
- </div>
 
- <div class="form-field">
-  <label class="form-label">TITLE</label>
-  <input id="formTitle" class="form-input">
- </div>
+<div class="form-field">
 
- <div class="form-field">
-  <label class="form-label">COMPANY</label>
-  <input id="formCompany" class="form-input">
- </div>
+ <label class="form-label">
+  FIRST NAME
+ </label>
 
- <div class="form-field">
-  <label class="form-label">ROLE / REQUIREMENT</label>
-  <input id="formRole" class="form-input">
- </div>
+ <input
+  id="formFirstName"
+  class="form-input"
+ >
 
- <div class="form-field full">
-  <label class="form-label">LOCATION</label>
-  <input id="formLocation" class="form-input">
- </div>
+</div>
 
- <div class="form-field">
-  <label class="form-label">PHONE</label>
-  <input id="formPhone" class="form-input">
- </div>
 
- <div class="form-field">
-  <label class="form-label">DIRECT PHONE</label>
-  <input id="formDirectPhone" class="form-input">
- </div>
+<div class="form-field">
 
- <div class="form-field full">
-  <label class="form-label">EMAIL</label>
-  <input id="formEmail" class="form-input" type="email">
- </div>
+ <label class="form-label">
+  TITLE
+ </label>
 
- <div class="form-field">
-  <label class="form-label">TIMEZONE</label>
-  <input
-   id="formTimezone"
-   class="form-input"
-   placeholder="America/Los_Angeles"
-  >
- </div>
+ <input
+  id="formTitle"
+  class="form-input"
+ >
 
- <div class="form-field">
-  <label class="form-label">TIMEZONE LABEL</label>
-  <input
-   id="formTimezoneLabel"
-   class="form-input"
-   placeholder="Pacific Time"
-  >
- </div>
+</div>
 
- <div class="form-field">
-  <label class="form-label">PIPELINE STAGE</label>
-  <select id="formPipelineStage" class="form-input">
-   <option>New</option>
-   <option>Contacted</option>
-   <option>Follow-Up</option>
-   <option>Interested</option>
-   <option>Meeting Booked</option>
-   <option>Proposal</option>
-   <option>Won</option>
-   <option>Lost</option>
-  </select>
- </div>
 
- <div class="form-field">
-  <label class="form-label">FOLLOW-UP DATE</label>
-  <input id="formFollowUpDate" class="form-input" type="date">
- </div>
+<div class="form-field full">
 
- <div class="form-field full">
-  <label class="form-label">NEXT ACTION</label>
-  <input id="formNextAction" class="form-input">
- </div>
+ <label class="form-label">
+  COMPANY
+ </label>
+
+ <select
+  id="formCompanyId"
+  class="form-input"
+  onchange="contactCompanyChanged()"
+ >
+ </select>
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  ROLE / REQUIREMENT
+ </label>
+
+ <input
+  id="formRole"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  LOCATION
+ </label>
+
+ <input
+  id="formLocation"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  PHONE
+ </label>
+
+ <input
+  id="formPhone"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  DIRECT PHONE
+ </label>
+
+ <input
+  id="formDirectPhone"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field full">
+
+ <label class="form-label">
+  EMAIL
+ </label>
+
+ <input
+  id="formEmail"
+  class="form-input"
+  type="email"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  TIMEZONE
+ </label>
+
+ <input
+  id="formTimezone"
+  class="form-input"
+  placeholder="America/Los_Angeles"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  TIMEZONE LABEL
+ </label>
+
+ <input
+  id="formTimezoneLabel"
+  class="form-input"
+  placeholder="Pacific Time"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  PIPELINE STAGE
+ </label>
+
+ <select
+  id="formPipelineStage"
+  class="form-input"
+ >
+
+  <option>
+   New
+  </option>
+
+  <option>
+   Contacted
+  </option>
+
+  <option>
+   Follow-Up
+  </option>
+
+  <option>
+   Interested
+  </option>
+
+  <option>
+   Meeting Booked
+  </option>
+
+  <option>
+   Proposal
+  </option>
+
+  <option>
+   Won
+  </option>
+
+  <option>
+   Lost
+  </option>
+
+ </select>
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  FOLLOW-UP DATE
+ </label>
+
+ <input
+  id="formFollowUpDate"
+  class="form-input"
+  type="date"
+ >
+
+</div>
+
+
+<div class="form-field full">
+
+ <label class="form-label">
+  NEXT ACTION
+ </label>
+
+ <input
+  id="formNextAction"
+  class="form-input"
+ >
+
+</div>
+
 
 </div>
 
 
 <div class="modal-actions">
 
- <button class="secondary-btn" onclick="closeContactModal()">
-  Cancel
- </button>
+<button
+ class="secondary-btn"
+ onclick="closeContactModal()"
+>
+ Cancel
+</button>
 
- <button class="primary-btn" onclick="saveContactForm()">
-  Save Contact
+
+<button
+ class="primary-btn"
+ onclick="saveContactForm()"
+>
+ Save Contact
+</button>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =====================================================
+     COMPANY MODAL
+===================================================== -->
+
+<div
+ id="companyModal"
+ class="modal"
+>
+
+
+<div class="modal-box">
+
+
+<div class="modal-head">
+
+ <div
+  id="companyModalTitle"
+  class="modal-title"
+ >
+  New Company
+ </div>
+
+ <button
+  class="modal-close"
+  onclick="closeCompanyModal()"
+ >
+  ×
  </button>
 
 </div>
 
+
+<div class="form-grid">
+
+
+<div class="form-field full">
+
+ <label class="form-label">
+  COMPANY NAME
+ </label>
+
+ <input
+  id="companyFormName"
+  class="form-input"
+ >
+
 </div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  WEBSITE
+ </label>
+
+ <input
+  id="companyFormWebsite"
+  class="form-input"
+  placeholder="https://example.com"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  INDUSTRY
+ </label>
+
+ <input
+  id="companyFormIndustry"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  PHONE
+ </label>
+
+ <input
+  id="companyFormPhone"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  EMAIL
+ </label>
+
+ <input
+  id="companyFormEmail"
+  class="form-input"
+  type="email"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  STATUS
+ </label>
+
+ <select
+  id="companyFormStatus"
+  class="form-input"
+ >
+
+  <option>
+   Prospect
+  </option>
+
+  <option>
+   Customer
+  </option>
+
+  <option>
+   Inactive
+  </option>
+
+ </select>
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  TIMEZONE
+ </label>
+
+ <input
+  id="companyFormTimezone"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  TIMEZONE LABEL
+ </label>
+
+ <input
+  id="companyFormTimezoneLabel"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field full">
+
+ <label class="form-label">
+  ADDRESS LINE 1
+ </label>
+
+ <input
+  id="companyFormAddress1"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field full">
+
+ <label class="form-label">
+  ADDRESS LINE 2
+ </label>
+
+ <input
+  id="companyFormAddress2"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  CITY
+ </label>
+
+ <input
+  id="companyFormCity"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  STATE / REGION
+ </label>
+
+ <input
+  id="companyFormState"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  POSTAL CODE
+ </label>
+
+ <input
+  id="companyFormPostal"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field">
+
+ <label class="form-label">
+  COUNTRY
+ </label>
+
+ <input
+  id="companyFormCountry"
+  class="form-input"
+ >
+
+</div>
+
+
+<div class="form-field full">
+
+ <label class="form-label">
+  NOTES
+ </label>
+
+ <textarea
+  id="companyFormNotes"
+  class="form-input form-textarea"
+ ></textarea>
+
+</div>
+
+
+</div>
+
+
+<div class="modal-actions">
+
+<button
+ class="secondary-btn"
+ onclick="closeCompanyModal()"
+>
+ Cancel
+</button>
+
+
+<button
+ class="primary-btn"
+ onclick="saveCompanyForm()"
+>
+ Save Company
+</button>
+
+</div>
+
+
+</div>
+
 
 </div>
 
 
 <script>
 
+
 /* =====================================================
    CONFIG
 ===================================================== */
 
+
 const SUPABASE_URL =
  "https://kxxoyhagfmexvnzpuwys.supabase.co";
+
 
 const SUPABASE_PROJECT_REF =
  "kxxoyhagfmexvnzpuwys";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
  "sb_publishable_2gcvru1GxULE5nCVFNPgQw__vOGbDxx";
+
 
 const CLOUD_FUNCTION_URL =
  `${SUPABASE_URL}/functions/v1/crm-data`;
 
+
 const CALL_ASSIST_URL =
  "https://excederemanagementconsultancy.github.io/excedere-call-assist/";
+
 
 const LEAD_STORAGE_KEY =
  "excedereCallAssistLeads";
 
+
 const LEAD_BACKUP_KEY =
  "excedereCallAssistLeadsBackup";
+
+
+const COMPANY_STORAGE_KEY =
+ "excedereCRMCompanies";
+
+
+const COMPANY_BACKUP_KEY =
+ "excedereCRMCompaniesBackup";
+
 
 const PIPELINE_STAGES = [
  "New",
@@ -677,17 +3133,25 @@ const PIPELINE_STAGES = [
 ];
 
 
+const COMPANY_STATUSES = [
+ "Prospect",
+ "Customer",
+ "Inactive"
+];
+
+
 /* =====================================================
-   CAPTURE EXISTING / LEGACY LOGIN BEFORE CLIENT STARTS
+   CAPTURE EXISTING LOGIN
 ===================================================== */
+
 
 function findExistingExcedereSession(){
 
  const expectedKey =
   `sb-${SUPABASE_PROJECT_REF}-auth-token`;
 
- const keys =
-  [];
+
+ const keys=[];
 
 
  if(
@@ -720,7 +3184,6 @@ function findExistingExcedereSession(){
     key
    )
   ){
-
    keys.push(
     key
    );
@@ -752,102 +3215,50 @@ function findExistingExcedereSession(){
     );
 
 
-   /*
-     Standard Supabase layout
-   */
+   const possible = [
 
-   if(
-    parsed?.access_token &&
-    parsed?.refresh_token
+    parsed,
+
+    parsed?.currentSession,
+
+    parsed?.session,
+
+    parsed?.data?.session
+
+   ];
+
+
+   for(
+    const candidate of possible
    ){
 
-    return {
-     access_token:
-      parsed.access_token,
+    if(
+     candidate?.access_token &&
+     candidate?.refresh_token
+    ){
 
-     refresh_token:
-      parsed.refresh_token
-    };
-   }
+     return {
 
+      access_token:
+       candidate.access_token,
 
-   /*
-     Excedere / older Projects layout
-   */
+      refresh_token:
+       candidate.refresh_token
 
-   if(
-    parsed
-     ?.currentSession
-     ?.access_token
-    &&
-    parsed
-     ?.currentSession
-     ?.refresh_token
-   ){
+     };
+    }
 
-    return {
-     access_token:
-      parsed.currentSession.access_token,
-
-     refresh_token:
-      parsed.currentSession.refresh_token
-    };
-   }
-
-
-   /*
-     Other possible wrapper formats
-   */
-
-   if(
-    parsed
-     ?.session
-     ?.access_token
-    &&
-    parsed
-     ?.session
-     ?.refresh_token
-   ){
-
-    return {
-     access_token:
-      parsed.session.access_token,
-
-     refresh_token:
-      parsed.session.refresh_token
-    };
-   }
-
-
-   if(
-    parsed
-     ?.data
-     ?.session
-     ?.access_token
-    &&
-    parsed
-     ?.data
-     ?.session
-     ?.refresh_token
-   ){
-
-    return {
-     access_token:
-      parsed.data.session.access_token,
-
-     refresh_token:
-      parsed.data.session.refresh_token
-    };
    }
 
   }catch(error){
 
    console.warn(
-    "Could not inspect stored Supabase session:",
+    "Stored session read failed:",
     key,
     error
    );
   }
+
  }
 
 
@@ -855,31 +3266,39 @@ function findExistingExcedereSession(){
 }
 
 
-/*
-  Capture it now, before the official Supabase client
-  gets the opportunity to rewrite its own storage key.
-*/
-
 const existingExcedereSession =
  findExistingExcedereSession();
 
 
 /* =====================================================
-   OFFICIAL SUPABASE CLIENT
+   SUPABASE CLIENT
 ===================================================== */
+
 
 const supabaseClient =
  window.supabase.createClient(
+
   SUPABASE_URL,
+
   SUPABASE_PUBLISHABLE_KEY,
+
   {
+
    auth:{
+
     persistSession:true,
+
     autoRefreshToken:true,
+
     detectSessionInUrl:true,
-    storage:window.localStorage
+
+    storage:
+     window.localStorage
+
    }
+
   }
+
  );
 
 
@@ -887,12 +3306,27 @@ const supabaseClient =
    STATE
 ===================================================== */
 
+
 let leads=[];
+
+let companies=[];
+
 let selectedLeadId=null;
+
+let selectedCompanyId=null;
+
 let currentSearch="";
+
+let currentView="dashboard";
+
 let editingLeadId=null;
+
+let editingCompanyId=null;
+
 let cloudSyncTimer=null;
+
 let cloudSyncRunning=false;
+
 let sessionBridgeRunning=null;
 
 
@@ -900,52 +3334,32 @@ let sessionBridgeRunning=null;
    GENERAL HELPERS
 ===================================================== */
 
+
 function e(value){
 
  return String(
   value ?? ""
  )
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
-}
-
-
-function defaults(lead){
-
- lead.pipelineStage ||=
-  "New";
-
- lead.callHistory ||=
-  [];
-
- lead.emailHistory ||=
-  [];
-
- lead.callCount ||=
-  0;
-
- lead.lastOutcome ||=
-  "";
-
- lead.nextAction ||=
-  "";
-
- lead.nextFollowUpDate ||=
-  "";
-
- return lead;
-}
-
-
-function getLeadById(id){
-
- return leads.find(
-  lead =>
-   lead.id === id
- );
+  .replace(
+   /&/g,
+   "&amp;"
+  )
+  .replace(
+   /</g,
+   "&lt;"
+  )
+  .replace(
+   />/g,
+   "&gt;"
+  )
+  .replace(
+   /"/g,
+   "&quot;"
+  )
+  .replace(
+   /'/g,
+   "&#039;"
+  );
 }
 
 
@@ -985,9 +3399,143 @@ function uuid(){
 }
 
 
+function defaults(lead){
+
+ lead.pipelineStage ||=
+  "New";
+
+ lead.callHistory ||=
+  [];
+
+ lead.emailHistory ||=
+  [];
+
+ lead.callCount ||=
+  0;
+
+ lead.lastOutcome ||=
+  "";
+
+ lead.nextAction ||=
+  "";
+
+ lead.nextFollowUpDate ||=
+  "";
+
+ lead.companyId ||=
+  "";
+
+ return lead;
+}
+
+
+function companyDefaults(
+ company
+){
+
+ company.status ||=
+  "Prospect";
+
+ company.website ||=
+  "";
+
+ company.industry ||=
+  "";
+
+ company.phone ||=
+  "";
+
+ company.email ||=
+  "";
+
+ company.addressLine1 ||=
+  "";
+
+ company.addressLine2 ||=
+  "";
+
+ company.city ||=
+  "";
+
+ company.stateRegion ||=
+  "";
+
+ company.postalCode ||=
+  "";
+
+ company.country ||=
+  "";
+
+ company.timezone ||=
+  "";
+
+ company.timezoneLabel ||=
+  "";
+
+ company.notes ||=
+  "";
+
+ return company;
+}
+
+
+function getLeadById(id){
+
+ return leads.find(
+  lead =>
+   lead.id === id
+ );
+}
+
+
+function getCompanyById(id){
+
+ return companies.find(
+  company =>
+   company.id === id
+ );
+}
+
+
+function getCompanyForLead(
+ lead
+){
+
+ if(
+  lead?.companyId
+ ){
+
+  return getCompanyById(
+   lead.companyId
+  );
+ }
+
+
+ if(
+  lead?.company
+ ){
+
+  return companies.find(
+   company =>
+    company.name
+     .trim()
+     .toLowerCase()
+    ===
+    lead.company
+     .trim()
+     .toLowerCase()
+  );
+ }
+
+
+ return null;
+}
+
+
 /* =====================================================
    STATUS DISPLAY
 ===================================================== */
+
 
 function setSync(
  type,
@@ -1014,8 +3562,9 @@ function setSync(
 
 
 /* =====================================================
-   BRIDGE EXISTING LOGIN INTO OFFICIAL SUPABASE CLIENT
+   SESSION BRIDGE
 ===================================================== */
+
 
 async function bridgeExistingSession(){
 
@@ -1030,11 +3579,6 @@ async function bridgeExistingSession(){
   (async()=>{
 
 
-   /*
-     First ask the official client whether it already
-     has a usable session.
-   */
-
    const current =
     await supabaseClient
      .auth
@@ -1042,29 +3586,11 @@ async function bridgeExistingSession(){
 
 
    if(
-    current.error
-   ){
-    console.warn(
-     "Supabase getSession warning:",
-     current.error
-    );
-   }
-
-
-   if(
     current.data?.session
    ){
-
     return current.data.session;
    }
 
-
-   /*
-     No official session yet.
-
-     Hand our existing Projects / Excedere tokens to
-     the official Supabase client.
-   */
 
    if(
     existingExcedereSession
@@ -1084,11 +3610,13 @@ async function bridgeExistingSession(){
      await supabaseClient
       .auth
       .setSession({
+
        access_token:
         existingExcedereSession.access_token,
 
        refresh_token:
         existingExcedereSession.refresh_token
+
       });
 
 
@@ -1102,9 +3630,9 @@ async function bridgeExistingSession(){
     if(
      bridged.data?.session
     ){
-
      return bridged.data.session;
     }
+
    }
 
 
@@ -1119,15 +3647,10 @@ async function bridgeExistingSession(){
 
  }finally{
 
-  sessionBridgeRunning =
-   null;
+  sessionBridgeRunning=null;
  }
 }
 
-
-/* =====================================================
-   GET ACTIVE SESSION
-===================================================== */
 
 async function getActiveSession(){
 
@@ -1152,10 +3675,6 @@ async function getActiveSession(){
    0
   );
 
-
- /*
-   Refresh if within two minutes of expiry.
- */
 
  if(
   expiresAt &&
@@ -1189,6 +3708,7 @@ async function getActiveSession(){
    CLOUD REQUEST
 ===================================================== */
 
+
 async function cloud(
  action,
  extra={},
@@ -1209,31 +3729,37 @@ async function cloud(
 
  let response =
   await fetch(
+
    CLOUD_FUNCTION_URL,
+
    {
-    method:"POST",
+
+    method:
+     "POST",
 
     headers:{
+
      "Authorization":
       `Bearer ${session.access_token}`,
 
      "Content-Type":
       "application/json"
+
     },
 
     body:
      JSON.stringify({
+
       action,
+
       ...extra
+
      })
+
    }
+
   );
 
-
- /*
-   If the token expires during the request itself,
-   refresh through Supabase and retry once.
- */
 
  if(
   response.status === 401 &&
@@ -1304,28 +3830,45 @@ async function cloud(
    LOCAL CACHE
 ===================================================== */
 
+
 function saveCache(){
 
  localStorage.setItem(
+
   LEAD_STORAGE_KEY,
+
   JSON.stringify(
    leads
   )
+
+ );
+
+
+ localStorage.setItem(
+
+  COMPANY_STORAGE_KEY,
+
+  JSON.stringify(
+   companies
+  )
+
  );
 }
 
 
-function loadCache(){
+function loadLeadCache(){
 
  try{
 
   const parsed =
    JSON.parse(
+
     localStorage.getItem(
      LEAD_STORAGE_KEY
     )
     ||
     "[]"
+
    );
 
 
@@ -1347,16 +3890,50 @@ function loadCache(){
 }
 
 
+function loadCompanyCache(){
+
+ try{
+
+  const parsed =
+   JSON.parse(
+
+    localStorage.getItem(
+     COMPANY_STORAGE_KEY
+    )
+    ||
+    "[]"
+
+   );
+
+
+  return Array.isArray(
+   parsed
+  )
+   ?
+   parsed.map(
+    companyDefaults
+   )
+   :
+   [];
+
+
+ }catch{
+
+  return [];
+ }
+}
+
+
 function backupCache(){
 
- const raw =
+ const leadRaw =
   localStorage.getItem(
    LEAD_STORAGE_KEY
   );
 
 
  if(
-  raw &&
+  leadRaw &&
   !localStorage.getItem(
    LEAD_BACKUP_KEY
   )
@@ -1364,15 +3941,37 @@ function backupCache(){
 
   localStorage.setItem(
    LEAD_BACKUP_KEY,
-   raw
+   leadRaw
   );
  }
+
+
+ const companyRaw =
+  localStorage.getItem(
+   COMPANY_STORAGE_KEY
+  );
+
+
+ if(
+  companyRaw &&
+  !localStorage.getItem(
+   COMPANY_BACKUP_KEY
+  )
+ ){
+
+  localStorage.setItem(
+   COMPANY_BACKUP_KEY,
+   companyRaw
+  );
+ }
+
 }
 
 
 /* =====================================================
    SYNC
 ===================================================== */
+
 
 function scheduleSync(){
 
@@ -1407,8 +4006,7 @@ async function syncCloud(){
  }
 
 
- cloudSyncRunning =
-  true;
+ cloudSyncRunning=true;
 
 
  setSync(
@@ -1422,6 +4020,7 @@ async function syncCloud(){
   await cloud(
    "sync",
    {
+    companies,
     leads
    }
   );
@@ -1449,8 +4048,7 @@ async function syncCloud(){
 
  }finally{
 
-  cloudSyncRunning =
-   false;
+  cloudSyncRunning=false;
  }
 }
 
@@ -1459,13 +4057,18 @@ async function syncCloud(){
    STARTUP
 ===================================================== */
 
+
 async function initialise(){
 
  backupCache();
 
 
- const fallback =
-  loadCache();
+ const leadFallback =
+  loadLeadCache();
+
+
+ const companyFallback =
+  loadCompanyCache();
 
 
  setSync(
@@ -1482,12 +4085,21 @@ async function initialise(){
 
   if(!session){
 
-   leads =
-    fallback;
+   leads=
+    leadFallback;
+
+
+   companies=
+    companyFallback;
 
 
    selectedLeadId =
     leads[0]?.id ||
+    null;
+
+
+   selectedCompanyId =
+    companies[0]?.id ||
     null;
 
 
@@ -1522,100 +4134,71 @@ async function initialise(){
     [];
 
 
-  if(
-   cloudLeads.length
-  ){
-
-   /*
-     Normally Supabase is the source of truth.
-
-     However, if the local cache contains a newly-created
-     contact which never reached the cloud during the
-     earlier authentication issue, merge that local record
-     into the working set before syncing.
-
-     IDs prevent duplication.
-   */
-
-   const merged =
-    [
-     ...cloudLeads
-    ];
-
-
-   fallback.forEach(
-    localLead => {
-
-     if(
-      !merged.some(
-       cloudLead =>
-        cloudLead.id ===
-        localLead.id
-      )
-     ){
-
-      merged.push(
-       localLead
-      );
-     }
-
-    }
-   );
-
-
-   leads =
-    merged;
-
-
-   saveCache();
-
-
-   /*
-     If the merge restored anything that was only local,
-     push the complete verified working set to cloud now.
-   */
-
-   if(
-    leads.length >
-    cloudLeads.length
-   ){
-
-    setSync(
-     "syncing",
-     "Restoring unsynced changes..."
-    );
-
-
-    await cloud(
-     "sync",
-     {
-      leads
-     }
-    );
-   }
-
-
-  }else if(
-   fallback.length
-  ){
-
-   leads =
-    fallback;
-
-
-   await cloud(
-    "sync",
-    {
-     leads
-    }
-   );
-
-
-  }else{
-
-   leads =
+  const cloudCompanies =
+   Array.isArray(
+    result.companies
+   )
+    ?
+    result.companies.map(
+     companyDefaults
+    )
+    :
     [];
-  }
+
+
+  companies =
+   [
+    ...cloudCompanies
+   ];
+
+
+  companyFallback.forEach(
+   localCompany => {
+
+    if(
+     !companies.some(
+      cloudCompany =>
+       cloudCompany.id ===
+       localCompany.id
+     )
+    ){
+
+     companies.push(
+      localCompany
+     );
+    }
+
+   }
+  );
+
+
+  leads =
+   [
+    ...cloudLeads
+   ];
+
+
+  leadFallback.forEach(
+   localLead => {
+
+    if(
+     !leads.some(
+      cloudLead =>
+       cloudLead.id ===
+       localLead.id
+     )
+    ){
+
+     leads.push(
+      localLead
+     );
+    }
+
+   }
+  );
+
+
+  saveCache();
 
 
   selectedLeadId =
@@ -1623,7 +4206,36 @@ async function initialise(){
    null;
 
 
+  selectedCompanyId =
+   companies[0]?.id ||
+   null;
+
+
   renderAll();
+
+
+  if(
+   companies.length >
+   cloudCompanies.length
+   ||
+   leads.length >
+   cloudLeads.length
+  ){
+
+   setSync(
+    "syncing",
+    "Restoring unsynced changes..."
+   );
+
+
+   await cloud(
+    "sync",
+    {
+     companies,
+     leads
+    }
+   );
+  }
 
 
   setSync(
@@ -1640,12 +4252,21 @@ async function initialise(){
   );
 
 
-  leads =
-   fallback;
+  leads=
+   leadFallback;
+
+
+  companies=
+   companyFallback;
 
 
   selectedLeadId =
    leads[0]?.id ||
+   null;
+
+
+  selectedCompanyId =
+   companies[0]?.id ||
    null;
 
 
@@ -1657,12 +4278,14 @@ async function initialise(){
    "Local cache active"
   );
  }
+
 }
 
 
 /* =====================================================
-   SUPABASE AUTH EVENTS
+   AUTH EVENTS
 ===================================================== */
+
 
 supabaseClient
  .auth
@@ -1671,12 +4294,6 @@ supabaseClient
    event,
    session
   ) => {
-
-
-   console.log(
-    "Supabase auth:",
-    event
-   );
 
 
    if(
@@ -1720,8 +4337,9 @@ supabaseClient
 
 
 /* =====================================================
-   CRM STATUS HELPERS
+   CONTACT STATUS HELPERS
 ===================================================== */
+
 
 function days(
  dateString
@@ -1802,6 +4420,7 @@ function status(lead){
     "status-due"
    ];
   }
+
  }
 
 
@@ -1812,14 +4431,43 @@ function status(lead){
 }
 
 
+function companyStatusClass(
+ value
+){
+
+ switch(
+  value
+ ){
+
+  case "Customer":
+
+   return "company-status-customer";
+
+
+  case "Inactive":
+
+   return "company-status-inactive";
+
+
+  default:
+
+   return "company-status-prospect";
+
+ }
+}
+
+
 function timeFor(lead){
 
  try{
 
   const value =
    new Intl.DateTimeFormat(
+
     "en-US",
+
     {
+
      timeZone:
       lead.timezone ||
       "America/Los_Angeles",
@@ -1829,7 +4477,9 @@ function timeFor(lead){
 
      minute:
       "2-digit"
+
     }
+
    )
     .format(
      new Date()
@@ -1852,6 +4502,7 @@ function timeFor(lead){
 
   return "Time unavailable";
  }
+
 }
 
 
@@ -1859,7 +4510,8 @@ function timeFor(lead){
    SEARCH
 ===================================================== */
 
-function filtered(){
+
+function filteredLeads(){
 
  if(
   !currentSearch
@@ -1876,6 +4528,7 @@ function filtered(){
  return leads.filter(
   lead =>
    [
+
     lead.firstName,
     lead.title,
     lead.company,
@@ -1887,6 +4540,46 @@ function filtered(){
     lead.lastOutcome,
     lead.nextAction,
     lead.pipelineStage
+
+   ]
+    .join(" ")
+    .toLowerCase()
+    .includes(
+     query
+    )
+ );
+}
+
+
+function filteredCompanies(){
+
+ if(
+  !currentSearch
+ ){
+  return companies;
+ }
+
+
+ const query =
+  currentSearch
+   .toLowerCase();
+
+
+ return companies.filter(
+  company =>
+   [
+
+    company.name,
+    company.website,
+    company.industry,
+    company.phone,
+    company.email,
+    company.city,
+    company.stateRegion,
+    company.country,
+    company.status,
+    company.notes
+
    ]
     .join(" ")
     .toLowerCase()
@@ -1901,10 +4594,15 @@ function filtered(){
    VIEW SWITCHING
 ===================================================== */
 
+
 function switchView(
  view,
- button
+ button=null
 ){
+
+ currentView =
+  view;
+
 
  document
   .querySelectorAll(
@@ -1939,9 +4637,41 @@ function switchView(
   );
 
 
- button.classList.add(
-  "active"
- );
+ if(button){
+
+  button.classList.add(
+   "active"
+  );
+
+ }else{
+
+  const navIndex = {
+
+   dashboard:0,
+
+   companies:1,
+
+   contacts:2,
+
+   pipeline:3,
+
+   followups:4
+
+  };
+
+
+  document
+   .querySelectorAll(
+    ".nav-btn"
+   )
+   [
+    navIndex[view]
+   ]
+   ?.classList
+   .add(
+    "active"
+   );
+ }
 
 
  const titles = {
@@ -1949,6 +4679,11 @@ function switchView(
   dashboard:[
    "Dashboard",
    "Your Excedere sales activity at a glance."
+  ],
+
+  companies:[
+   "Companies",
+   "Manage organisations and the contacts connected to them."
   ],
 
   contacts:[
@@ -1993,11 +4728,11 @@ function switchView(
    DASHBOARD
 ===================================================== */
 
+
 function renderDashboard(){
 
  let due=0;
  let overdue=0;
- let meetings=0;
  let calls=0;
 
 
@@ -2026,17 +4761,6 @@ function renderDashboard(){
    }
 
 
-   if(
-    lead.lastOutcome ===
-     "Appointment booked"
-    ||
-    lead.pipelineStage ===
-     "Meeting Booked"
-   ){
-    meetings++;
-   }
-
-
    calls +=
     Number(
      lead.callCount ||
@@ -2045,6 +4769,14 @@ function renderDashboard(){
 
   }
  );
+
+
+ document
+  .getElementById(
+   "statCompanies"
+  )
+  .textContent =
+   companies.length;
 
 
  document
@@ -2073,22 +4805,13 @@ function renderDashboard(){
 
  document
   .getElementById(
-   "statMeetings"
-  )
-  .textContent =
-   meetings;
-
-
- document
-  .getElementById(
    "statCalls"
   )
   .textContent =
    calls;
 
 
- const activities =
-  [];
+ const activities=[];
 
 
  leads.forEach(
@@ -2332,8 +5055,464 @@ function renderDashboard(){
 
 
 /* =====================================================
+   COMPANIES
+===================================================== */
+
+
+function renderCompanies(){
+
+ const area =
+  document.getElementById(
+   "companiesList"
+  );
+
+
+ area.innerHTML =
+
+  filteredCompanies()
+   .map(
+    company => {
+
+     const location = [
+
+      company.city,
+
+      company.stateRegion,
+
+      company.country
+
+     ]
+      .filter(Boolean)
+      .join(", ");
+
+
+     return `
+
+     <button
+      class="company-row ${
+       selectedCompanyId ===
+       company.id
+        ?
+        "selected"
+        :
+        ""
+      }"
+      onclick="selectCompany('${company.id}')"
+     >
+
+
+      <div>
+
+       <div class="company-name">
+        ${e(company.name)}
+       </div>
+
+       <div class="company-sub">
+        ${e(company.website || company.email || "")}
+       </div>
+
+      </div>
+
+
+      <div class="company-cell">
+       ${e(company.industry || "—")}
+      </div>
+
+
+      <div class="company-cell">
+       ${e(location || "—")}
+      </div>
+
+
+      <div>
+
+       <span
+        class="status-badge ${companyStatusClass(company.status)}"
+       >
+        ${e(company.status)}
+       </span>
+
+      </div>
+
+
+     </button>
+
+     `;
+    }
+   )
+   .join("")
+   ||
+   '<div class="empty">No matching companies.</div>';
+
+
+ renderCompanyDetail();
+}
+
+
+function selectCompany(id){
+
+ selectedCompanyId =
+  id;
+
+
+ renderCompanies();
+}
+
+
+function renderCompanyDetail(){
+
+ const box =
+  document.getElementById(
+   "companyDetail"
+  );
+
+
+ const company =
+  getCompanyById(
+   selectedCompanyId
+  );
+
+
+ if(!company){
+
+  box.innerHTML =
+   '<div class="empty">Select a company to view the record.</div>';
+
+  return;
+ }
+
+
+ const companyContacts =
+  leads.filter(
+   lead =>
+    lead.companyId ===
+    company.id
+    ||
+    (
+     !lead.companyId &&
+     lead.company &&
+     lead.company
+      .trim()
+      .toLowerCase()
+     ===
+     company.name
+      .trim()
+      .toLowerCase()
+    )
+  );
+
+
+ const initials =
+  (
+   company.name
+    .match(
+     /\b\w/g
+    )
+   ||
+   [
+    "E",
+    "X"
+   ]
+  )
+   .slice(
+    0,
+    2
+   )
+   .join("")
+   .toUpperCase();
+
+
+ const fullAddress = [
+
+  company.addressLine1,
+
+  company.addressLine2,
+
+  company.city,
+
+  company.stateRegion,
+
+  company.postalCode,
+
+  company.country
+
+ ]
+  .filter(Boolean)
+  .join(", ");
+
+
+ box.innerHTML = `
+
+ <div class="detail-top">
+
+  <div class="detail-avatar company-avatar">
+   ${e(initials)}
+  </div>
+
+  <div class="detail-name">
+   ${e(company.name)}
+  </div>
+
+  <div class="detail-company">
+
+   ${
+    e(
+     company.industry ||
+     "Company"
+    )
+   }
+
+   ·
+
+   ${companyContacts.length}
+
+   ${
+    companyContacts.length === 1
+     ?
+     "contact"
+     :
+     "contacts"
+   }
+
+  </div>
+
+ </div>
+
+
+ <div class="detail-body">
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    STATUS
+   </div>
+
+   <div class="detail-value">
+
+    <span
+     class="status-badge ${companyStatusClass(company.status)}"
+    >
+     ${e(company.status)}
+    </span>
+
+   </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    WEBSITE
+   </div>
+
+   <div class="detail-value detail-gold">
+
+    ${
+     company.website
+      ?
+      `<a href="${e(normalizeWebsite(company.website))}" target="_blank">${e(company.website)}</a>`
+      :
+      "Not provided"
+    }
+
+   </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    INDUSTRY
+   </div>
+
+   <div class="detail-value">
+    ${e(company.industry || "Not provided")}
+   </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    PHONE
+   </div>
+
+   <div class="detail-value">
+    ${e(company.phone || "Not provided")}
+   </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    EMAIL
+   </div>
+
+   <div class="detail-value">
+    ${e(company.email || "Not provided")}
+   </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    LOCATION
+   </div>
+
+   <div class="detail-value">
+    ${e(fullAddress || "Not provided")}
+   </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    TIMEZONE
+   </div>
+
+   <div class="detail-value">
+    ${
+     e(
+      [
+       company.timezone,
+       company.timezoneLabel
+      ]
+       .filter(Boolean)
+       .join(" · ")
+      ||
+      "Not provided"
+     )
+    }
+   </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+   <div class="detail-label">
+    NOTES
+   </div>
+
+   <div class="detail-value">
+    ${e(company.notes || "No notes yet.")}
+   </div>
+
+  </div>
+
+
+  <div class="detail-actions">
+
+   <button
+    class="secondary-btn"
+    onclick="openCompanyModal('${company.id}')"
+   >
+    ✎ Edit Company
+   </button>
+
+   <button
+    class="danger-btn"
+    onclick="deleteCompany('${company.id}')"
+   >
+    Delete Company
+   </button>
+
+  </div>
+
+
+  <div class="history-title">
+   LINKED CONTACTS
+  </div>
+
+
+  ${
+   companyContacts
+    .map(
+     lead => `
+
+     <button
+      class="linked-contact"
+      onclick="openLinkedContact('${lead.id}')"
+     >
+
+      <div>
+
+       <div class="linked-contact-name">
+        ${e(lead.firstName || "Unknown")}
+       </div>
+
+       <div class="linked-contact-role">
+        ${e(lead.role || lead.title || "Contact")}
+       </div>
+
+      </div>
+
+      <div class="linked-contact-arrow">
+       ›
+      </div>
+
+     </button>
+
+     `
+    )
+    .join("")
+   ||
+   '<div class="history-sub">No contacts linked to this company yet.</div>'
+  }
+
+
+ </div>
+
+ `;
+}
+
+
+function normalizeWebsite(
+ value
+){
+
+ if(
+  /^https?:\/\//i
+   .test(
+    value
+   )
+ ){
+  return value;
+ }
+
+
+ return `https://${value}`;
+}
+
+
+function openLinkedContact(
+ id
+){
+
+ selectedLeadId =
+  id;
+
+
+ switchView(
+  "contacts"
+ );
+}
+
+
+/* =====================================================
    CONTACTS
 ===================================================== */
+
 
 function renderContacts(){
 
@@ -2345,7 +5524,7 @@ function renderContacts(){
 
  area.innerHTML =
 
-  filtered()
+  filteredLeads()
    .map(
     lead => {
 
@@ -2424,7 +5603,9 @@ function renderContacts(){
 
       <div>
 
-       <span class="status-badge ${currentStatus[1]}">
+       <span
+        class="status-badge ${currentStatus[1]}"
+       >
         ${currentStatus[0]}
        </span>
 
@@ -2456,8 +5637,9 @@ function selectContact(id){
 
 
 /* =====================================================
-   DETAIL
+   CONTACT DETAIL
 ===================================================== */
+
 
 function renderDetail(){
 
@@ -2549,6 +5731,12 @@ function renderDetail(){
   );
 
 
+ const linkedCompany =
+  getCompanyForLead(
+   lead
+  );
+
+
  box.innerHTML = `
 
  <div class="detail-top">
@@ -2583,61 +5771,136 @@ function renderDetail(){
 
  <div class="detail-body">
 
+
+  ${
+   linkedCompany
+    ?
+    `
+
+    <div class="detail-item">
+
+     <div class="detail-label">
+      COMPANY RECORD
+     </div>
+
+     <div class="detail-value">
+
+      <button
+       class="secondary-btn"
+       style="width:100%"
+       onclick="openCompanyFromContact('${linkedCompany.id}')"
+      >
+       ◆ ${e(linkedCompany.name)}
+      </button>
+
+     </div>
+
+    </div>
+
+    `
+    :
+    ""
+  }
+
+
   <div class="detail-item">
-   <div class="detail-label">LOCAL TIME</div>
+
+   <div class="detail-label">
+    LOCAL TIME
+   </div>
+
    <div class="detail-value detail-gold">
     ${e(timeFor(lead))}
    </div>
+
   </div>
 
+
   <div class="detail-item">
-   <div class="detail-label">ROLE</div>
+
+   <div class="detail-label">
+    ROLE
+   </div>
+
    <div class="detail-value">
     ${e(lead.role || "Not provided")}
    </div>
+
   </div>
 
+
   <div class="detail-item">
-   <div class="detail-label">PHONE</div>
+
+   <div class="detail-label">
+    PHONE
+   </div>
+
    <div class="detail-value">
     ${e(lead.phone || lead.directPhone || "Not provided")}
    </div>
+
   </div>
 
+
   <div class="detail-item">
-   <div class="detail-label">EMAIL</div>
+
+   <div class="detail-label">
+    EMAIL
+   </div>
+
    <div class="detail-value">
     ${e(lead.email || "Not provided")}
    </div>
+
   </div>
 
+
   <div class="detail-item">
-   <div class="detail-label">LAST OUTCOME</div>
+
+   <div class="detail-label">
+    LAST OUTCOME
+   </div>
+
    <div class="detail-value">
     ${e(lead.lastOutcome || "None")}
    </div>
+
   </div>
 
+
   <div class="detail-item">
-   <div class="detail-label">NEXT ACTION</div>
+
+   <div class="detail-label">
+    NEXT ACTION
+   </div>
+
    <div class="detail-value">
     ${e(lead.nextAction || "None")}
    </div>
+
   </div>
 
+
   <div class="detail-item">
-   <div class="detail-label">FOLLOW-UP</div>
+
+   <div class="detail-label">
+    FOLLOW-UP
+   </div>
+
    <div class="detail-value">
 
     ${e(lead.nextFollowUpDate || "None")}
 
     &nbsp;
 
-    <span class="status-badge ${currentStatus[1]}">
+    <span
+     class="status-badge ${currentStatus[1]}"
+    >
      ${currentStatus[0]}
     </span>
 
    </div>
+
   </div>
 
 
@@ -2798,15 +6061,31 @@ function renderDetail(){
    '<div class="history-sub">No activity recorded yet.</div>'
   }
 
+
  </div>
 
  `;
 }
 
 
+function openCompanyFromContact(
+ id
+){
+
+ selectedCompanyId =
+  id;
+
+
+ switchView(
+  "companies"
+ );
+}
+
+
 /* =====================================================
    PIPELINE
 ===================================================== */
+
 
 function renderPipeline(){
 
@@ -2821,7 +6100,7 @@ function renderPipeline(){
     stage => {
 
      const items =
-      filtered()
+      filteredLeads()
        .filter(
         lead =>
          (
@@ -2848,7 +6127,6 @@ function renderPipeline(){
        </div>
 
       </div>
-
 
       <div class="pipeline-body">
 
@@ -2895,10 +6173,11 @@ function renderPipeline(){
    FOLLOW UPS
 ===================================================== */
 
+
 function renderFollowups(){
 
  const items =
-  filtered()
+  filteredLeads()
    .filter(
     lead =>
      lead.nextFollowUpDate
@@ -2957,7 +6236,6 @@ function renderFollowups(){
 
       </div>
 
-
       <div class="follow-date">
 
        ${e(lead.nextFollowUpDate)}
@@ -2985,11 +6263,17 @@ function renderFollowups(){
    RENDER ALL
 ===================================================== */
 
+
 function renderAll(){
 
  renderDashboard();
+
+ renderCompanies();
+
  renderContacts();
+
  renderPipeline();
+
  renderFollowups();
 }
 
@@ -2997,6 +6281,7 @@ function renderAll(){
 /* =====================================================
    PIPELINE CHANGE
 ===================================================== */
+
 
 function changeStage(
  id,
@@ -3026,8 +6311,149 @@ function changeStage(
 
 
 /* =====================================================
-   CONTACT EDITOR
+   CONTACT MODAL
 ===================================================== */
+
+
+function populateCompanyDropdown(
+ selectedId=""
+){
+
+ const select =
+  document.getElementById(
+   "formCompanyId"
+  );
+
+
+ select.innerHTML = `
+
+ <option value="">
+  No company selected
+ </option>
+
+ ${
+  [...companies]
+   .sort(
+    (a,b) =>
+     a.name.localeCompare(
+      b.name
+     )
+   )
+   .map(
+    company => `
+
+    <option
+     value="${e(company.id)}"
+     ${
+      company.id ===
+      selectedId
+       ?
+       "selected"
+       :
+       ""
+     }
+    >
+     ${e(company.name)}
+    </option>
+
+    `
+   )
+   .join("")
+ }
+
+ `;
+}
+
+
+function contactCompanyChanged(){
+
+ const companyId =
+  document
+   .getElementById(
+    "formCompanyId"
+   )
+   .value;
+
+
+ const company =
+  getCompanyById(
+   companyId
+  );
+
+
+ if(!company){
+  return;
+ }
+
+
+ const location = [
+
+  company.city,
+
+  company.stateRegion,
+
+  company.country
+
+ ]
+  .filter(Boolean)
+  .join(", ");
+
+
+ if(
+  location &&
+  !document
+   .getElementById(
+    "formLocation"
+   )
+   .value
+ ){
+
+  document
+   .getElementById(
+    "formLocation"
+   )
+   .value =
+    location;
+ }
+
+
+ if(
+  company.timezone &&
+  !document
+   .getElementById(
+    "formTimezone"
+   )
+   .value
+ ){
+
+  document
+   .getElementById(
+    "formTimezone"
+   )
+   .value =
+    company.timezone;
+ }
+
+
+ if(
+  company.timezoneLabel &&
+  !document
+   .getElementById(
+    "formTimezoneLabel"
+   )
+   .value
+ ){
+
+  document
+   .getElementById(
+    "formTimezoneLabel"
+   )
+   .value =
+    company.timezoneLabel;
+ }
+
+}
+
 
 function openContactModal(
  id=null
@@ -3059,6 +6485,22 @@ function openContactModal(
     "New Contact";
 
 
+ const linkedCompany =
+  lead
+   ?
+   getCompanyForLead(
+    lead
+   )
+   :
+   null;
+
+
+ populateCompanyDropdown(
+  linkedCompany?.id ||
+  ""
+ );
+
+
  const fields = {
 
   formFirstName:
@@ -3067,10 +6509,6 @@ function openContactModal(
 
   formTitle:
    lead?.title ||
-   "",
-
-  formCompany:
-   lead?.company ||
    "",
 
   formRole:
@@ -3095,7 +6533,7 @@ function openContactModal(
 
   formTimezone:
    lead?.timezone ||
-   "America/Los_Angeles",
+   "",
 
   formTimezoneLabel:
    lead?.timezoneLabel ||
@@ -3162,8 +6600,7 @@ function closeContactModal(){
   );
 
 
- editingLeadId =
-  null;
+ editingLeadId=null;
 }
 
 
@@ -3182,6 +6619,7 @@ function formValue(id){
    SAVE CONTACT
 ===================================================== */
 
+
 async function saveContactForm(){
 
  const firstName =
@@ -3190,19 +6628,25 @@ async function saveContactForm(){
   );
 
 
- const company =
+ const companyId =
   formValue(
-   "formCompany"
+   "formCompanyId"
+  );
+
+
+ const selectedCompany =
+  getCompanyById(
+   companyId
   );
 
 
  if(
   !firstName &&
-  !company
+  !selectedCompany
  ){
 
   alert(
-   "Please enter a contact name or company."
+   "Please enter a contact name or select a company."
   );
 
   return;
@@ -3226,9 +6670,7 @@ async function saveContactForm(){
    return;
   }
 
-
  }else{
-
 
   lead =
    defaults(
@@ -3276,8 +6718,14 @@ async function saveContactForm(){
   );
 
 
+ lead.companyId =
+  selectedCompany?.id ||
+  "";
+
+
  lead.company =
-  company;
+  selectedCompany?.name ||
+  "";
 
 
  lead.role =
@@ -3362,6 +6810,7 @@ async function saveContactForm(){
   await cloud(
    "sync",
    {
+    companies,
     leads
    }
   );
@@ -3391,12 +6840,14 @@ async function saveContactForm(){
    "The contact was saved locally, but cloud sync failed."
   );
  }
+
 }
 
 
 /* =====================================================
    DELETE CONTACT
 ===================================================== */
+
 
 async function deleteContact(id){
 
@@ -3437,8 +6888,7 @@ async function deleteContact(id){
   await cloud(
    "delete",
    {
-    externalId:
-     id
+    externalId:id
    }
   );
 
@@ -3485,12 +6935,588 @@ async function deleteContact(id){
    "The contact was not deleted. Your existing data has been left unchanged."
   );
  }
+
+}
+
+
+/* =====================================================
+   COMPANY MODAL
+===================================================== */
+
+
+function openCompanyModal(
+ id=null
+){
+
+ editingCompanyId =
+  id;
+
+
+ const company =
+  id
+   ?
+   getCompanyById(
+    id
+   )
+   :
+   null;
+
+
+ document
+  .getElementById(
+   "companyModalTitle"
+  )
+  .textContent =
+   company
+    ?
+    "Edit Company"
+    :
+    "New Company";
+
+
+ const fields = {
+
+  companyFormName:
+   company?.name ||
+   "",
+
+  companyFormWebsite:
+   company?.website ||
+   "",
+
+  companyFormIndustry:
+   company?.industry ||
+   "",
+
+  companyFormPhone:
+   company?.phone ||
+   "",
+
+  companyFormEmail:
+   company?.email ||
+   "",
+
+  companyFormStatus:
+   company?.status ||
+   "Prospect",
+
+  companyFormTimezone:
+   company?.timezone ||
+   "",
+
+  companyFormTimezoneLabel:
+   company?.timezoneLabel ||
+   "",
+
+  companyFormAddress1:
+   company?.addressLine1 ||
+   "",
+
+  companyFormAddress2:
+   company?.addressLine2 ||
+   "",
+
+  companyFormCity:
+   company?.city ||
+   "",
+
+  companyFormState:
+   company?.stateRegion ||
+   "",
+
+  companyFormPostal:
+   company?.postalCode ||
+   "",
+
+  companyFormCountry:
+   company?.country ||
+   "",
+
+  companyFormNotes:
+   company?.notes ||
+   ""
+
+ };
+
+
+ Object
+  .entries(
+   fields
+  )
+  .forEach(
+   (
+    [
+     fieldId,
+     value
+    ]
+   ) => {
+
+    document
+     .getElementById(
+      fieldId
+     )
+     .value =
+      value;
+
+   }
+  );
+
+
+ document
+  .getElementById(
+   "companyModal"
+  )
+  .classList
+  .add(
+   "show"
+  );
+}
+
+
+function closeCompanyModal(){
+
+ document
+  .getElementById(
+   "companyModal"
+  )
+  .classList
+  .remove(
+   "show"
+  );
+
+
+ editingCompanyId=null;
+}
+
+
+function companyFormValue(
+ id
+){
+
+ return document
+  .getElementById(
+   id
+  )
+  .value
+  .trim();
+}
+
+
+/* =====================================================
+   SAVE COMPANY
+===================================================== */
+
+
+async function saveCompanyForm(){
+
+ const name =
+  companyFormValue(
+   "companyFormName"
+  );
+
+
+ if(!name){
+
+  alert(
+   "Please enter a company name."
+  );
+
+  return;
+ }
+
+
+ const duplicate =
+  companies.find(
+   company =>
+    company.id !==
+    editingCompanyId
+    &&
+    company.name
+     .trim()
+     .toLowerCase()
+    ===
+    name
+     .trim()
+     .toLowerCase()
+  );
+
+
+ if(duplicate){
+
+  alert(
+   "A company with this name already exists."
+  );
+
+  return;
+ }
+
+
+ let company;
+
+
+ if(
+  editingCompanyId
+ ){
+
+  company =
+   getCompanyById(
+    editingCompanyId
+   );
+
+
+  if(!company){
+   return;
+  }
+
+ }else{
+
+  company =
+   companyDefaults(
+    {
+     id:uuid()
+    }
+   );
+
+
+  companies.push(
+   company
+  );
+
+
+  selectedCompanyId =
+   company.id;
+ }
+
+
+ const oldName =
+  company.name ||
+  "";
+
+
+ company.name =
+  name;
+
+
+ company.website =
+  companyFormValue(
+   "companyFormWebsite"
+  );
+
+
+ company.industry =
+  companyFormValue(
+   "companyFormIndustry"
+  );
+
+
+ company.phone =
+  companyFormValue(
+   "companyFormPhone"
+  );
+
+
+ company.email =
+  companyFormValue(
+   "companyFormEmail"
+  );
+
+
+ company.status =
+  companyFormValue(
+   "companyFormStatus"
+  )
+  ||
+  "Prospect";
+
+
+ company.timezone =
+  companyFormValue(
+   "companyFormTimezone"
+  );
+
+
+ company.timezoneLabel =
+  companyFormValue(
+   "companyFormTimezoneLabel"
+  );
+
+
+ company.addressLine1 =
+  companyFormValue(
+   "companyFormAddress1"
+  );
+
+
+ company.addressLine2 =
+  companyFormValue(
+   "companyFormAddress2"
+  );
+
+
+ company.city =
+  companyFormValue(
+   "companyFormCity"
+  );
+
+
+ company.stateRegion =
+  companyFormValue(
+   "companyFormState"
+  );
+
+
+ company.postalCode =
+  companyFormValue(
+   "companyFormPostal"
+  );
+
+
+ company.country =
+  companyFormValue(
+   "companyFormCountry"
+  );
+
+
+ company.notes =
+  companyFormValue(
+   "companyFormNotes"
+  );
+
+
+ /*
+   If the company is renamed, update its linked
+   contacts' display name as well.
+ */
+
+
+ leads.forEach(
+  lead => {
+
+   if(
+    lead.companyId ===
+    company.id
+    ||
+    (
+     !lead.companyId &&
+     oldName &&
+     lead.company
+      ?.trim()
+      .toLowerCase()
+     ===
+     oldName
+      .trim()
+      .toLowerCase()
+    )
+   ){
+
+    lead.companyId =
+     company.id;
+
+
+    lead.company =
+     company.name;
+   }
+
+  }
+ );
+
+
+ closeCompanyModal();
+
+
+ saveCache();
+
+
+ renderAll();
+
+
+ setSync(
+  "syncing",
+  "Saving..."
+ );
+
+
+ try{
+
+  await cloud(
+   "sync",
+   {
+    companies,
+    leads
+   }
+  );
+
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+
+ }catch(error){
+
+  console.error(
+   "Company save failed:",
+   error
+  );
+
+
+  setSync(
+   "error",
+   "Local cache active"
+  );
+
+
+  alert(
+   "The company was saved locally, but cloud sync failed."
+  );
+ }
+
+}
+
+
+/* =====================================================
+   DELETE COMPANY
+===================================================== */
+
+
+async function deleteCompany(id){
+
+ const company =
+  getCompanyById(
+   id
+  );
+
+
+ if(!company){
+  return;
+ }
+
+
+ const linkedContacts =
+  leads.filter(
+   lead =>
+    lead.companyId === id
+  );
+
+
+ let warning =
+  `Delete ${company.name} from the CRM?`;
+
+
+ if(
+  linkedContacts.length
+ ){
+
+  warning +=
+   `\n\n${linkedContacts.length} contact${
+    linkedContacts.length === 1
+     ?
+     ""
+     :
+     "s"
+   } will remain in the CRM but will no longer be linked to this company.`;
+ }
+
+
+ if(
+  !confirm(
+   warning
+  )
+ ){
+  return;
+ }
+
+
+ setSync(
+  "syncing",
+  "Deleting..."
+ );
+
+
+ try{
+
+  await cloud(
+   "deleteCompany",
+   {
+    externalId:id
+   }
+  );
+
+
+  leads.forEach(
+   lead => {
+
+    if(
+     lead.companyId === id
+    ){
+
+     lead.companyId="";
+    }
+
+   }
+  );
+
+
+  companies =
+   companies.filter(
+    item =>
+     item.id !== id
+   );
+
+
+  selectedCompanyId =
+   companies[0]?.id ||
+   null;
+
+
+  saveCache();
+
+
+  renderAll();
+
+
+  await cloud(
+   "sync",
+   {
+    companies,
+    leads
+   }
+  );
+
+
+  setSync(
+   "synced",
+   "Cloud synced"
+  );
+
+
+ }catch(error){
+
+  console.error(
+   "Company delete failed:",
+   error
+  );
+
+
+  setSync(
+   "error",
+   "Delete failed"
+  );
+
+
+  alert(
+   "The company was not deleted. Your existing data has been left unchanged."
+  );
+ }
+
 }
 
 
 /* =====================================================
    CALL ASSIST
 ===================================================== */
+
 
 function openCallAssist(){
 
@@ -3519,6 +7545,7 @@ function openLeadInCallAssist(id){
 /* =====================================================
    EMAIL
 ===================================================== */
+
 
 function emailLead(id){
 
@@ -3568,6 +7595,7 @@ function emailLead(id){
    SEARCH
 ===================================================== */
 
+
 document
  .getElementById(
   "globalSearch"
@@ -3592,6 +7620,7 @@ document
    MODAL BACKDROP
 ===================================================== */
 
+
 document
  .getElementById(
   "contactModal"
@@ -3612,9 +7641,30 @@ document
  );
 
 
+document
+ .getElementById(
+  "companyModal"
+ )
+ .addEventListener(
+  "click",
+  event => {
+
+   if(
+    event.target.id ===
+    "companyModal"
+   ){
+
+    closeCompanyModal();
+   }
+
+  }
+ );
+
+
 /* =====================================================
    CALL ASSIST STORAGE CHANGES
 ===================================================== */
+
 
 window.addEventListener(
  "storage",
@@ -3629,7 +7679,7 @@ window.addEventListener(
 
 
   leads =
-   loadCache();
+   loadLeadCache();
 
 
   if(
@@ -3658,6 +7708,7 @@ window.addEventListener(
    RETURNING FROM IDLE / SLEEP
 ===================================================== */
 
+
 async function verifySessionWhenReturning(){
 
  if(
@@ -3673,15 +7724,12 @@ async function verifySessionWhenReturning(){
    await getActiveSession();
 
 
-  if(
-   session
-  ){
+  if(session){
 
    setSync(
     "synced",
     "Cloud synced"
    );
-
 
   }else{
 
@@ -3705,6 +7753,7 @@ async function verifySessionWhenReturning(){
    "Login required"
   );
  }
+
 }
 
 
@@ -3724,12 +7773,15 @@ window.addEventListener(
    START
 ===================================================== */
 
+
 window.addEventListener(
  "load",
  initialise
  );
 
+
 </script>
+
 
 </body>
 </html>
