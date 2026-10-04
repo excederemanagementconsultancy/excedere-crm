@@ -1,1089 +1,2917 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
 <title>Excedere CRM</title>
 
-<link rel="icon" type="image/png" href="excedere-favicon.png">
-<link rel="apple-touch-icon" href="excedere-favicon.png">
+<link
+  rel="icon"
+  type="image/png"
+  href="excedere-favicon.png"
+>
+
+<link
+  rel="apple-touch-icon"
+  href="excedere-favicon.png"
+>
+
+<!-- Official Supabase Browser Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <style>
+
 :root{
- --bg:#050b12;--bg2:#07131d;--panel:#0a1620;--panel2:#0d1b27;
- --panel3:#102332;--line:#203341;--line2:#172a37;--text:#f4f5f7;
- --muted:#91a4b3;--gold:#e3b15d;--gold2:#f4d08a;--silver:#c9d5df;
- --blue:#61b7ff;--green:#4fce8b;--amber:#e4ad58;--red:#ee7373;
+  --bg:#050b12;
+  --bg2:#07131d;
+  --panel:#0a1620;
+  --panel2:#0d1b27;
+  --panel3:#102332;
+  --line:#203341;
+  --line2:#172a37;
+  --text:#f4f5f7;
+  --muted:#91a4b3;
+  --gold:#e3b15d;
+  --gold2:#f4d08a;
+  --silver:#c9d5df;
+  --blue:#61b7ff;
+  --green:#4fce8b;
+  --amber:#e4ad58;
+  --red:#ee7373;
 }
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%}
+
+
+*{
+  box-sizing:border-box;
+}
+
+
+html,
 body{
- color:var(--text);
- background:
- radial-gradient(circle at 78% -5%,rgba(40,108,145,.20),transparent 34%),
- radial-gradient(circle at 6% 96%,rgba(211,164,83,.09),transparent 30%),
- linear-gradient(145deg,var(--bg),var(--bg2));
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  margin:0;
+  min-height:100%;
 }
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.app{min-height:100vh;display:grid;grid-template-columns:250px minmax(0,1fr)}
+
+
+body{
+  color:var(--text);
+
+  background:
+    radial-gradient(
+      circle at 78% -5%,
+      rgba(40,108,145,.20),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 6% 96%,
+      rgba(211,164,83,.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      var(--bg),
+      var(--bg2)
+    );
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+
+button{
+  cursor:pointer;
+}
+
+
+.app{
+  min-height:100vh;
+
+  display:grid;
+
+  grid-template-columns:
+    250px
+    minmax(0,1fr);
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
 .sidebar{
- min-height:100vh;height:100vh;position:sticky;top:0;padding:24px 18px;
- border-right:1px solid var(--line);
- background:linear-gradient(180deg,rgba(4,13,20,.99),rgba(6,18,27,.98));
+  min-height:100vh;
+  height:100vh;
+
+  position:sticky;
+  top:0;
+
+  padding:
+    24px 18px;
+
+  border-right:
+    1px solid
+    var(--line);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(4,13,20,.99),
+      rgba(6,18,27,.98)
+    );
 }
-.brand{padding:4px 8px 26px;border-bottom:1px solid var(--line);margin-bottom:22px}
-.brand-top{display:flex;align-items:center;gap:12px}
+
+
+.brand{
+  padding:
+    4px 8px 26px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  margin-bottom:
+    22px;
+}
+
+
+.brand-top{
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+}
+
+
 .brand-icon{
- width:54px;height:54px;border-radius:15px;object-fit:cover;
- box-shadow:0 0 24px rgba(226,177,93,.15)
+  width:54px;
+  height:54px;
+
+  border-radius:15px;
+
+  object-fit:cover;
+
+  box-shadow:
+    0 0 24px
+    rgba(226,177,93,.15);
 }
+
+
 .brand-word{
- font-family:Georgia,"Times New Roman",serif;font-size:20px;letter-spacing:.22em;
- background:linear-gradient(90deg,var(--gold2),#fff,var(--silver));
- -webkit-background-clip:text;background-clip:text;color:transparent
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:20px;
+
+  letter-spacing:.22em;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold2),
+      #fff,
+      var(--silver)
+    );
+
+  -webkit-background-clip:text;
+
+  background-clip:text;
+
+  color:transparent;
 }
-.brand-sub{margin-top:4px;color:var(--silver);font-size:8px;letter-spacing:.20em}
-.nav{display:flex;flex-direction:column;gap:7px}
+
+
+.brand-sub{
+  margin-top:4px;
+
+  color:
+    var(--silver);
+
+  font-size:8px;
+
+  letter-spacing:.20em;
+}
+
+
+.nav{
+  display:flex;
+
+  flex-direction:column;
+
+  gap:7px;
+}
+
+
 .nav-btn{
- width:100%;min-height:48px;padding:0 14px;display:flex;align-items:center;
- gap:12px;border:1px solid transparent;border-radius:10px;background:transparent;
- color:#b6c4cf;text-align:left;font-weight:650
+  width:100%;
+
+  min-height:48px;
+
+  padding:
+    0 14px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius:10px;
+
+  background:
+    transparent;
+
+  color:
+    #b6c4cf;
+
+  text-align:left;
+
+  font-weight:650;
 }
-.nav-btn:hover{background:#0b1a25}
+
+
+.nav-btn:hover{
+  background:
+    #0b1a25;
+}
+
+
 .nav-btn.active{
- color:#fff;border-color:#253b4a;
- background:linear-gradient(90deg,rgba(226,177,93,.16),rgba(26,52,69,.42));
- box-shadow:inset 3px 0 0 var(--gold)
+  color:#fff;
+
+  border-color:
+    #253b4a;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(226,177,93,.16),
+      rgba(26,52,69,.42)
+    );
+
+  box-shadow:
+    inset 3px 0 0
+    var(--gold);
 }
-.nav-icon{width:22px;text-align:center;color:var(--gold)}
-.sidebar-footer{position:absolute;left:18px;right:18px;bottom:20px}
+
+
+.nav-icon{
+  width:22px;
+
+  text-align:center;
+
+  color:
+    var(--gold);
+}
+
+
+.sidebar-footer{
+  position:absolute;
+
+  left:18px;
+  right:18px;
+  bottom:20px;
+}
+
+
+/* =====================================================
+   CLOUD STATUS
+===================================================== */
+
 .sync-status{
- display:flex;align-items:center;gap:8px;min-height:34px;margin-bottom:10px;
- padding:8px 10px;border:1px solid var(--line);border-radius:8px;
- background:rgba(8,22,31,.70);color:var(--muted);font-size:9px;
- font-weight:700;letter-spacing:.04em
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  min-height:34px;
+
+  margin-bottom:10px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:8px;
+
+  background:
+    rgba(8,22,31,.70);
+
+  color:
+    var(--muted);
+
+  font-size:9px;
+
+  font-weight:700;
+
+  letter-spacing:.04em;
 }
-.sync-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#607786}
-.sync-status.syncing{color:var(--gold2)}
-.sync-status.syncing .sync-dot{background:var(--gold);box-shadow:0 0 10px rgba(226,177,93,.35)}
-.sync-status.synced{color:var(--green)}
-.sync-status.synced .sync-dot{background:var(--green);box-shadow:0 0 10px rgba(79,206,139,.35)}
-.sync-status.error{color:var(--amber)}
-.sync-status.error .sync-dot{background:var(--amber)}
+
+
+.sync-dot{
+  width:7px;
+  height:7px;
+
+  flex:
+    0 0 7px;
+
+  border-radius:50%;
+
+  background:
+    #607786;
+}
+
+
+.sync-status.syncing{
+  color:
+    var(--gold2);
+}
+
+
+.sync-status.syncing .sync-dot{
+  background:
+    var(--gold);
+
+  box-shadow:
+    0 0 10px
+    rgba(226,177,93,.35);
+}
+
+
+.sync-status.synced{
+  color:
+    var(--green);
+}
+
+
+.sync-status.synced .sync-dot{
+  background:
+    var(--green);
+
+  box-shadow:
+    0 0 10px
+    rgba(79,206,139,.35);
+}
+
+
+.sync-status.error{
+  color:
+    var(--amber);
+}
+
+
+.sync-status.error .sync-dot{
+  background:
+    var(--amber);
+}
+
+
 .call-assist-link{
- width:100%;min-height:48px;border:1px solid #e4b864;border-radius:10px;
- color:#10141a;font-weight:850;background:linear-gradient(135deg,#f1cd84,#dca64e)
+  width:100%;
+
+  min-height:48px;
+
+  border:
+    1px solid
+    #e4b864;
+
+  border-radius:10px;
+
+  color:
+    #10141a;
+
+  font-weight:850;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f1cd84,
+      #dca64e
+    );
 }
+
+
 .sidebar-tagline{
- margin-top:18px;padding-top:14px;border-top:1px solid var(--line);
- color:#7f93a3;font-family:Georgia,"Times New Roman",serif;font-size:9px;
- line-height:1.8;letter-spacing:.25em
+  margin-top:18px;
+
+  padding-top:14px;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  color:
+    #7f93a3;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:9px;
+
+  line-height:1.8;
+
+  letter-spacing:.25em;
 }
-.main{min-width:0}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+  min-width:0;
+}
+
+
 .topbar{
- min-height:78px;display:grid;grid-template-columns:1fr minmax(330px,520px);
- gap:22px;align-items:center;padding:11px 28px;border-bottom:1px solid var(--line);
- position:sticky;top:0;z-index:30;background:rgba(5,13,20,.92);backdrop-filter:blur(14px)
+  min-height:78px;
+
+  display:grid;
+
+  grid-template-columns:
+    1fr
+    minmax(330px,520px);
+
+  gap:22px;
+
+  align-items:center;
+
+  padding:
+    11px 28px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  position:sticky;
+
+  top:0;
+
+  z-index:30;
+
+  background:
+    rgba(5,13,20,.92);
+
+  backdrop-filter:
+    blur(14px);
 }
-.page-title{font-size:28px;font-weight:780}
-.page-subtitle{margin-top:4px;color:var(--muted);font-size:11px}
-.search-wrap{position:relative}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold)}
+
+
+.page-title{
+  font-size:28px;
+
+  font-weight:780;
+}
+
+
+.page-subtitle{
+  margin-top:4px;
+
+  color:
+    var(--muted);
+
+  font-size:11px;
+}
+
+
+.search-wrap{
+  position:relative;
+}
+
+
+.search-icon{
+  position:absolute;
+
+  left:14px;
+
+  top:50%;
+
+  transform:
+    translateY(-50%);
+
+  color:
+    var(--gold);
+}
+
+
 .search{
- width:100%;height:44px;padding:0 14px 0 42px;border:1px solid #2b4252;
- border-radius:10px;outline:none;background:#08141d;color:var(--text)
+  width:100%;
+
+  height:44px;
+
+  padding:
+    0 14px 0 42px;
+
+  border:
+    1px solid
+    #2b4252;
+
+  border-radius:10px;
+
+  outline:none;
+
+  background:
+    #08141d;
+
+  color:
+    var(--text);
 }
-.content{padding:24px 28px 42px}
-.view{display:none}.view.active{display:block}
+
+
+.content{
+  padding:
+    24px 28px 42px;
+}
+
+
+.view{
+  display:none;
+}
+
+
+.view.active{
+  display:block;
+}
+
+
 .card{
- border:1px solid var(--line);border-radius:12px;
- background:linear-gradient(155deg,rgba(12,28,39,.94),rgba(7,19,28,.96))
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      155deg,
+      rgba(12,28,39,.94),
+      rgba(7,19,28,.96)
+    );
 }
-.empty{padding:28px;color:var(--muted);text-align:center}
-.stat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+
+
+.empty{
+  padding:28px;
+
+  color:
+    var(--muted);
+
+  text-align:center;
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stat-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:12px;
+
+  margin-bottom:16px;
+}
+
+
 .stat-card{
- padding:16px 17px;display:grid;grid-template-columns:38px 1fr;gap:12px;
- align-items:center;border:1px solid var(--line);border-radius:12px;
- background:linear-gradient(145deg,#0a1823,#0c1e2b)
+  padding:
+    16px 17px;
+
+  display:grid;
+
+  grid-template-columns:
+    38px 1fr;
+
+  gap:12px;
+
+  align-items:center;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0a1823,
+      #0c1e2b
+    );
 }
+
+
 .stat-icon{
- width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(226,177,93,.55);
- border-radius:10px;color:var(--gold);background:rgba(226,177,93,.07);font-size:18px
+  width:38px;
+  height:38px;
+
+  display:grid;
+
+  place-items:center;
+
+  border:
+    1px solid
+    rgba(226,177,93,.55);
+
+  border-radius:10px;
+
+  color:
+    var(--gold);
+
+  background:
+    rgba(226,177,93,.07);
+
+  font-size:18px;
 }
-.stat-label{color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.11em}
-.stat-number{margin-top:3px;font-size:27px;font-weight:850}
-.gold{color:var(--gold2)}.red{color:var(--red)}.blue{color:var(--blue)}
-.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(330px,.8fr);gap:14px}
+
+
+.stat-label{
+  color:
+    var(--muted);
+
+  font-size:8px;
+
+  font-weight:800;
+
+  letter-spacing:.11em;
+}
+
+
+.stat-number{
+  margin-top:3px;
+
+  font-size:27px;
+
+  font-weight:850;
+}
+
+
+.gold{
+  color:
+    var(--gold2);
+}
+
+
+.red{
+  color:
+    var(--red);
+}
+
+
+.blue{
+  color:
+    var(--blue);
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+.dashboard-grid{
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1.3fr)
+    minmax(330px,.8fr);
+
+  gap:14px;
+}
+
+
 .card-header{
- padding:14px 16px;border-bottom:1px solid var(--line);display:flex;
- justify-content:space-between;align-items:center;font-size:12px;font-weight:800
+  padding:
+    14px 16px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  display:flex;
+
+  justify-content:
+    space-between;
+
+  align-items:center;
+
+  font-size:12px;
+
+  font-weight:800;
 }
-.card-header span{color:var(--gold)}
-.card-body{padding:10px 16px 14px}
+
+
+.card-header span{
+  color:
+    var(--gold);
+}
+
+
+.card-body{
+  padding:
+    10px 16px 14px;
+}
+
+
 .activity-row{
- padding:11px 0;display:grid;grid-template-columns:38px minmax(0,1fr) auto;
- gap:11px;align-items:center;border-bottom:1px solid var(--line2)
+  padding:
+    11px 0;
+
+  display:grid;
+
+  grid-template-columns:
+    38px
+    minmax(0,1fr)
+    auto;
+
+  gap:11px;
+
+  align-items:center;
+
+  border-bottom:
+    1px solid
+    var(--line2);
 }
+
+
 .activity-icon{
- width:35px;height:35px;display:grid;place-items:center;border-radius:50%;
- background:#132737;color:var(--silver);border:1px solid #294354
+  width:35px;
+  height:35px;
+
+  display:grid;
+
+  place-items:center;
+
+  border-radius:50%;
+
+  background:
+    #132737;
+
+  color:
+    var(--silver);
+
+  border:
+    1px solid
+    #294354;
 }
-.activity-title,.follow-name,.contact-name{font-size:11px;font-weight:800}
-.activity-subtitle,.follow-company,.contact-sub{margin-top:3px;color:var(--muted);font-size:9px}
-.activity-time{color:#8294a2;font-size:8px}
+
+
+.activity-title,
+.follow-name,
+.contact-name{
+  font-size:11px;
+
+  font-weight:800;
+}
+
+
+.activity-subtitle,
+.follow-company,
+.contact-sub{
+  margin-top:3px;
+
+  color:
+    var(--muted);
+
+  font-size:9px;
+}
+
+
+.activity-time{
+  color:
+    #8294a2;
+
+  font-size:8px;
+}
+
+
+/* =====================================================
+   FOLLOW UPS
+===================================================== */
+
 .follow-row{
- padding:11px 0;display:grid;grid-template-columns:minmax(0,1fr) 105px;
- gap:12px;border-bottom:1px solid var(--line2)
+  padding:
+    11px 0;
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    105px;
+
+  gap:12px;
+
+  border-bottom:
+    1px solid
+    var(--line2);
 }
-.follow-action{margin-top:5px;font-size:9px}.follow-date{text-align:right;font-size:9px}
+
+
+.follow-action{
+  margin-top:5px;
+
+  font-size:9px;
+}
+
+
+.follow-date{
+  text-align:right;
+
+  font-size:9px;
+}
+
+
 .status-badge{
- display:inline-block;margin-top:4px;padding:4px 8px;border-radius:999px;
- font-size:8px;font-weight:850
+  display:inline-block;
+
+  margin-top:4px;
+
+  padding:
+    4px 8px;
+
+  border-radius:999px;
+
+  font-size:8px;
+
+  font-weight:850;
 }
-.status-new{color:var(--silver);border:1px solid #536776;background:#162631}
-.status-current{color:var(--green);border:1px solid rgba(79,206,139,.55);background:rgba(79,206,139,.08)}
-.status-due{color:var(--gold2);border:1px solid rgba(226,177,93,.55);background:rgba(226,177,93,.09)}
-.status-overdue{color:var(--red);border:1px solid rgba(238,115,115,.55);background:rgba(238,115,115,.08)}
-.section-heading{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:13px}
-.section-heading h2{margin:0;font-size:19px}
-.section-heading p{margin:4px 0 0;color:var(--muted);font-size:10px}
-.primary-btn,.secondary-btn,.danger-btn{
- min-height:40px;padding:0 15px;border-radius:8px;font-weight:800
+
+
+.status-new{
+  color:
+    var(--silver);
+
+  border:
+    1px solid
+    #536776;
+
+  background:
+    #162631;
 }
-.primary-btn{border:0;background:linear-gradient(135deg,#f0cc80,#d9a34a);color:#101318}
-.secondary-btn{border:1px solid #2d4656;background:#0d1f2c;color:var(--text)}
-.danger-btn{border:1px solid rgba(238,115,115,.55);background:rgba(238,115,115,.08);color:var(--red)}
-.contacts-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:14px}
-.contact-list{overflow:hidden}
-.contact-head,.contact-row{
- display:grid;grid-template-columns:1.1fr 1.3fr 1.2fr .85fr .72fr;gap:10px
+
+
+.status-current{
+  color:
+    var(--green);
+
+  border:
+    1px solid
+    rgba(79,206,139,.55);
+
+  background:
+    rgba(79,206,139,.08);
 }
-.contact-head{padding:10px 14px;border-bottom:1px solid var(--line);color:#8296a5;font-size:8px;font-weight:800}
+
+
+.status-due{
+  color:
+    var(--gold2);
+
+  border:
+    1px solid
+    rgba(226,177,93,.55);
+
+  background:
+    rgba(226,177,93,.09);
+}
+
+
+.status-overdue{
+  color:
+    var(--red);
+
+  border:
+    1px solid
+    rgba(238,115,115,.55);
+
+  background:
+    rgba(238,115,115,.08);
+}
+
+
+/* =====================================================
+   CONTACTS
+===================================================== */
+
+.section-heading{
+  display:flex;
+
+  justify-content:
+    space-between;
+
+  align-items:center;
+
+  gap:18px;
+
+  margin-bottom:13px;
+}
+
+
+.section-heading h2{
+  margin:0;
+
+  font-size:19px;
+}
+
+
+.section-heading p{
+  margin:
+    4px 0 0;
+
+  color:
+    var(--muted);
+
+  font-size:10px;
+}
+
+
+.primary-btn,
+.secondary-btn,
+.danger-btn{
+  min-height:40px;
+
+  padding:
+    0 15px;
+
+  border-radius:8px;
+
+  font-weight:800;
+}
+
+
+.primary-btn{
+  border:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0cc80,
+      #d9a34a
+    );
+
+  color:
+    #101318;
+}
+
+
+.secondary-btn{
+  border:
+    1px solid
+    #2d4656;
+
+  background:
+    #0d1f2c;
+
+  color:
+    var(--text);
+}
+
+
+.danger-btn{
+  border:
+    1px solid
+    rgba(238,115,115,.55);
+
+  background:
+    rgba(238,115,115,.08);
+
+  color:
+    var(--red);
+}
+
+
+.contacts-layout{
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    390px;
+
+  gap:14px;
+}
+
+
+.contact-list{
+  overflow:hidden;
+}
+
+
+.contact-head,
 .contact-row{
- width:100%;align-items:center;padding:12px 14px;border:0;border-bottom:1px solid var(--line2);
- background:transparent;color:var(--text);text-align:left
+  display:grid;
+
+  grid-template-columns:
+    1.1fr
+    1.3fr
+    1.2fr
+    .85fr
+    .72fr;
+
+  gap:10px;
 }
-.contact-row:hover{background:#0c1d29}
-.contact-row.selected{background:linear-gradient(90deg,rgba(226,177,93,.11),rgba(23,48,66,.34))}
-.contact-cell{font-size:9px;line-height:1.45}
-.detail-panel{height:fit-content;position:sticky;top:102px}
-.detail-top{padding:18px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(226,177,93,.07),transparent)}
+
+
+.contact-head{
+  padding:
+    10px 14px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  color:
+    #8296a5;
+
+  font-size:8px;
+
+  font-weight:800;
+}
+
+
+.contact-row{
+  width:100%;
+
+  align-items:center;
+
+  padding:
+    12px 14px;
+
+  border:0;
+
+  border-bottom:
+    1px solid
+    var(--line2);
+
+  background:
+    transparent;
+
+  color:
+    var(--text);
+
+  text-align:left;
+}
+
+
+.contact-row:hover{
+  background:
+    #0c1d29;
+}
+
+
+.contact-row.selected{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(226,177,93,.11),
+      rgba(23,48,66,.34)
+    );
+}
+
+
+.contact-cell{
+  font-size:9px;
+
+  line-height:1.45;
+}
+
+
+/* =====================================================
+   CONTACT DETAIL
+===================================================== */
+
+.detail-panel{
+  height:fit-content;
+
+  position:sticky;
+
+  top:102px;
+}
+
+
+.detail-top{
+  padding:18px;
+
+  border-bottom:
+    1px solid
+    var(--line);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(226,177,93,.07),
+      transparent
+    );
+}
+
+
 .detail-avatar{
- width:48px;height:48px;margin-bottom:11px;display:grid;place-items:center;border-radius:50%;
- border:1px solid var(--gold);color:#15181c;font-weight:850;
- background:linear-gradient(135deg,#f1cf8b,#b98138)
+  width:48px;
+  height:48px;
+
+  margin-bottom:11px;
+
+  display:grid;
+
+  place-items:center;
+
+  border-radius:50%;
+
+  border:
+    1px solid
+    var(--gold);
+
+  color:
+    #15181c;
+
+  font-weight:850;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f1cf8b,
+      #b98138
+    );
 }
-.detail-name{font-size:22px;font-weight:850}.detail-company{margin-top:4px;color:var(--muted);font-size:11px}
-.detail-body{padding:13px 17px 18px}
-.detail-item{padding:9px 0;border-bottom:1px solid var(--line2)}
-.detail-label{margin-bottom:4px;color:#7f95a5;font-size:7px;font-weight:800;letter-spacing:.11em}
-.detail-value{font-size:10px;line-height:1.45}.detail-gold{color:var(--gold2)}
-.pipeline-select,.form-input{
- width:100%;min-height:38px;padding:8px 9px;border:1px solid #2d4656;
- border-radius:8px;outline:none;background:#07151f;color:var(--text)
+
+
+.detail-name{
+  font-size:22px;
+
+  font-weight:850;
 }
-.detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
-.history-title{margin:17px 0 7px;color:var(--gold);font-size:8px;font-weight:850;letter-spacing:.12em}
-.history-entry{padding:8px 0;border-bottom:1px solid var(--line2)}
-.history-date{color:var(--muted);font-size:7px}.history-main{margin-top:3px;font-size:9px;font-weight:750}
-.history-sub{margin-top:2px;color:var(--muted);font-size:8px}
+
+
+.detail-company{
+  margin-top:4px;
+
+  color:
+    var(--muted);
+
+  font-size:11px;
+}
+
+
+.detail-body{
+  padding:
+    13px 17px 18px;
+}
+
+
+.detail-item{
+  padding:
+    9px 0;
+
+  border-bottom:
+    1px solid
+    var(--line2);
+}
+
+
+.detail-label{
+  margin-bottom:4px;
+
+  color:
+    #7f95a5;
+
+  font-size:7px;
+
+  font-weight:800;
+
+  letter-spacing:.11em;
+}
+
+
+.detail-value{
+  font-size:10px;
+
+  line-height:1.45;
+}
+
+
+.detail-gold{
+  color:
+    var(--gold2);
+}
+
+
+.pipeline-select,
+.form-input{
+  width:100%;
+
+  min-height:38px;
+
+  padding:
+    8px 9px;
+
+  border:
+    1px solid
+    #2d4656;
+
+  border-radius:8px;
+
+  outline:none;
+
+  background:
+    #07151f;
+
+  color:
+    var(--text);
+}
+
+
+.detail-actions{
+  display:grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap:7px;
+
+  margin-top:13px;
+}
+
+
+.history-title{
+  margin:
+    17px 0 7px;
+
+  color:
+    var(--gold);
+
+  font-size:8px;
+
+  font-weight:850;
+
+  letter-spacing:.12em;
+}
+
+
+.history-entry{
+  padding:
+    8px 0;
+
+  border-bottom:
+    1px solid
+    var(--line2);
+}
+
+
+.history-date{
+  color:
+    var(--muted);
+
+  font-size:7px;
+}
+
+
+.history-main{
+  margin-top:3px;
+
+  font-size:9px;
+
+  font-weight:750;
+}
+
+
+.history-sub{
+  margin-top:2px;
+
+  color:
+    var(--muted);
+
+  font-size:8px;
+}
+
+
+/* =====================================================
+   PIPELINE
+===================================================== */
+
 .pipeline-board{
- display:grid;grid-template-columns:repeat(8,minmax(220px,1fr));gap:10px;
- overflow-x:auto;padding-bottom:10px
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      8,
+      minmax(220px,1fr)
+    );
+
+  gap:10px;
+
+  overflow-x:auto;
+
+  padding-bottom:10px;
 }
-.pipeline-column{min-height:500px;border:1px solid var(--line);border-radius:11px;background:rgba(7,20,29,.84)}
-.pipeline-head{padding:11px 12px;display:flex;justify-content:space-between;border-bottom:1px solid var(--line)}
-.pipeline-title{font-size:9px;font-weight:850;color:var(--gold2)}
-.pipeline-count{color:var(--muted);font-size:9px}.pipeline-body{padding:8px}
-.pipeline-card{margin-bottom:8px;padding:11px;border:1px solid #263d4c;border-radius:8px;background:#0a1822}
-.pipeline-card-name{font-size:10px;font-weight:800}.pipeline-card-company{margin-top:3px;color:var(--muted);font-size:8px}
-.pipeline-card-action{margin-top:8px;color:#c4d0d9;font-size:8px}
+
+
+.pipeline-column{
+  min-height:500px;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:11px;
+
+  background:
+    rgba(7,20,29,.84);
+}
+
+
+.pipeline-head{
+  padding:
+    11px 12px;
+
+  display:flex;
+
+  justify-content:
+    space-between;
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+
+.pipeline-title{
+  font-size:9px;
+
+  font-weight:850;
+
+  color:
+    var(--gold2);
+}
+
+
+.pipeline-count{
+  color:
+    var(--muted);
+
+  font-size:9px;
+}
+
+
+.pipeline-body{
+  padding:8px;
+}
+
+
+.pipeline-card{
+  margin-bottom:8px;
+
+  padding:11px;
+
+  border:
+    1px solid
+    #263d4c;
+
+  border-radius:8px;
+
+  background:
+    #0a1822;
+}
+
+
+.pipeline-card-name{
+  font-size:10px;
+
+  font-weight:800;
+}
+
+
+.pipeline-card-company{
+  margin-top:3px;
+
+  color:
+    var(--muted);
+
+  font-size:8px;
+}
+
+
+.pipeline-card-action{
+  margin-top:8px;
+
+  color:
+    #c4d0d9;
+
+  font-size:8px;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
 
 .modal{
- position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
- padding:20px;background:rgba(0,0,0,.72);backdrop-filter:blur(5px)
-}
-.modal.show{display:flex}
-.modal-box{
- width:min(720px,100%);max-height:90vh;overflow:auto;border:1px solid #30495a;
- border-radius:14px;background:#081620;box-shadow:0 25px 80px rgba(0,0,0,.5)
-}
-.modal-head{
- padding:18px 20px;display:flex;justify-content:space-between;align-items:center;
- border-bottom:1px solid var(--line)
-}
-.modal-title{font-size:18px;font-weight:850}
-.modal-close{border:0;background:transparent;color:var(--silver);font-size:22px}
-.form-grid{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-field.full{grid-column:1/-1}
-.form-label{display:block;margin-bottom:6px;color:#8ca1b0;font-size:8px;font-weight:800;letter-spacing:.1em}
-.modal-actions{
- padding:16px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px
+  position:fixed;
+
+  inset:0;
+
+  z-index:100;
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:20px;
+
+  background:
+    rgba(0,0,0,.72);
+
+  backdrop-filter:
+    blur(5px);
 }
 
-@media(max-width:1250px){
- .stat-grid{grid-template-columns:repeat(3,1fr)}
- .contacts-layout{grid-template-columns:1fr}
- .detail-panel{position:static}
+
+.modal.show{
+  display:flex;
 }
+
+
+.modal-box{
+  width:
+    min(
+      720px,
+      100%
+    );
+
+  max-height:90vh;
+
+  overflow:auto;
+
+  border:
+    1px solid
+    #30495a;
+
+  border-radius:14px;
+
+  background:
+    #081620;
+
+  box-shadow:
+    0 25px 80px
+    rgba(0,0,0,.5);
+}
+
+
+.modal-head{
+  padding:
+    18px 20px;
+
+  display:flex;
+
+  justify-content:
+    space-between;
+
+  align-items:center;
+
+  border-bottom:
+    1px solid
+    var(--line);
+}
+
+
+.modal-title{
+  font-size:18px;
+
+  font-weight:850;
+}
+
+
+.modal-close{
+  border:0;
+
+  background:
+    transparent;
+
+  color:
+    var(--silver);
+
+  font-size:22px;
+}
+
+
+.form-grid{
+  padding:20px;
+
+  display:grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap:14px;
+}
+
+
+.form-field.full{
+  grid-column:
+    1 / -1;
+}
+
+
+.form-label{
+  display:block;
+
+  margin-bottom:6px;
+
+  color:
+    #8ca1b0;
+
+  font-size:8px;
+
+  font-weight:800;
+
+  letter-spacing:.1em;
+}
+
+
+.modal-actions{
+  padding:
+    16px 20px;
+
+  border-top:
+    1px solid
+    var(--line);
+
+  display:flex;
+
+  justify-content:
+    flex-end;
+
+  gap:8px;
+}
+
+
+@media(max-width:1250px){
+
+  .stat-grid{
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+
+
+  .contacts-layout{
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .detail-panel{
+    position:static;
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
+
 <aside class="sidebar">
- <div class="brand">
-  <div class="brand-top">
-   <img class="brand-icon" src="excedere-favicon.png" alt="Excedere">
-   <div>
-    <div class="brand-word">EXCEDERE</div>
-    <div class="brand-sub">MANAGEMENT CONSULTANCY</div>
-   </div>
-  </div>
- </div>
 
- <nav class="nav">
-  <button class="nav-btn active" onclick="switchView('dashboard',this)"><span class="nav-icon">⌂</span>Dashboard</button>
-  <button class="nav-btn" onclick="switchView('contacts',this)"><span class="nav-icon">●</span>Contacts</button>
-  <button class="nav-btn" onclick="switchView('pipeline',this)"><span class="nav-icon">▥</span>Pipeline</button>
-  <button class="nav-btn" onclick="switchView('followups',this)"><span class="nav-icon">▣</span>Follow-Ups</button>
- </nav>
 
- <div class="sidebar-footer">
-  <div id="syncStatus" class="sync-status">
-   <span class="sync-dot"></span>
-   <span id="syncStatusText">Connecting...</span>
-  </div>
+<div class="brand">
 
-  <button class="call-assist-link" onclick="openCallAssist()">☎ &nbsp; Open Call Assist</button>
+<div class="brand-top">
 
-  <div class="sidebar-tagline">PEOPLE.<br>PROCESS.<br>PERFORMANCE.</div>
- </div>
+<img
+  class="brand-icon"
+  src="excedere-favicon.png"
+  alt="Excedere"
+>
+
+<div>
+
+<div class="brand-word">
+EXCEDERE
+</div>
+
+<div class="brand-sub">
+MANAGEMENT CONSULTANCY
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<nav class="nav">
+
+<button
+  class="nav-btn active"
+  onclick="switchView('dashboard',this)"
+>
+<span class="nav-icon">⌂</span>
+Dashboard
+</button>
+
+
+<button
+  class="nav-btn"
+  onclick="switchView('contacts',this)"
+>
+<span class="nav-icon">●</span>
+Contacts
+</button>
+
+
+<button
+  class="nav-btn"
+  onclick="switchView('pipeline',this)"
+>
+<span class="nav-icon">▥</span>
+Pipeline
+</button>
+
+
+<button
+  class="nav-btn"
+  onclick="switchView('followups',this)"
+>
+<span class="nav-icon">▣</span>
+Follow-Ups
+</button>
+
+</nav>
+
+
+<div class="sidebar-footer">
+
+<div
+  id="syncStatus"
+  class="sync-status syncing"
+>
+
+<span class="sync-dot"></span>
+
+<span id="syncStatusText">
+Connecting...
+</span>
+
+</div>
+
+
+<button
+  class="call-assist-link"
+  onclick="openCallAssist()"
+>
+☎ &nbsp; Open Call Assist
+</button>
+
+
+<div class="sidebar-tagline">
+PEOPLE.<br>
+PROCESS.<br>
+PERFORMANCE.
+</div>
+
+</div>
+
+
 </aside>
+
 
 <section class="main">
 
-<header class="topbar">
- <div>
-  <div id="pageTitle" class="page-title">Dashboard</div>
-  <div id="pageSubtitle" class="page-subtitle">Your Excedere sales activity at a glance.</div>
- </div>
 
- <div class="search-wrap">
-  <span class="search-icon">⌕</span>
-  <input id="globalSearch" class="search" type="search"
-   placeholder="Search prospects, company, phone, email or role...">
- </div>
+<header class="topbar">
+
+<div>
+
+<div
+  id="pageTitle"
+  class="page-title"
+>
+Dashboard
+</div>
+
+<div
+  id="pageSubtitle"
+  class="page-subtitle"
+>
+Your Excedere sales activity at a glance.
+</div>
+
+</div>
+
+
+<div class="search-wrap">
+
+<span class="search-icon">
+⌕
+</span>
+
+<input
+  id="globalSearch"
+  class="search"
+  type="search"
+  placeholder="Search prospects, company, phone, email or role..."
+>
+
+</div>
+
 </header>
+
 
 <div class="content">
 
-<section id="dashboardView" class="view active">
 
- <div class="stat-grid">
-  <div class="stat-card"><div class="stat-icon">♙</div><div><div class="stat-label">TOTAL PROSPECTS</div><div id="statProspects" class="stat-number">0</div></div></div>
-  <div class="stat-card"><div class="stat-icon">▣</div><div><div class="stat-label">FOLLOW-UPS DUE</div><div id="statDue" class="stat-number gold">0</div></div></div>
-  <div class="stat-card"><div class="stat-icon">◷</div><div><div class="stat-label">OVERDUE</div><div id="statOverdue" class="stat-number red">0</div></div></div>
-  <div class="stat-card"><div class="stat-icon">✓</div><div><div class="stat-label">MEETINGS BOOKED</div><div id="statMeetings" class="stat-number gold">0</div></div></div>
-  <div class="stat-card"><div class="stat-icon">☎</div><div><div class="stat-label">CALLS LOGGED</div><div id="statCalls" class="stat-number blue">0</div></div></div>
- </div>
+<section
+  id="dashboardView"
+  class="view active"
+>
 
- <div class="dashboard-grid">
-  <div class="card">
-   <div class="card-header"><div>Recent Activity</div><span>LIVE</span></div>
-   <div id="recentActivity" class="card-body"></div>
-  </div>
 
-  <div class="card">
-   <div class="card-header"><div>Next Follow-Ups</div><span>UPCOMING</span></div>
-   <div id="dashboardFollowups" class="card-body"></div>
-  </div>
- </div>
+<div class="stat-grid">
 
-</section>
 
-<section id="contactsView" class="view">
+<div class="stat-card">
 
- <div class="section-heading">
-  <div>
-   <h2>Contacts</h2>
-   <p>Prospects and customers in the Excedere database.</p>
-  </div>
+<div class="stat-icon">
+♙
+</div>
 
-  <button class="primary-btn" onclick="openContactModal()">＋ New Contact</button>
- </div>
+<div>
 
- <div class="contacts-layout">
+<div class="stat-label">
+TOTAL PROSPECTS
+</div>
 
-  <div class="card contact-list">
-   <div class="contact-head">
-    <div>CONTACT</div><div>COMPANY / ROLE</div><div>CONTACT DETAILS</div>
-    <div>FOLLOW-UP</div><div>STATUS</div>
-   </div>
-   <div id="contactsList"></div>
-  </div>
-
-  <div id="contactDetail" class="card detail-panel">
-   <div class="empty">Select a contact to view the record.</div>
-  </div>
-
- </div>
-
-</section>
-
-<section id="pipelineView" class="view">
- <div class="section-heading">
-  <div><h2>Pipeline</h2><p>Track each prospect from first contact through to customer.</p></div>
- </div>
- <div id="pipelineBoard" class="pipeline-board"></div>
-</section>
-
-<section id="followupsView" class="view">
- <div class="section-heading">
-  <div><h2>Follow-Ups</h2><p>Prospects requiring your attention.</p></div>
- </div>
- <div class="card"><div id="followupList" class="card-body"></div></div>
-</section>
+<div
+  id="statProspects"
+  class="stat-number"
+>
+0
+</div>
 
 </div>
-</section>
+
 </div>
 
 
-<div id="contactModal" class="modal">
- <div class="modal-box">
+<div class="stat-card">
 
-  <div class="modal-head">
-   <div id="contactModalTitle" class="modal-title">New Contact</div>
-   <button class="modal-close" onclick="closeContactModal()">×</button>
-  </div>
+<div class="stat-icon">
+▣
+</div>
 
-  <div class="form-grid">
+<div>
 
-   <div class="form-field">
-    <label class="form-label">FIRST NAME</label>
-    <input id="formFirstName" class="form-input">
-   </div>
+<div class="stat-label">
+FOLLOW-UPS DUE
+</div>
 
-   <div class="form-field">
-    <label class="form-label">TITLE</label>
-    <input id="formTitle" class="form-input">
-   </div>
+<div
+  id="statDue"
+  class="stat-number gold"
+>
+0
+</div>
 
-   <div class="form-field">
-    <label class="form-label">COMPANY</label>
-    <input id="formCompany" class="form-input">
-   </div>
+</div>
 
-   <div class="form-field">
-    <label class="form-label">ROLE / REQUIREMENT</label>
-    <input id="formRole" class="form-input">
-   </div>
+</div>
 
-   <div class="form-field full">
-    <label class="form-label">LOCATION</label>
-    <input id="formLocation" class="form-input">
-   </div>
 
-   <div class="form-field">
-    <label class="form-label">PHONE</label>
-    <input id="formPhone" class="form-input">
-   </div>
+<div class="stat-card">
 
-   <div class="form-field">
-    <label class="form-label">DIRECT PHONE</label>
-    <input id="formDirectPhone" class="form-input">
-   </div>
+<div class="stat-icon">
+◷
+</div>
 
-   <div class="form-field full">
-    <label class="form-label">EMAIL</label>
-    <input id="formEmail" class="form-input" type="email">
-   </div>
+<div>
 
-   <div class="form-field">
-    <label class="form-label">TIMEZONE</label>
-    <input id="formTimezone" class="form-input" placeholder="America/Los_Angeles">
-   </div>
+<div class="stat-label">
+OVERDUE
+</div>
 
-   <div class="form-field">
-    <label class="form-label">TIMEZONE LABEL</label>
-    <input id="formTimezoneLabel" class="form-input" placeholder="Pacific Time">
-   </div>
+<div
+  id="statOverdue"
+  class="stat-number red"
+>
+0
+</div>
 
-   <div class="form-field">
-    <label class="form-label">PIPELINE STAGE</label>
-    <select id="formPipelineStage" class="form-input">
-     <option>New</option>
-     <option>Contacted</option>
-     <option>Follow-Up</option>
-     <option>Interested</option>
-     <option>Meeting Booked</option>
-     <option>Proposal</option>
-     <option>Won</option>
-     <option>Lost</option>
-    </select>
-   </div>
+</div>
 
-   <div class="form-field">
-    <label class="form-label">FOLLOW-UP DATE</label>
-    <input id="formFollowUpDate" class="form-input" type="date">
-   </div>
+</div>
 
-   <div class="form-field full">
-    <label class="form-label">NEXT ACTION</label>
-    <input id="formNextAction" class="form-input">
-   </div>
 
-  </div>
+<div class="stat-card">
 
-  <div class="modal-actions">
-   <button class="secondary-btn" onclick="closeContactModal()">Cancel</button>
-   <button class="primary-btn" onclick="saveContactForm()">Save Contact</button>
-  </div>
+<div class="stat-icon">
+✓
+</div>
 
- </div>
+<div>
+
+<div class="stat-label">
+MEETINGS BOOKED
+</div>
+
+<div
+  id="statMeetings"
+  class="stat-number gold"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+
+<div class="stat-card">
+
+<div class="stat-icon">
+☎
+</div>
+
+<div>
+
+<div class="stat-label">
+CALLS LOGGED
+</div>
+
+<div
+  id="statCalls"
+  class="stat-number blue"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+<div class="card">
+
+<div class="card-header">
+
+<div>
+Recent Activity
+</div>
+
+<span>
+LIVE
+</span>
+
+</div>
+
+<div
+  id="recentActivity"
+  class="card-body"
+>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-header">
+
+<div>
+Next Follow-Ups
+</div>
+
+<span>
+UPCOMING
+</span>
+
+</div>
+
+<div
+  id="dashboardFollowups"
+  class="card-body"
+>
+</div>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+<section
+  id="contactsView"
+  class="view"
+>
+
+
+<div class="section-heading">
+
+<div>
+
+<h2>
+Contacts
+</h2>
+
+<p>
+Prospects and customers in the Excedere database.
+</p>
+
+</div>
+
+
+<button
+  class="primary-btn"
+  onclick="openContactModal()"
+>
+＋ New Contact
+</button>
+
+
+</div>
+
+
+<div class="contacts-layout">
+
+
+<div class="card contact-list">
+
+
+<div class="contact-head">
+
+<div>
+CONTACT
+</div>
+
+<div>
+COMPANY / ROLE
+</div>
+
+<div>
+CONTACT DETAILS
+</div>
+
+<div>
+FOLLOW-UP
+</div>
+
+<div>
+STATUS
+</div>
+
+</div>
+
+
+<div id="contactsList">
+</div>
+
+
+</div>
+
+
+<div
+  id="contactDetail"
+  class="card detail-panel"
+>
+
+<div class="empty">
+Select a contact to view the record.
+</div>
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+<section
+  id="pipelineView"
+  class="view"
+>
+
+
+<div class="section-heading">
+
+<div>
+
+<h2>
+Pipeline
+</h2>
+
+<p>
+Track each prospect from first contact through to customer.
+</p>
+
+</div>
+
+</div>
+
+
+<div
+  id="pipelineBoard"
+  class="pipeline-board"
+>
+</div>
+
+
+</section>
+
+
+<section
+  id="followupsView"
+  class="view"
+>
+
+
+<div class="section-heading">
+
+<div>
+
+<h2>
+Follow-Ups
+</h2>
+
+<p>
+Prospects requiring your attention.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div
+  id="followupList"
+  class="card-body"
+>
+</div>
+
+</div>
+
+
+</section>
+
+
+</div>
+
+
+</section>
+
+
+</div>
+
+
+<!-- =====================================================
+     CONTACT MODAL
+===================================================== -->
+
+<div
+  id="contactModal"
+  class="modal"
+>
+
+
+<div class="modal-box">
+
+
+<div class="modal-head">
+
+<div
+  id="contactModalTitle"
+  class="modal-title"
+>
+New Contact
+</div>
+
+
+<button
+  class="modal-close"
+  onclick="closeContactModal()"
+>
+×
+</button>
+
+
+</div>
+
+
+<div class="form-grid">
+
+
+<div class="form-field">
+
+<label class="form-label">
+FIRST NAME
+</label>
+
+<input
+  id="formFirstName"
+  class="form-input"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+TITLE
+</label>
+
+<input
+  id="formTitle"
+  class="form-input"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+COMPANY
+</label>
+
+<input
+  id="formCompany"
+  class="form-input"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+ROLE / REQUIREMENT
+</label>
+
+<input
+  id="formRole"
+  class="form-input"
+>
+
+</div>
+
+
+<div class="form-field full">
+
+<label class="form-label">
+LOCATION
+</label>
+
+<input
+  id="formLocation"
+  class="form-input"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+PHONE
+</label>
+
+<input
+  id="formPhone"
+  class="form-input"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+DIRECT PHONE
+</label>
+
+<input
+  id="formDirectPhone"
+  class="form-input"
+>
+
+</div>
+
+
+<div class="form-field full">
+
+<label class="form-label">
+EMAIL
+</label>
+
+<input
+  id="formEmail"
+  class="form-input"
+  type="email"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+TIMEZONE
+</label>
+
+<input
+  id="formTimezone"
+  class="form-input"
+  placeholder="America/Los_Angeles"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+TIMEZONE LABEL
+</label>
+
+<input
+  id="formTimezoneLabel"
+  class="form-input"
+  placeholder="Pacific Time"
+>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+PIPELINE STAGE
+</label>
+
+<select
+  id="formPipelineStage"
+  class="form-input"
+>
+
+<option>
+New
+</option>
+
+<option>
+Contacted
+</option>
+
+<option>
+Follow-Up
+</option>
+
+<option>
+Interested
+</option>
+
+<option>
+Meeting Booked
+</option>
+
+<option>
+Proposal
+</option>
+
+<option>
+Won
+</option>
+
+<option>
+Lost
+</option>
+
+</select>
+
+</div>
+
+
+<div class="form-field">
+
+<label class="form-label">
+FOLLOW-UP DATE
+</label>
+
+<input
+  id="formFollowUpDate"
+  class="form-input"
+  type="date"
+>
+
+</div>
+
+
+<div class="form-field full">
+
+<label class="form-label">
+NEXT ACTION
+</label>
+
+<input
+  id="formNextAction"
+  class="form-input"
+>
+
+</div>
+
+
+</div>
+
+
+<div class="modal-actions">
+
+
+<button
+  class="secondary-btn"
+  onclick="closeContactModal()"
+>
+Cancel
+</button>
+
+
+<button
+  class="primary-btn"
+  onclick="saveContactForm()"
+>
+Save Contact
+</button>
+
+
+</div>
+
+
+</div>
+
+
 </div>
 
 
 <script>
 
-const LEAD_STORAGE_KEY="excedereCallAssistLeads";
-const LEAD_BACKUP_KEY="excedereCallAssistLeadsBackup";
-const CLOUD_FUNCTION_URL="https://kxxoyhagfmexvnzpuwys.supabase.co/functions/v1/crm-data";
-const SUPABASE_PROJECT_REF="kxxoyhagfmexvnzpuwys";
-const CALL_ASSIST_URL="https://excederemanagementconsultancy.github.io/excedere-call-assist/";
 
-const PIPELINE_STAGES=[
- "New","Contacted","Follow-Up","Interested",
- "Meeting Booked","Proposal","Won","Lost"
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const SUPABASE_URL =
+  "https://kxxoyhagfmexvnzpuwys.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_2gcvru1GxULE5nCVFNPgQw__vOGbDxx";
+
+
+const CLOUD_FUNCTION_URL =
+  `${SUPABASE_URL}/functions/v1/crm-data`;
+
+
+const CALL_ASSIST_URL =
+  "https://excederemanagementconsultancy.github.io/excedere-call-assist/";
+
+
+const LEAD_STORAGE_KEY =
+  "excedereCallAssistLeads";
+
+
+const LEAD_BACKUP_KEY =
+  "excedereCallAssistLeadsBackup";
+
+
+const PIPELINE_STAGES = [
+  "New",
+  "Contacted",
+  "Follow-Up",
+  "Interested",
+  "Meeting Booked",
+  "Proposal",
+  "Won",
+  "Lost"
 ];
 
-let leads=[];
-let selectedLeadId=null;
-let currentSearch="";
-let editingLeadId=null;
-let cloudSyncTimer=null;
-let cloudSyncRunning=false;
-let refreshRunning=null;
+
+/* =====================================================
+   OFFICIAL SUPABASE CLIENT
+===================================================== */
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth: {
+
+        persistSession:
+          true,
+
+        autoRefreshToken:
+          true,
+
+        detectSessionInUrl:
+          true,
+
+        storage:
+          window.localStorage
+
+      }
+    }
+  );
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let leads =
+  [];
+
+
+let selectedLeadId =
+  null;
+
+
+let currentSearch =
+  "";
+
+
+let editingLeadId =
+  null;
+
+
+let cloudSyncTimer =
+  null;
+
+
+let cloudSyncRunning =
+  false;
+
 
 /* =====================================================
    GENERAL HELPERS
 ===================================================== */
 
-function e(v){
- return String(v??"")
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
+function e(value){
+
+  return String(
+    value ??
+    ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 }
 
-function defaults(l){
- l.pipelineStage ||= "New";
- l.callHistory ||= [];
- l.emailHistory ||= [];
- l.callCount ||= 0;
- l.lastOutcome ||= "";
- l.nextAction ||= "";
- l.nextFollowUpDate ||= "";
- return l;
+
+function defaults(lead){
+
+  lead.pipelineStage ||=
+    "New";
+
+  lead.callHistory ||=
+    [];
+
+  lead.emailHistory ||=
+    [];
+
+  lead.callCount ||=
+    0;
+
+  lead.lastOutcome ||=
+    "";
+
+  lead.nextAction ||=
+    "";
+
+  lead.nextFollowUpDate ||=
+    "";
+
+  return lead;
 }
+
 
 function getLeadById(id){
- return leads.find(l=>l.id===id);
+
+  return leads.find(
+    lead =>
+      lead.id === id
+  );
 }
+
 
 function uuid(){
- if(crypto.randomUUID){
-  return crypto.randomUUID();
- }
-
- return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-  .replace(/[xy]/g,c=>{
-   const r=Math.random()*16|0;
-   const v=c==="x"?r:(r&3|8);
-   return v.toString(16);
-  });
-}
-
-/* =====================================================
-   SUPABASE SESSION STORAGE
-===================================================== */
-
-function sessionStorageRecord(){
-
- const expectedKey=
-  `sb-${SUPABASE_PROJECT_REF}-auth-token`;
-
- const candidateKeys=[];
-
- if(
-  localStorage.getItem(expectedKey)
- ){
-  candidateKeys.push(expectedKey);
- }
-
- for(
-  let i=0;
-  i<localStorage.length;
-  i++
- ){
-  const key=
-   localStorage.key(i);
 
   if(
-   key &&
-   key.includes(
-    SUPABASE_PROJECT_REF
-   ) &&
-   !candidateKeys.includes(key)
+    crypto.randomUUID
   ){
-   candidateKeys.push(key);
-  }
- }
-
- for(
-  const key of candidateKeys
- ){
-  try{
-
-   const raw=
-    localStorage.getItem(key);
-
-   if(!raw){
-    continue;
-   }
-
-   const parsed=
-    JSON.parse(raw);
-
-   const session=
-    parsed?.access_token
-     ?
-     parsed
-     :
-     parsed?.currentSession
-       ?
-       parsed.currentSession
-       :
-       null;
-
-   if(
-    session?.access_token ||
-    session?.refresh_token
-   ){
-    return {
-     key,
-     parsed,
-     session,
-     nested:
-      !parsed?.access_token &&
-      !!parsed?.currentSession
-    };
-   }
-
-  }catch{}
- }
-
- return null;
-}
-
-function token(){
- return (
-  sessionStorageRecord()
-   ?.session
-   ?.access_token
-  ||
-  null
- );
-}
-
-function refreshToken(){
- return (
-  sessionStorageRecord()
-   ?.session
-   ?.refresh_token
-  ||
-  null
- );
-}
-
-/* =====================================================
-   TOKEN EXPIRY
-===================================================== */
-
-function decodeJwtPayload(
- accessToken
-){
- try{
-
-  const parts=
-   String(accessToken||"")
-    .split(".");
-
-  if(
-   parts.length<2
-  ){
-   return null;
+    return crypto.randomUUID();
   }
 
-  let payload=
-   parts[1]
-    .replace(/-/g,"+")
-    .replace(/_/g,"/");
 
-  while(
-   payload.length%4
-  ){
-   payload+="=";
-  }
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
+    .replace(
+      /[xy]/g,
+      char => {
 
-  return JSON.parse(
-   decodeURIComponent(
-    atob(payload)
-     .split("")
-     .map(
-      char =>
-       "%" +
-       (
-        "00"+
-        char
-         .charCodeAt(0)
-         .toString(16)
-       )
-        .slice(-2)
-     )
-     .join("")
-   )
-  );
+        const random =
+          Math.random() *
+          16 |
+          0;
 
- }catch{
-  return null;
- }
-}
 
-function accessTokenExpiresAt(){
+        const value =
+          char === "x"
+            ?
+            random
+            :
+            (
+              random &
+              3 |
+              8
+            );
 
- const record=
-  sessionStorageRecord();
 
- if(!record){
-  return null;
- }
-
- const session=
-  record.session;
-
- if(
-  Number(
-   session?.expires_at
-  )
- ){
-  return Number(
-   session.expires_at
-  );
- }
-
- const payload=
-  decodeJwtPayload(
-   session?.access_token
-  );
-
- if(
-  Number(
-   payload?.exp
-  )
- ){
-  return Number(
-   payload.exp
-  );
- }
-
- return null;
-}
-
-function tokenNeedsRefresh(){
-
- const accessToken=
-  token();
-
- if(!accessToken){
-  return true;
- }
-
- const expiresAt=
-  accessTokenExpiresAt();
-
- if(!expiresAt){
-  return false;
- }
-
- const nowSeconds=
-  Math.floor(
-   Date.now()/1000
-  );
-
- /*
-   Refresh five minutes before expiry.
- */
- return (
-  expiresAt-nowSeconds
-  <=
-  300
- );
-}
-
-/* =====================================================
-   SAVE REFRESHED SESSION
-===================================================== */
-
-function storeRefreshedSession(
- result
-){
-
- const record=
-  sessionStorageRecord();
-
- if(!record){
-  throw new Error(
-   "Supabase session storage could not be found."
-  );
- }
-
- const {
-  key,
-  parsed,
-  nested
- }=record;
-
- const updatedSession={
-  ...record.session,
-
-  access_token:
-   result.accessToken,
-
-  refresh_token:
-   result.refreshToken,
-
-  expires_at:
-   result.expiresAt,
-
-  expires_in:
-   result.expiresIn,
-
-  token_type:
-   result.tokenType ||
-   record.session.token_type ||
-   "bearer"
- };
-
- let updated;
-
- if(nested){
-
-  updated={
-   ...parsed,
-
-   currentSession:
-    updatedSession
-  };
-
- }else{
-
-  updated={
-   ...parsed,
-   ...updatedSession
-  };
- }
-
- localStorage.setItem(
-  key,
-  JSON.stringify(
-   updated
-  )
- );
-}
-
-/* =====================================================
-   REFRESH SESSION
-===================================================== */
-
-async function refreshSupabaseSession(){
-
- if(refreshRunning){
-  return refreshRunning;
- }
-
- refreshRunning=
-  (async()=>{
-
-   const storedRefreshToken=
-    refreshToken();
-
-   if(!storedRefreshToken){
-    throw new Error(
-     "No refresh token is available."
+        return value
+          .toString(16);
+      }
     );
-   }
-
-   setSync(
-    "syncing",
-    "Refreshing session..."
-   );
-
-   const response=
-    await fetch(
-     CLOUD_FUNCTION_URL,
-     {
-      method:"POST",
-
-      headers:{
-       "Content-Type":
-        "application/json"
-      },
-
-      body:
-       JSON.stringify({
-        action:"refresh",
-
-        refreshToken:
-         storedRefreshToken
-       })
-     }
-    );
-
-   let result;
-
-   try{
-    result=
-     await response.json();
-   }catch{
-    throw new Error(
-     "Invalid session refresh response."
-    );
-   }
-
-   if(
-    !response.ok ||
-    !result.success
-   ){
-    throw new Error(
-     result.error ||
-     "Session refresh failed."
-    );
-   }
-
-   storeRefreshedSession(
-    result
-   );
-
-   return result;
-
-  })();
-
- try{
-  return await refreshRunning;
- }finally{
-  refreshRunning=null;
- }
 }
 
-/* =====================================================
-   ENSURE SESSION IS CURRENT
-===================================================== */
-
-async function ensureFreshSession(){
-
- if(
-  !token()
- ){
-  if(
-   refreshToken()
-  ){
-   await refreshSupabaseSession();
-  }
-
-  return;
- }
-
- if(
-  tokenNeedsRefresh() &&
-  refreshToken()
- ){
-  await refreshSupabaseSession();
- }
-}
-
-/* =====================================================
-   CLOUD REQUEST
-===================================================== */
-
-async function cloud(
- action,
- extra={},
- retry=true
-){
-
- /*
-   Refresh proactively before normal cloud work.
-   The refresh action itself is handled separately.
- */
- await ensureFreshSession();
-
- const accessToken=
-  token();
-
- if(!accessToken){
-  throw new Error(
-   "No active Excedere login session."
-  );
- }
-
- const response=
-  await fetch(
-   CLOUD_FUNCTION_URL,
-   {
-    method:"POST",
-
-    headers:{
-     Authorization:
-      `Bearer ${accessToken}`,
-
-     "Content-Type":
-      "application/json"
-    },
-
-    body:
-     JSON.stringify({
-      action,
-      ...extra
-     })
-   }
-  );
-
- let result;
-
- try{
-  result=
-   await response.json();
- }catch{
-  throw new Error(
-   "Invalid CRM cloud response."
-  );
- }
-
- /*
-   If the access token expired between our check
-   and the request reaching Supabase, refresh once
-   and automatically repeat the request.
- */
- if(
-  response.status===401 &&
-  retry &&
-  refreshToken()
- ){
-  await refreshSupabaseSession();
-
-  return cloud(
-   action,
-   extra,
-   false
-  );
- }
-
- if(
-  !response.ok ||
-  !result.success
- ){
-  throw new Error(
-   result.error ||
-   "CRM cloud request failed."
-  );
- }
-
- return result;
-}
 
 /* =====================================================
    CLOUD STATUS
 ===================================================== */
 
 function setSync(
- type,
- text
+  type,
+  text
 ){
- const box=
-  document.getElementById(
-   "syncStatus"
-  );
 
- box.className=
-  `sync-status ${type}`;
+  const box =
+    document.getElementById(
+      "syncStatus"
+    );
 
- document
-  .getElementById(
-   "syncStatusText"
-  )
-  .textContent=
-   text;
+
+  box.className =
+    `sync-status ${type}`;
+
+
+  document
+    .getElementById(
+      "syncStatusText"
+    )
+    .textContent =
+      text;
 }
+
+
+/* =====================================================
+   SUPABASE SESSION
+===================================================== */
+
+async function getActiveSession(){
+
+  let {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if(error){
+    throw error;
+  }
+
+
+  let session =
+    data?.session ||
+    null;
+
+
+  if(!session){
+
+    return null;
+  }
+
+
+  const now =
+    Math.floor(
+      Date.now() /
+      1000
+    );
+
+
+  const expiresAt =
+    Number(
+      session.expires_at ||
+      0
+    );
+
+
+  /*
+    If the access token is within 2 minutes of expiry,
+    explicitly ask Supabase to refresh it.
+
+    autoRefreshToken also runs in the background, but
+    this protects a user returning after a long idle
+    period or a sleeping laptop.
+  */
+
+  if(
+    expiresAt &&
+    expiresAt - now <= 120
+  ){
+
+    const refreshed =
+      await supabaseClient
+        .auth
+        .refreshSession();
+
+
+    if(
+      refreshed.error
+    ){
+      throw refreshed.error;
+    }
+
+
+    session =
+      refreshed.data?.session ||
+      null;
+  }
+
+
+  return session;
+}
+
+
+/* =====================================================
+   CLOUD REQUEST
+===================================================== */
+
+async function cloud(
+  action,
+  extra = {},
+  retry = true
+){
+
+  let session =
+    await getActiveSession();
+
+
+  if(!session){
+
+    throw new Error(
+      "No active Excedere login session."
+    );
+  }
+
+
+  let response =
+    await fetch(
+      CLOUD_FUNCTION_URL,
+      {
+
+        method:
+          "POST",
+
+        headers: {
+
+          "Authorization":
+            `Bearer ${session.access_token}`,
+
+          "Content-Type":
+            "application/json"
+
+        },
+
+        body:
+          JSON.stringify(
+            {
+              action,
+              ...extra
+            }
+          )
+
+      }
+    );
+
+
+  /*
+    If the request still receives 401,
+    refresh through the official Supabase client
+    and retry once automatically.
+  */
+
+  if(
+    response.status === 401 &&
+    retry
+  ){
+
+    const refreshed =
+      await supabaseClient
+        .auth
+        .refreshSession();
+
+
+    if(
+      refreshed.error ||
+      !refreshed.data?.session
+    ){
+
+      throw (
+        refreshed.error ||
+        new Error(
+          "Session refresh failed."
+        )
+      );
+    }
+
+
+    return cloud(
+      action,
+      extra,
+      false
+    );
+  }
+
+
+  let result;
+
+
+  try{
+
+    result =
+      await response.json();
+
+  }catch{
+
+    throw new Error(
+      "Invalid CRM cloud response."
+    );
+  }
+
+
+  if(
+    !response.ok ||
+    !result.success
+  ){
+
+    throw new Error(
+      result.error ||
+      "CRM cloud request failed."
+    );
+  }
+
+
+  return result;
+}
+
 
 /* =====================================================
    LOCAL CACHE
 ===================================================== */
 
 function saveCache(){
- localStorage.setItem(
-  LEAD_STORAGE_KEY,
-  JSON.stringify(leads)
- );
+
+  localStorage.setItem(
+    LEAD_STORAGE_KEY,
+    JSON.stringify(
+      leads
+    )
+  );
 }
+
 
 function loadCache(){
- try{
 
-  const parsed=
-   JSON.parse(
-    localStorage.getItem(
-     LEAD_STORAGE_KEY
-    )||"[]"
-   );
+  try{
 
-  return Array.isArray(parsed)
-   ?
-   parsed.map(defaults)
-   :
-   [];
+    const parsed =
+      JSON.parse(
+        localStorage.getItem(
+          LEAD_STORAGE_KEY
+        )
+        ||
+        "[]"
+      );
 
- }catch{
-  return [];
- }
+
+    return Array.isArray(
+      parsed
+    )
+      ?
+      parsed.map(
+        defaults
+      )
+      :
+      [];
+
+
+  }catch{
+
+    return [];
+  }
 }
+
 
 function backupCache(){
 
- const raw=
-  localStorage.getItem(
-   LEAD_STORAGE_KEY
-  );
+  const raw =
+    localStorage.getItem(
+      LEAD_STORAGE_KEY
+    );
 
- if(
-  raw &&
-  !localStorage.getItem(
-   LEAD_BACKUP_KEY
-  )
- ){
-  localStorage.setItem(
-   LEAD_BACKUP_KEY,
-   raw
-  );
- }
+
+  if(
+    raw &&
+    !localStorage.getItem(
+      LEAD_BACKUP_KEY
+    )
+  ){
+
+    localStorage.setItem(
+      LEAD_BACKUP_KEY,
+      raw
+    );
+  }
 }
+
 
 /* =====================================================
    SYNC
@@ -1091,65 +2919,84 @@ function backupCache(){
 
 function scheduleSync(){
 
- saveCache();
+  saveCache();
 
- clearTimeout(
-  cloudSyncTimer
- );
 
- setSync(
-  "syncing",
-  "Waiting to sync..."
- );
-
- cloudSyncTimer=
-  setTimeout(
-   syncCloud,
-   600
+  clearTimeout(
+    cloudSyncTimer
   );
+
+
+  setSync(
+    "syncing",
+    "Waiting to sync..."
+  );
+
+
+  cloudSyncTimer =
+    setTimeout(
+      syncCloud,
+      600
+    );
 }
+
 
 async function syncCloud(){
 
- if(cloudSyncRunning){
-  return;
- }
+  if(
+    cloudSyncRunning
+  ){
+    return;
+  }
 
- cloudSyncRunning=true;
 
- setSync(
-  "syncing",
-  "Syncing..."
- );
+  cloudSyncRunning =
+    true;
 
- try{
-
-  await cloud(
-   "sync",
-   {leads}
-  );
 
   setSync(
-   "synced",
-   "Cloud synced"
+    "syncing",
+    "Syncing..."
   );
 
- }catch(error){
 
-  console.error(
-   error
-  );
+  try{
 
-  setSync(
-   "error",
-   "Local cache active"
-  );
+    await cloud(
+      "sync",
+      {
+        leads
+      }
+    );
 
- }finally{
 
-  cloudSyncRunning=false;
- }
+    setSync(
+      "synced",
+      "Cloud synced"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "CRM sync failed:",
+      error
+    );
+
+
+    setSync(
+      "error",
+      "Local cache active"
+    );
+
+
+  }finally{
+
+    cloudSyncRunning =
+      false;
+  }
 }
+
 
 /* =====================================================
    STARTUP
@@ -1157,210 +3004,336 @@ async function syncCloud(){
 
 async function initialise(){
 
- backupCache();
+  backupCache();
 
- const fallback=
-  loadCache();
 
- setSync(
-  "syncing",
-  "Connecting..."
- );
+  const fallback =
+    loadCache();
 
- try{
 
-  /*
-    Automatic refresh happens inside cloud().
-  */
+  setSync(
+    "syncing",
+    "Connecting..."
+  );
 
-  const result=
-   await cloud(
-    "load"
-   );
 
-  const cloudLeads=
-   Array.isArray(
-    result.leads
-   )
-    ?
-    result.leads.map(
-     defaults
-    )
-    :
-    [];
+  try{
 
-  if(
-   cloudLeads.length
-  ){
+    const session =
+      await getActiveSession();
 
-   leads=
-    cloudLeads;
 
-   saveCache();
+    if(!session){
 
-  }else if(
-   fallback.length
-  ){
+      leads =
+        fallback;
 
-   leads=
-    fallback;
 
-   await cloud(
-    "sync",
-    {leads}
-   );
+      selectedLeadId =
+        leads[0]?.id ||
+        null;
 
-  }else{
 
-   leads=[];
+      renderAll();
+
+
+      setSync(
+        "error",
+        "Login required"
+      );
+
+
+      return;
+    }
+
+
+    const result =
+      await cloud(
+        "load"
+      );
+
+
+    const cloudLeads =
+      Array.isArray(
+        result.leads
+      )
+        ?
+        result.leads.map(
+          defaults
+        )
+        :
+        [];
+
+
+    if(
+      cloudLeads.length
+    ){
+
+      leads =
+        cloudLeads;
+
+
+      saveCache();
+
+    }else if(
+      fallback.length
+    ){
+
+      leads =
+        fallback;
+
+
+      await cloud(
+        "sync",
+        {
+          leads
+        }
+      );
+
+    }else{
+
+      leads =
+        [];
+    }
+
+
+    selectedLeadId =
+      leads[0]?.id ||
+      null;
+
+
+    renderAll();
+
+
+    setSync(
+      "synced",
+      "Cloud synced"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "CRM startup failed:",
+      error
+    );
+
+
+    leads =
+      fallback;
+
+
+    selectedLeadId =
+      leads[0]?.id ||
+      null;
+
+
+    renderAll();
+
+
+    setSync(
+      "error",
+      "Local cache active"
+    );
   }
-
-  selectedLeadId=
-   leads[0]?.id ||
-   null;
-
-  renderAll();
-
-  setSync(
-   "synced",
-   "Cloud synced"
-  );
-
- }catch(error){
-
-  console.error(
-   "CRM startup failed:",
-   error
-  );
-
-  leads=
-   fallback;
-
-  selectedLeadId=
-   leads[0]?.id ||
-   null;
-
-  renderAll();
-
-  setSync(
-   "error",
-   "Local cache active"
-  );
- }
 }
+
+
+/* =====================================================
+   AUTH EVENT LISTENER
+===================================================== */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      console.log(
+        "Supabase auth:",
+        event
+      );
+
+
+      if(
+        event ===
+        "TOKEN_REFRESHED"
+      ){
+
+        setSync(
+          "synced",
+          "Cloud synced"
+        );
+      }
+
+
+      if(
+        event ===
+        "SIGNED_OUT"
+      ){
+
+        setSync(
+          "error",
+          "Login required"
+        );
+      }
+
+
+      if(
+        event ===
+        "SIGNED_IN" &&
+        session
+      ){
+
+        setSync(
+          "synced",
+          "Cloud synced"
+        );
+      }
+
+    }
+  );
+
 
 /* =====================================================
    STATUS HELPERS
 ===================================================== */
 
 function days(
- dateString
+  dateString
 ){
- if(!dateString){
-  return null;
- }
 
- const today=
-  new Date();
-
- today.setHours(
-  0,0,0,0
- );
-
- return Math.ceil(
-  (
-   new Date(
-    `${dateString}T00:00:00`
-   )
-   -
-   today
-  )
-  /
-  86400000
- );
-}
-
-function status(l){
-
- if(
-  !l.lastCalled &&
-  !l.nextFollowUpDate
- ){
-  return [
-   "NEW",
-   "status-new"
-  ];
- }
-
- if(
-  l.nextFollowUpDate
- ){
-
-  const d=
-   days(
-    l.nextFollowUpDate
-   );
-
-  if(d<0){
-   return [
-    "OVERDUE",
-    "status-overdue"
-   ];
+  if(!dateString){
+    return null;
   }
 
-  if(d<=2){
-   return [
-    "DUE SOON",
-    "status-due"
-   ];
-  }
- }
 
- return [
-  "CURRENT",
-  "status-current"
- ];
-}
+  const today =
+    new Date();
 
-function timeFor(l){
 
- try{
-
-  const value=
-   new Intl.DateTimeFormat(
-    "en-US",
-    {
-     timeZone:
-      l.timezone ||
-      "America/Los_Angeles",
-
-     hour:
-      "numeric",
-
-     minute:
-      "2-digit"
-    }
-   )
-    .format(
-     new Date()
-    );
-
-  return (
-   value+
-   (
-    l.timezoneLabel
-     ?
-     ` ${l.timezoneLabel}`
-     :
-     ""
-   )
+  today.setHours(
+    0,
+    0,
+    0,
+    0
   );
 
- }catch{
 
-  return "Time unavailable";
- }
+  return Math.ceil(
+    (
+      new Date(
+        `${dateString}T00:00:00`
+      )
+      -
+      today
+    )
+    /
+    86400000
+  );
 }
+
+
+function status(lead){
+
+  if(
+    !lead.lastCalled &&
+    !lead.nextFollowUpDate
+  ){
+
+    return [
+      "NEW",
+      "status-new"
+    ];
+  }
+
+
+  if(
+    lead.nextFollowUpDate
+  ){
+
+    const difference =
+      days(
+        lead.nextFollowUpDate
+      );
+
+
+    if(
+      difference < 0
+    ){
+
+      return [
+        "OVERDUE",
+        "status-overdue"
+      ];
+    }
+
+
+    if(
+      difference <= 2
+    ){
+
+      return [
+        "DUE SOON",
+        "status-due"
+      ];
+    }
+  }
+
+
+  return [
+    "CURRENT",
+    "status-current"
+  ];
+}
+
+
+function timeFor(lead){
+
+  try{
+
+    const value =
+      new Intl.DateTimeFormat(
+        "en-US",
+        {
+
+          timeZone:
+            lead.timezone ||
+            "America/Los_Angeles",
+
+          hour:
+            "numeric",
+
+          minute:
+            "2-digit"
+
+        }
+      )
+        .format(
+          new Date()
+        );
+
+
+    return (
+      value +
+      (
+        lead.timezoneLabel
+          ?
+          ` ${lead.timezoneLabel}`
+          :
+          ""
+      )
+    );
+
+
+  }catch{
+
+    return "Time unavailable";
+  }
+}
+
 
 /* =====================================================
    SEARCH
@@ -1368,124 +3341,140 @@ function timeFor(l){
 
 function filtered(){
 
- if(!currentSearch){
-  return leads;
- }
+  if(
+    !currentSearch
+  ){
+    return leads;
+  }
 
- const q=
-  currentSearch
-   .toLowerCase();
 
- return leads.filter(
-  l=>
-   [
-    l.firstName,
-    l.title,
-    l.company,
-    l.role,
-    l.location,
-    l.phone,
-    l.directPhone,
-    l.email,
-    l.lastOutcome,
-    l.nextAction,
-    l.pipelineStage
-   ]
-    .join(" ")
-    .toLowerCase()
-    .includes(q)
- );
+  const query =
+    currentSearch
+      .toLowerCase();
+
+
+  return leads.filter(
+    lead =>
+      [
+        lead.firstName,
+        lead.title,
+        lead.company,
+        lead.role,
+        lead.location,
+        lead.phone,
+        lead.directPhone,
+        lead.email,
+        lead.lastOutcome,
+        lead.nextAction,
+        lead.pipelineStage
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(
+          query
+        )
+  );
 }
+
 
 /* =====================================================
    VIEW SWITCHING
 ===================================================== */
 
 function switchView(
- view,
- button
+  view,
+  button
 ){
 
- document
-  .querySelectorAll(
-   ".view"
-  )
-  .forEach(
-   element =>
-    element
-     .classList
-     .remove(
+  document
+    .querySelectorAll(
+      ".view"
+    )
+    .forEach(
+      element =>
+        element
+          .classList
+          .remove(
+            "active"
+          )
+    );
+
+
+  document
+    .querySelectorAll(
+      ".nav-btn"
+    )
+    .forEach(
+      element =>
+        element
+          .classList
+          .remove(
+            "active"
+          )
+    );
+
+
+  document
+    .getElementById(
+      `${view}View`
+    )
+    .classList
+    .add(
       "active"
-     )
-  );
+    );
 
- document
-  .querySelectorAll(
-   ".nav-btn"
-  )
-  .forEach(
-   element =>
-    element
-     .classList
-     .remove(
+
+  button
+    .classList
+    .add(
       "active"
-     )
-  );
+    );
 
- document
-  .getElementById(
-   `${view}View`
-  )
-  .classList
-  .add(
-   "active"
-  );
 
- button
-  .classList
-  .add(
-   "active"
-  );
+  const titles = {
 
- const titles={
+    dashboard:[
+      "Dashboard",
+      "Your Excedere sales activity at a glance."
+    ],
 
-  dashboard:[
-   "Dashboard",
-   "Your Excedere sales activity at a glance."
-  ],
+    contacts:[
+      "Contacts",
+      "Manage prospects, communication and follow-ups."
+    ],
 
-  contacts:[
-   "Contacts",
-   "Manage prospects, communication and follow-ups."
-  ],
+    pipeline:[
+      "Pipeline",
+      "Track prospects through the sales process."
+    ],
 
-  pipeline:[
-   "Pipeline",
-   "Track prospects through the sales process."
-  ],
+    followups:[
+      "Follow-Ups",
+      "See who needs your attention next."
+    ]
 
-  followups:[
-   "Follow-Ups",
-   "See who needs your attention next."
-  ]
- };
+  };
 
- document
-  .getElementById(
-   "pageTitle"
-  )
-  .textContent=
-   titles[view][0];
 
- document
-  .getElementById(
-   "pageSubtitle"
-  )
-  .textContent=
-   titles[view][1];
+  document
+    .getElementById(
+      "pageTitle"
+    )
+    .textContent =
+      titles[view][0];
 
- renderAll();
+
+  document
+    .getElementById(
+      "pageSubtitle"
+    )
+    .textContent =
+      titles[view][1];
+
+
+  renderAll();
 }
+
 
 /* =====================================================
    DASHBOARD
@@ -1493,290 +3482,362 @@ function switchView(
 
 function renderDashboard(){
 
- let due=0;
- let overdue=0;
- let meetings=0;
- let calls=0;
+  let due =
+    0;
 
- leads.forEach(
-  lead=>{
 
-   const currentStatus=
-    status(lead)[0];
+  let overdue =
+    0;
 
-   if(
-    currentStatus==="DUE SOON"
-   ){
-    due++;
-   }
 
-   if(
-    currentStatus==="OVERDUE"
-   ){
-    overdue++;
-   }
+  let meetings =
+    0;
 
-   if(
-    lead.lastOutcome===
-     "Appointment booked"
-    ||
-    lead.pipelineStage===
-     "Meeting Booked"
-   ){
-    meetings++;
-   }
 
-   calls+=
-    Number(
-     lead.callCount||0
-    );
-  }
- );
+  let calls =
+    0;
 
- document
-  .getElementById(
-   "statProspects"
-  )
-  .textContent=
-   leads.length;
 
- document
-  .getElementById(
-   "statDue"
-  )
-  .textContent=
-   due;
+  leads.forEach(
+    lead => {
 
- document
-  .getElementById(
-   "statOverdue"
-  )
-  .textContent=
-   overdue;
+      const currentStatus =
+        status(
+          lead
+        )[0];
 
- document
-  .getElementById(
-   "statMeetings"
-  )
-  .textContent=
-   meetings;
 
- document
-  .getElementById(
-   "statCalls"
-  )
-  .textContent=
-   calls;
-
- const activities=[];
-
- leads.forEach(
-  lead=>{
-
-   (
-    lead.callHistory||
-    []
-   )
-    .forEach(
-     entry =>
-      activities.push({
-       type:"call",
-       timestamp:
-        entry.timestamp,
-       lead,
-       entry
-      })
-    );
-
-   (
-    lead.emailHistory||
-    []
-   )
-    .forEach(
-     entry =>
-      activities.push({
-       type:"email",
-       timestamp:
-        entry.timestamp,
-       lead,
-       entry
-      })
-    );
-  }
- );
-
- activities.sort(
-  (a,b)=>
-   new Date(
-    b.timestamp
-   )
-   -
-   new Date(
-    a.timestamp
-   )
- );
-
- document
-  .getElementById(
-   "recentActivity"
-  )
-  .innerHTML=
-
-  activities
-   .slice(0,7)
-   .map(
-    activity=>`
-
-    <div class="activity-row">
-
-     <div class="activity-icon">
-      ${
-       activity.type==="email"
-        ?
-        "✉"
-        :
-        "☎"
-      }
-     </div>
-
-     <div>
-
-      <div class="activity-title">
-
-       ${
-        activity.type==="email"
-         ?
-         "Email sent to"
-         :
-         "Call with"
-       }
-
-       ${
-        e(
-         activity.lead.firstName ||
-         activity.lead.company
-        )
-       }
-
-      </div>
-
-      <div class="activity-subtitle">
-
-       ${
-        e(
-         activity.type==="email"
-          ?
-          (
-           activity.entry.subject ||
-           "Email"
-          )
-          :
-          (
-           activity.entry.outcome ||
-           "Call logged"
-          )
-        )
-       }
-
-      </div>
-
-     </div>
-
-     <div class="activity-time">
-
-      ${
-       e(
-        activity.timestamp
-         ?
-         new Date(
-          activity.timestamp
-         )
-          .toLocaleString()
-         :
-         ""
-       )
+      if(
+        currentStatus ===
+        "DUE SOON"
+      ){
+        due++;
       }
 
-     </div>
 
-    </div>
-   `
-   )
-   .join("")
-   ||
-   '<div class="empty">No activity recorded yet.</div>';
+      if(
+        currentStatus ===
+        "OVERDUE"
+      ){
+        overdue++;
+      }
 
- const followups=
-  leads
-   .filter(
-    lead =>
-     lead.nextFollowUpDate
-   )
-   .sort(
-    (a,b)=>
-     new Date(
-      a.nextFollowUpDate
-     )
-     -
-     new Date(
-      b.nextFollowUpDate
-     )
-   )
-   .slice(0,7);
 
- document
-  .getElementById(
-   "dashboardFollowups"
-  )
-  .innerHTML=
+      if(
+        lead.lastOutcome ===
+        "Appointment booked"
+        ||
+        lead.pipelineStage ===
+        "Meeting Booked"
+      ){
+        meetings++;
+      }
 
-  followups
-   .map(
-    lead=>{
 
-     const currentStatus=
-      status(lead);
+      calls +=
+        Number(
+          lead.callCount ||
+          0
+        );
 
-     return `
-
-      <div class="follow-row">
-
-       <div>
-
-        <div class="follow-name">
-         ${e(lead.firstName)}
-        </div>
-
-        <div class="follow-company">
-         ${e(lead.company)}
-        </div>
-
-        <div class="follow-action">
-         ${e(lead.nextAction||"Follow up")}
-        </div>
-
-       </div>
-
-       <div class="follow-date">
-
-        ${e(lead.nextFollowUpDate)}
-
-        <br>
-
-        <span class="status-badge ${currentStatus[1]}">
-         ${currentStatus[0]}
-        </span>
-
-       </div>
-
-      </div>
-     `;
     }
-   )
-   .join("")
-   ||
-   '<div class="empty">No follow-ups scheduled.</div>';
+  );
+
+
+  document
+    .getElementById(
+      "statProspects"
+    )
+    .textContent =
+      leads.length;
+
+
+  document
+    .getElementById(
+      "statDue"
+    )
+    .textContent =
+      due;
+
+
+  document
+    .getElementById(
+      "statOverdue"
+    )
+    .textContent =
+      overdue;
+
+
+  document
+    .getElementById(
+      "statMeetings"
+    )
+    .textContent =
+      meetings;
+
+
+  document
+    .getElementById(
+      "statCalls"
+    )
+    .textContent =
+      calls;
+
+
+  const activities =
+    [];
+
+
+  leads.forEach(
+    lead => {
+
+
+      (
+        lead.callHistory ||
+        []
+      )
+        .forEach(
+          entry =>
+            activities.push(
+              {
+
+                type:
+                  "call",
+
+                timestamp:
+                  entry.timestamp,
+
+                lead,
+
+                entry
+
+              }
+            )
+        );
+
+
+      (
+        lead.emailHistory ||
+        []
+      )
+        .forEach(
+          entry =>
+            activities.push(
+              {
+
+                type:
+                  "email",
+
+                timestamp:
+                  entry.timestamp,
+
+                lead,
+
+                entry
+
+              }
+            )
+        );
+
+    }
+  );
+
+
+  activities.sort(
+    (a,b) =>
+      new Date(
+        b.timestamp
+      )
+      -
+      new Date(
+        a.timestamp
+      )
+  );
+
+
+  document
+    .getElementById(
+      "recentActivity"
+    )
+    .innerHTML =
+
+    activities
+      .slice(
+        0,
+        7
+      )
+      .map(
+        activity => `
+
+        <div class="activity-row">
+
+          <div class="activity-icon">
+
+            ${
+              activity.type ===
+              "email"
+                ?
+                "✉"
+                :
+                "☎"
+            }
+
+          </div>
+
+
+          <div>
+
+            <div class="activity-title">
+
+              ${
+                activity.type ===
+                "email"
+                  ?
+                  "Email sent to"
+                  :
+                  "Call with"
+              }
+
+              ${
+                e(
+                  activity.lead.firstName ||
+                  activity.lead.company
+                )
+              }
+
+            </div>
+
+
+            <div class="activity-subtitle">
+
+              ${
+                e(
+                  activity.type ===
+                  "email"
+                    ?
+                    (
+                      activity.entry.subject ||
+                      "Email"
+                    )
+                    :
+                    (
+                      activity.entry.outcome ||
+                      "Call logged"
+                    )
+                )
+              }
+
+            </div>
+
+          </div>
+
+
+          <div class="activity-time">
+
+            ${
+              e(
+                activity.timestamp
+                  ?
+                  new Date(
+                    activity.timestamp
+                  )
+                    .toLocaleString()
+                  :
+                  ""
+              )
+            }
+
+          </div>
+
+        </div>
+        `
+      )
+      .join("")
+      ||
+      '<div class="empty">No activity recorded yet.</div>';
+
+
+  const followups =
+    leads
+      .filter(
+        lead =>
+          lead.nextFollowUpDate
+      )
+      .sort(
+        (a,b) =>
+          new Date(
+            a.nextFollowUpDate
+          )
+          -
+          new Date(
+            b.nextFollowUpDate
+          )
+      )
+      .slice(
+        0,
+        7
+      );
+
+
+  document
+    .getElementById(
+      "dashboardFollowups"
+    )
+    .innerHTML =
+
+    followups
+      .map(
+        lead => {
+
+          const currentStatus =
+            status(
+              lead
+            );
+
+
+          return `
+
+          <div class="follow-row">
+
+            <div>
+
+              <div class="follow-name">
+                ${e(lead.firstName)}
+              </div>
+
+              <div class="follow-company">
+                ${e(lead.company)}
+              </div>
+
+              <div class="follow-action">
+                ${e(lead.nextAction || "Follow up")}
+              </div>
+
+            </div>
+
+
+            <div class="follow-date">
+
+              ${e(lead.nextFollowUpDate)}
+
+              <br>
+
+              <span class="status-badge ${currentStatus[1]}">
+                ${currentStatus[0]}
+              </span>
+
+            </div>
+
+          </div>
+          `;
+
+        }
+      )
+      .join("")
+      ||
+      '<div class="empty">No follow-ups scheduled.</div>';
 }
+
 
 /* =====================================================
    CONTACTS
@@ -1784,107 +3845,123 @@ function renderDashboard(){
 
 function renderContacts(){
 
- const area=
-  document.getElementById(
-   "contactsList"
-  );
+  const area =
+    document.getElementById(
+      "contactsList"
+    );
 
- area.innerHTML=
 
-  filtered()
-   .map(
-    lead=>{
+  area.innerHTML =
 
-     const currentStatus=
-      status(lead);
+    filtered()
+      .map(
+        lead => {
 
-     return `
+          const currentStatus =
+            status(
+              lead
+            );
 
-      <button
-       class="contact-row ${
-        selectedLeadId===lead.id
-         ?
-         "selected"
-         :
-         ""
-       }"
-       onclick="selectContact('${lead.id}')"
-      >
 
-       <div>
+          return `
 
-        <div class="contact-name">
-         ${e(lead.firstName||"Unknown")}
-        </div>
+          <button
+            class="contact-row ${
+              selectedLeadId ===
+              lead.id
+                ?
+                "selected"
+                :
+                ""
+            }"
+            onclick="selectContact('${lead.id}')"
+          >
 
-        <div class="contact-sub">
-         ${e(lead.title||"")}
-        </div>
 
-       </div>
+          <div>
 
-       <div>
+            <div class="contact-name">
+              ${e(lead.firstName || "Unknown")}
+            </div>
 
-        <div class="contact-cell">
-         ${e(lead.company||"")}
-        </div>
+            <div class="contact-sub">
+              ${e(lead.title || "")}
+            </div>
 
-        <div class="contact-sub">
-         ${e(lead.role||"")}
-        </div>
+          </div>
 
-       </div>
 
-       <div>
+          <div>
 
-        <div class="contact-cell">
-         ${e(lead.phone||lead.directPhone||"No phone")}
-        </div>
+            <div class="contact-cell">
+              ${e(lead.company || "")}
+            </div>
 
-        <div class="contact-sub">
-         ${e(lead.email||"No email")}
-        </div>
+            <div class="contact-sub">
+              ${e(lead.role || "")}
+            </div>
 
-       </div>
+          </div>
 
-       <div>
 
-        <div class="contact-cell">
-         ${e(lead.nextFollowUpDate||"None")}
-        </div>
+          <div>
 
-        <div class="contact-sub">
-         ${e(lead.nextAction||"")}
-        </div>
+            <div class="contact-cell">
+              ${e(lead.phone || lead.directPhone || "No phone")}
+            </div>
 
-       </div>
+            <div class="contact-sub">
+              ${e(lead.email || "No email")}
+            </div>
 
-       <div>
+          </div>
 
-        <span class="status-badge ${currentStatus[1]}">
-         ${currentStatus[0]}
-        </span>
 
-       </div>
+          <div>
 
-      </button>
-     `;
-    }
-   )
-   .join("")
-   ||
-   '<div class="empty">No matching contacts.</div>';
+            <div class="contact-cell">
+              ${e(lead.nextFollowUpDate || "None")}
+            </div>
 
- renderDetail();
+            <div class="contact-sub">
+              ${e(lead.nextAction || "")}
+            </div>
+
+          </div>
+
+
+          <div>
+
+            <span class="status-badge ${currentStatus[1]}">
+              ${currentStatus[0]}
+            </span>
+
+          </div>
+
+
+          </button>
+          `;
+
+        }
+      )
+      .join("")
+      ||
+      '<div class="empty">No matching contacts.</div>';
+
+
+  renderDetail();
 }
+
 
 function selectContact(id){
 
- selectedLeadId=
-  id;
+  selectedLeadId =
+    id;
 
- renderContacts();
+
+  renderContacts();
 }
+
 
 /* =====================================================
    CONTACT DETAIL
@@ -1892,303 +3969,410 @@ function selectContact(id){
 
 function renderDetail(){
 
- const box=
-  document.getElementById(
-   "contactDetail"
-  );
+  const box =
+    document.getElementById(
+      "contactDetail"
+    );
 
- const lead=
-  getLeadById(
-   selectedLeadId
-  );
 
- if(!lead){
+  const lead =
+    getLeadById(
+      selectedLeadId
+    );
 
-  box.innerHTML=
-   '<div class="empty">Select a contact to view the record.</div>';
 
-  return;
- }
+  if(!lead){
 
- const initials=
-  (
-   (
-    lead.firstName||
-    lead.company||
-    "EX"
-   )
-    .match(/\b\w/g)
-   ||
-   ["E","X"]
-  )
-   .slice(0,2)
-   .join("")
-   .toUpperCase();
+    box.innerHTML =
+      '<div class="empty">Select a contact to view the record.</div>';
 
- const currentStatus=
-  status(lead);
+    return;
+  }
 
- const activity=[
-  ...(
-   lead.callHistory||
-   []
-  )
-   .map(
-    entry=>({
-     type:"call",
-     ...entry
-    })
-   ),
 
-  ...(
-   lead.emailHistory||
-   []
-  )
-   .map(
-    entry=>({
-     type:"email",
-     ...entry
-    })
-   )
- ]
-  .sort(
-   (a,b)=>
-    new Date(
-     b.timestamp
+  const initials =
+    (
+      (
+        lead.firstName ||
+        lead.company ||
+        "EX"
+      )
+        .match(
+          /\b\w/g
+        )
+      ||
+      [
+        "E",
+        "X"
+      ]
     )
-    -
-    new Date(
-     a.timestamp
+      .slice(
+        0,
+        2
+      )
+      .join("")
+      .toUpperCase();
+
+
+  const currentStatus =
+    status(
+      lead
+    );
+
+
+  const activity = [
+
+    ...(
+      lead.callHistory ||
+      []
     )
-  );
+      .map(
+        entry => ({
+          type:
+            "call",
+          ...entry
+        })
+      ),
 
- box.innerHTML=`
+    ...(
+      lead.emailHistory ||
+      []
+    )
+      .map(
+        entry => ({
+          type:
+            "email",
+          ...entry
+        })
+      )
 
- <div class="detail-top">
+  ]
+    .sort(
+      (a,b) =>
+        new Date(
+          b.timestamp
+        )
+        -
+        new Date(
+          a.timestamp
+        )
+    );
+
+
+  box.innerHTML = `
+
+
+  <div class="detail-top">
+
 
   <div class="detail-avatar">
-   ${e(initials)}
+    ${e(initials)}
   </div>
 
+
   <div class="detail-name">
-   ${e(lead.firstName||"Unknown")}
+    ${e(lead.firstName || "Unknown")}
   </div>
+
 
   <div class="detail-company">
 
-   ${e(lead.title||"")}
-
-   ${
-    lead.title &&
-    lead.company
-     ?
-     " · "
-     :
-     ""
-   }
-
-   ${e(lead.company||"")}
-
-  </div>
-
- </div>
-
- <div class="detail-body">
-
-  <div class="detail-item">
-   <div class="detail-label">LOCAL TIME</div>
-   <div class="detail-value detail-gold">${e(timeFor(lead))}</div>
-  </div>
-
-  <div class="detail-item">
-   <div class="detail-label">ROLE</div>
-   <div class="detail-value">${e(lead.role||"Not provided")}</div>
-  </div>
-
-  <div class="detail-item">
-   <div class="detail-label">PHONE</div>
-   <div class="detail-value">${e(lead.phone||lead.directPhone||"Not provided")}</div>
-  </div>
-
-  <div class="detail-item">
-   <div class="detail-label">EMAIL</div>
-   <div class="detail-value">${e(lead.email||"Not provided")}</div>
-  </div>
-
-  <div class="detail-item">
-   <div class="detail-label">LAST OUTCOME</div>
-   <div class="detail-value">${e(lead.lastOutcome||"None")}</div>
-  </div>
-
-  <div class="detail-item">
-   <div class="detail-label">NEXT ACTION</div>
-   <div class="detail-value">${e(lead.nextAction||"None")}</div>
-  </div>
-
-  <div class="detail-item">
-   <div class="detail-label">FOLLOW-UP</div>
-
-   <div class="detail-value">
-
-    ${e(lead.nextFollowUpDate||"None")}
-
-    &nbsp;
-
-    <span class="status-badge ${currentStatus[1]}">
-     ${currentStatus[0]}
-    </span>
-
-   </div>
-  </div>
-
-  <div class="detail-item">
-
-   <div class="detail-label">
-    PIPELINE STAGE
-   </div>
-
-   <select
-    class="pipeline-select"
-    onchange="changeStage('${lead.id}',this.value)"
-   >
+    ${e(lead.title || "")}
 
     ${
-     PIPELINE_STAGES
-      .map(
-       stage=>`
-
-        <option
-         ${
-          stage===
-          (
-           lead.pipelineStage||
-           "New"
-          )
-           ?
-           "selected"
-           :
-           ""
-         }
-        >
-         ${e(stage)}
-        </option>
-       `
-      )
-      .join("")
+      lead.title &&
+      lead.company
+        ?
+        " · "
+        :
+        ""
     }
 
-   </select>
+    ${e(lead.company || "")}
 
   </div>
+
+
+  </div>
+
+
+  <div class="detail-body">
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  LOCAL TIME
+  </div>
+
+  <div class="detail-value detail-gold">
+  ${e(timeFor(lead))}
+  </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  ROLE
+  </div>
+
+  <div class="detail-value">
+  ${e(lead.role || "Not provided")}
+  </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  PHONE
+  </div>
+
+  <div class="detail-value">
+  ${e(lead.phone || lead.directPhone || "Not provided")}
+  </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  EMAIL
+  </div>
+
+  <div class="detail-value">
+  ${e(lead.email || "Not provided")}
+  </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  LAST OUTCOME
+  </div>
+
+  <div class="detail-value">
+  ${e(lead.lastOutcome || "None")}
+  </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  NEXT ACTION
+  </div>
+
+  <div class="detail-value">
+  ${e(lead.nextAction || "None")}
+  </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  FOLLOW-UP
+  </div>
+
+  <div class="detail-value">
+
+  ${e(lead.nextFollowUpDate || "None")}
+
+  &nbsp;
+
+  <span class="status-badge ${currentStatus[1]}">
+  ${currentStatus[0]}
+  </span>
+
+  </div>
+
+  </div>
+
+
+  <div class="detail-item">
+
+  <div class="detail-label">
+  PIPELINE STAGE
+  </div>
+
+
+  <select
+    class="pipeline-select"
+    onchange="changeStage('${lead.id}',this.value)"
+  >
+
+  ${
+    PIPELINE_STAGES
+      .map(
+        stage => `
+
+        <option
+
+        ${
+          stage ===
+          (
+            lead.pipelineStage ||
+            "New"
+          )
+            ?
+            "selected"
+            :
+            ""
+        }
+
+        >
+
+        ${e(stage)}
+
+        </option>
+
+        `
+      )
+      .join("")
+  }
+
+  </select>
+
+
+  </div>
+
 
   <div class="detail-actions">
 
-   <button
+
+  <button
     class="primary-btn"
     onclick="openLeadInCallAssist('${lead.id}')"
-   >
-    ☎ Open in Call Assist
-   </button>
+  >
+  ☎ Open in Call Assist
+  </button>
 
-   <button
+
+  <button
     class="secondary-btn"
     onclick="emailLead('${lead.id}')"
-   >
-    ✉ Send Email
-   </button>
+  >
+  ✉ Send Email
+  </button>
 
-   <button
+
+  <button
     class="secondary-btn"
     onclick="openContactModal('${lead.id}')"
-   >
-    ✎ Edit Contact
-   </button>
+  >
+  ✎ Edit Contact
+  </button>
 
-   <button
+
+  <button
     class="danger-btn"
     onclick="deleteContact('${lead.id}')"
-   >
-    Delete Contact
-   </button>
+  >
+  Delete Contact
+  </button>
+
 
   </div>
+
 
   <div class="history-title">
-   ACTIVITY HISTORY
+  ACTIVITY HISTORY
   </div>
 
+
   ${
-   activity
-    .slice(0,8)
-    .map(
-     item=>`
+    activity
+      .slice(
+        0,
+        8
+      )
+      .map(
+        item => `
 
-      <div class="history-entry">
+        <div class="history-entry">
 
-       <div class="history-date">
 
-        ${
-         e(
-          item.timestamp
-           ?
-           new Date(
-            item.timestamp
-           )
-            .toLocaleString()
-           :
-           ""
-         )
-        }
-
-       </div>
-
-       <div class="history-main">
+        <div class="history-date">
 
         ${
-         item.type==="email"
-          ?
-          "✉ Email sent"
-          :
-          "☎ "+
           e(
-           item.outcome||
-           "Call"
+            item.timestamp
+              ?
+              new Date(
+                item.timestamp
+              )
+                .toLocaleString()
+              :
+              ""
           )
         }
 
-       </div>
+        </div>
 
-       <div class="history-sub">
+
+        <div class="history-main">
 
         ${
-         e(
-          item.type==="email"
-           ?
-           (
-            item.subject||
-            "Email"
-           )
-           :
-           (
-            item.nextAction||
-            ""
-           )
-         )
+          item.type ===
+          "email"
+            ?
+            "✉ Email sent"
+            :
+            "☎ " +
+            e(
+              item.outcome ||
+              "Call"
+            )
         }
 
-       </div>
+        </div>
 
-      </div>
-     `
-    )
-    .join("")
-   ||
-   '<div class="history-sub">No activity recorded yet.</div>'
+
+        <div class="history-sub">
+
+        ${
+          e(
+            item.type ===
+            "email"
+              ?
+              (
+                item.subject ||
+                "Email"
+              )
+              :
+              (
+                item.nextAction ||
+                ""
+              )
+          )
+        }
+
+        </div>
+
+
+        </div>
+
+        `
+      )
+      .join("")
+      ||
+      '<div class="history-sub">No activity recorded yet.</div>'
   }
 
- </div>
- `;
+
+  </div>
+  `;
 }
+
 
 /* =====================================================
    PIPELINE
@@ -2196,81 +4380,99 @@ function renderDetail(){
 
 function renderPipeline(){
 
- document
-  .getElementById(
-   "pipelineBoard"
-  )
-  .innerHTML=
+  document
+    .getElementById(
+      "pipelineBoard"
+    )
+    .innerHTML =
 
-  PIPELINE_STAGES
-   .map(
-    stage=>{
+    PIPELINE_STAGES
+      .map(
+        stage => {
 
-     const items=
-      filtered()
-       .filter(
-        lead =>
-         (
-          lead.pipelineStage||
-          "New"
-         )
-         ===
-         stage
-       );
 
-     return `
+          const items =
+            filtered()
+              .filter(
+                lead =>
+                  (
+                    lead.pipelineStage ||
+                    "New"
+                  )
+                  ===
+                  stage
+              );
 
-      <div class="pipeline-column">
 
-       <div class="pipeline-head">
+          return `
 
-        <div class="pipeline-title">
-         ${e(stage)}
-        </div>
+          <div class="pipeline-column">
 
-        <div class="pipeline-count">
-         ${items.length}
-        </div>
 
-       </div>
+          <div class="pipeline-head">
 
-       <div class="pipeline-body">
 
-        ${
-         items
-          .map(
-           lead=>`
+          <div class="pipeline-title">
+          ${e(stage)}
+          </div>
 
-            <div class="pipeline-card">
 
-             <div class="pipeline-card-name">
-              ${e(lead.firstName||"Unknown")}
-             </div>
+          <div class="pipeline-count">
+          ${items.length}
+          </div>
 
-             <div class="pipeline-card-company">
-              ${e(lead.company||"")}
-             </div>
 
-             <div class="pipeline-card-action">
-              ${e(lead.nextAction||lead.role||"")}
-             </div>
+          </div>
 
-            </div>
-           `
-          )
-          .join("")
-         ||
-         '<div class="history-sub">No prospects</div>'
+
+          <div class="pipeline-body">
+
+
+          ${
+            items
+              .map(
+                lead => `
+
+                <div class="pipeline-card">
+
+
+                <div class="pipeline-card-name">
+                ${e(lead.firstName || "Unknown")}
+                </div>
+
+
+                <div class="pipeline-card-company">
+                ${e(lead.company || "")}
+                </div>
+
+
+                <div class="pipeline-card-action">
+                ${e(lead.nextAction || lead.role || "")}
+                </div>
+
+
+                </div>
+
+                `
+              )
+              .join("")
+            ||
+            '<div class="history-sub">No prospects</div>'
+          }
+
+
+          </div>
+
+
+          </div>
+
+          `;
+
         }
-
-       </div>
-
-      </div>
-     `;
-    }
-   )
-   .join("");
+      )
+      .join("");
 }
+
 
 /* =====================================================
    FOLLOW UPS
@@ -2278,405 +4480,517 @@ function renderPipeline(){
 
 function renderFollowups(){
 
- const items=
-  filtered()
-   .filter(
-    lead =>
-     lead.nextFollowUpDate
-   )
-   .sort(
-    (a,b)=>
-     new Date(
-      a.nextFollowUpDate
-     )
-     -
-     new Date(
-      b.nextFollowUpDate
-     )
-   );
+  const items =
+    filtered()
+      .filter(
+        lead =>
+          lead.nextFollowUpDate
+      )
+      .sort(
+        (a,b) =>
+          new Date(
+            a.nextFollowUpDate
+          )
+          -
+          new Date(
+            b.nextFollowUpDate
+          )
+      );
 
- document
-  .getElementById(
-   "followupList"
-  )
-  .innerHTML=
 
-  items
-   .map(
-    lead=>{
+  document
+    .getElementById(
+      "followupList"
+    )
+    .innerHTML =
 
-     const currentStatus=
-      status(lead);
+    items
+      .map(
+        lead => {
 
-     return `
 
-      <div class="follow-row">
+          const currentStatus =
+            status(
+              lead
+            );
 
-       <div>
 
-        <div class="follow-name">
-         ${e(lead.firstName||"Unknown")}
-        </div>
+          return `
 
-        <div class="follow-company">
+          <div class="follow-row">
 
-         ${e(lead.company||"")}
 
-         ·
+          <div>
 
-         ${e(lead.role||"")}
 
-        </div>
+          <div class="follow-name">
+          ${e(lead.firstName || "Unknown")}
+          </div>
 
-        <div class="follow-action">
-         ${e(lead.nextAction||"Follow up")}
-        </div>
 
-       </div>
+          <div class="follow-company">
 
-       <div class="follow-date">
+          ${e(lead.company || "")}
 
-        ${e(lead.nextFollowUpDate)}
+          ·
 
-        <br>
+          ${e(lead.role || "")}
 
-        <span class="status-badge ${currentStatus[1]}">
-         ${currentStatus[0]}
-        </span>
+          </div>
 
-       </div>
 
-      </div>
-     `;
-    }
-   )
-   .join("")
-   ||
-   '<div class="empty">No follow-ups currently scheduled.</div>';
+          <div class="follow-action">
+          ${e(lead.nextAction || "Follow up")}
+          </div>
+
+
+          </div>
+
+
+          <div class="follow-date">
+
+
+          ${e(lead.nextFollowUpDate)}
+
+
+          <br>
+
+
+          <span class="status-badge ${currentStatus[1]}">
+          ${currentStatus[0]}
+          </span>
+
+
+          </div>
+
+
+          </div>
+
+          `;
+
+        }
+      )
+      .join("")
+      ||
+      '<div class="empty">No follow-ups currently scheduled.</div>';
 }
 
+
 /* =====================================================
-   RENDER
+   RENDER ALL
 ===================================================== */
 
 function renderAll(){
 
- renderDashboard();
- renderContacts();
- renderPipeline();
- renderFollowups();
+  renderDashboard();
+
+  renderContacts();
+
+  renderPipeline();
+
+  renderFollowups();
 }
+
 
 /* =====================================================
    PIPELINE CHANGE
 ===================================================== */
 
 function changeStage(
- id,
- stage
+  id,
+  stage
 ){
 
- const lead=
-  getLeadById(id);
+  const lead =
+    getLeadById(
+      id
+    );
 
- if(!lead){
-  return;
- }
 
- lead.pipelineStage=
-  stage;
+  if(!lead){
+    return;
+  }
 
- scheduleSync();
- renderAll();
+
+  lead.pipelineStage =
+    stage;
+
+
+  scheduleSync();
+
+
+  renderAll();
 }
+
 
 /* =====================================================
    CONTACT EDITOR
 ===================================================== */
 
 function openContactModal(
- id=null
+  id = null
 ){
 
- editingLeadId=
-  id;
+  editingLeadId =
+    id;
 
- const lead=
-  id
-   ?
-   getLeadById(id)
-   :
-   null;
 
- document
-  .getElementById(
-   "contactModalTitle"
-  )
-  .textContent=
-   lead
-    ?
-    "Edit Contact"
-    :
-    "New Contact";
+  const lead =
+    id
+      ?
+      getLeadById(
+        id
+      )
+      :
+      null;
 
- const fields={
 
-  formFirstName:
-   lead?.firstName||
-   "",
+  document
+    .getElementById(
+      "contactModalTitle"
+    )
+    .textContent =
+      lead
+        ?
+        "Edit Contact"
+        :
+        "New Contact";
 
-  formTitle:
-   lead?.title||
-   "",
 
-  formCompany:
-   lead?.company||
-   "",
+  const fields = {
 
-  formRole:
-   lead?.role||
-   "",
+    formFirstName:
+      lead?.firstName ||
+      "",
 
-  formLocation:
-   lead?.location||
-   "",
+    formTitle:
+      lead?.title ||
+      "",
 
-  formPhone:
-   lead?.phone||
-   "",
+    formCompany:
+      lead?.company ||
+      "",
 
-  formDirectPhone:
-   lead?.directPhone||
-   "",
+    formRole:
+      lead?.role ||
+      "",
 
-  formEmail:
-   lead?.email||
-   "",
+    formLocation:
+      lead?.location ||
+      "",
 
-  formTimezone:
-   lead?.timezone||
-   "America/Los_Angeles",
+    formPhone:
+      lead?.phone ||
+      "",
 
-  formTimezoneLabel:
-   lead?.timezoneLabel||
-   "",
+    formDirectPhone:
+      lead?.directPhone ||
+      "",
 
-  formPipelineStage:
-   lead?.pipelineStage||
-   "New",
+    formEmail:
+      lead?.email ||
+      "",
 
-  formFollowUpDate:
-   lead?.nextFollowUpDate||
-   "",
+    formTimezone:
+      lead?.timezone ||
+      "America/Los_Angeles",
 
-  formNextAction:
-   lead?.nextAction||
-   ""
- };
+    formTimezoneLabel:
+      lead?.timezoneLabel ||
+      "",
 
- Object
-  .entries(fields)
-  .forEach(
-   ([id,value])=>{
+    formPipelineStage:
+      lead?.pipelineStage ||
+      "New",
 
-    document
-     .getElementById(id)
-     .value=
-      value;
-   }
-  );
+    formFollowUpDate:
+      lead?.nextFollowUpDate ||
+      "",
 
- document
-  .getElementById(
-   "contactModal"
-  )
-  .classList
-  .add(
-   "show"
-  );
+    formNextAction:
+      lead?.nextAction ||
+      ""
+
+  };
+
+
+  Object
+    .entries(
+      fields
+    )
+    .forEach(
+      (
+        [
+          id,
+          value
+        ]
+      ) => {
+
+        document
+          .getElementById(
+            id
+          )
+          .value =
+            value;
+
+      }
+    );
+
+
+  document
+    .getElementById(
+      "contactModal"
+    )
+    .classList
+    .add(
+      "show"
+    );
 }
+
 
 function closeContactModal(){
 
- document
-  .getElementById(
-   "contactModal"
-  )
-  .classList
-  .remove(
-   "show"
-  );
+  document
+    .getElementById(
+      "contactModal"
+    )
+    .classList
+    .remove(
+      "show"
+    );
 
- editingLeadId=
-  null;
+
+  editingLeadId =
+    null;
 }
+
 
 function formValue(id){
 
- return document
-  .getElementById(id)
-  .value
-  .trim();
+  return document
+    .getElementById(
+      id
+    )
+    .value
+    .trim();
 }
+
+
+/* =====================================================
+   SAVE CONTACT
+===================================================== */
 
 async function saveContactForm(){
 
- const firstName=
-  formValue(
-   "formFirstName"
-  );
+  const firstName =
+    formValue(
+      "formFirstName"
+    );
 
- const company=
-  formValue(
-   "formCompany"
-  );
 
- if(
-  !firstName &&
-  !company
- ){
-  alert(
-   "Please enter a contact name or company."
-  );
+  const company =
+    formValue(
+      "formCompany"
+    );
 
-  return;
- }
 
- let lead;
+  if(
+    !firstName &&
+    !company
+  ){
 
- if(editingLeadId){
+    alert(
+      "Please enter a contact name or company."
+    );
 
-  lead=
-   getLeadById(
-    editingLeadId
-   );
-
-  if(!lead){
-   return;
+    return;
   }
 
- }else{
 
-  lead=
-   defaults({
-    id:uuid(),
-    callHistory:[],
-    emailHistory:[],
-    callCount:0,
-    lastOutcome:"",
-    lastCalled:""
-   });
+  let lead;
 
-  leads.push(
-   lead
-  );
 
-  selectedLeadId=
-   lead.id;
- }
+  if(
+    editingLeadId
+  ){
 
- lead.firstName=
-  firstName;
+    lead =
+      getLeadById(
+        editingLeadId
+      );
 
- lead.title=
-  formValue(
-   "formTitle"
-  );
 
- lead.company=
-  company;
+    if(!lead){
+      return;
+    }
 
- lead.role=
-  formValue(
-   "formRole"
-  );
 
- lead.location=
-  formValue(
-   "formLocation"
-  );
+  }else{
 
- lead.phone=
-  formValue(
-   "formPhone"
-  );
 
- lead.directPhone=
-  formValue(
-   "formDirectPhone"
-  );
+    lead =
+      defaults(
+        {
 
- lead.email=
-  formValue(
-   "formEmail"
-  );
+          id:
+            uuid(),
 
- lead.timezone=
-  formValue(
-   "formTimezone"
-  );
+          callHistory:
+            [],
 
- lead.timezoneLabel=
-  formValue(
-   "formTimezoneLabel"
-  );
+          emailHistory:
+            [],
 
- lead.pipelineStage=
-  formValue(
-   "formPipelineStage"
-  )
-  ||
-  "New";
+          callCount:
+            0,
 
- lead.nextFollowUpDate=
-  formValue(
-   "formFollowUpDate"
-  );
+          lastOutcome:
+            "",
 
- lead.nextAction=
-  formValue(
-   "formNextAction"
-  );
+          lastCalled:
+            ""
 
- closeContactModal();
+        }
+      );
 
- saveCache();
 
- renderAll();
+    leads.push(
+      lead
+    );
 
- setSync(
-  "syncing",
-  "Saving..."
- );
 
- try{
+    selectedLeadId =
+      lead.id;
+  }
 
-  await cloud(
-   "sync",
-   {leads}
-  );
+
+  lead.firstName =
+    firstName;
+
+
+  lead.title =
+    formValue(
+      "formTitle"
+    );
+
+
+  lead.company =
+    company;
+
+
+  lead.role =
+    formValue(
+      "formRole"
+    );
+
+
+  lead.location =
+    formValue(
+      "formLocation"
+    );
+
+
+  lead.phone =
+    formValue(
+      "formPhone"
+    );
+
+
+  lead.directPhone =
+    formValue(
+      "formDirectPhone"
+    );
+
+
+  lead.email =
+    formValue(
+      "formEmail"
+    );
+
+
+  lead.timezone =
+    formValue(
+      "formTimezone"
+    );
+
+
+  lead.timezoneLabel =
+    formValue(
+      "formTimezoneLabel"
+    );
+
+
+  lead.pipelineStage =
+    formValue(
+      "formPipelineStage"
+    )
+    ||
+    "New";
+
+
+  lead.nextFollowUpDate =
+    formValue(
+      "formFollowUpDate"
+    );
+
+
+  lead.nextAction =
+    formValue(
+      "formNextAction"
+    );
+
+
+  closeContactModal();
+
+
+  saveCache();
+
+
+  renderAll();
+
 
   setSync(
-   "synced",
-   "Cloud synced"
+    "syncing",
+    "Saving..."
   );
 
- }catch(error){
 
-  console.error(
-   error
-  );
+  try{
 
-  setSync(
-   "error",
-   "Local cache active"
-  );
+    await cloud(
+      "sync",
+      {
+        leads
+      }
+    );
 
-  alert(
-   "The contact was saved locally, but cloud sync failed."
-  );
- }
+
+    setSync(
+      "synced",
+      "Cloud synced"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Contact save failed:",
+      error
+    );
+
+
+    setSync(
+      "error",
+      "Local cache active"
+    );
+
+
+    alert(
+      "The contact was saved locally, but cloud sync failed."
+    );
+  }
 }
+
 
 /* =====================================================
    DELETE CONTACT
@@ -2684,75 +4998,93 @@ async function saveContactForm(){
 
 async function deleteContact(id){
 
- const lead=
-  getLeadById(id);
+  const lead =
+    getLeadById(
+      id
+    );
 
- if(!lead){
-  return;
- }
 
- const label=
-  lead.firstName||
-  lead.company||
-  "this contact";
+  if(!lead){
+    return;
+  }
 
- if(
-  !confirm(
-   `Delete ${label} from the CRM?\n\nThis will also remove the record from Supabase.`
-  )
- ){
-  return;
- }
 
- setSync(
-  "syncing",
-  "Deleting..."
- );
+  const label =
+    lead.firstName ||
+    lead.company ||
+    "this contact";
 
- try{
 
-  await cloud(
-   "delete",
-   {
-    externalId:id
-   }
-  );
+  if(
+    !confirm(
+      `Delete ${label} from the CRM?\n\nThis will also remove the record from Supabase.`
+    )
+  ){
+    return;
+  }
 
-  leads=
-   leads.filter(
-    item =>
-     item.id!==id
-   );
-
-  selectedLeadId=
-   leads[0]?.id||
-   null;
-
-  saveCache();
-
-  renderAll();
 
   setSync(
-   "synced",
-   "Cloud synced"
+    "syncing",
+    "Deleting..."
   );
 
- }catch(error){
 
-  console.error(
-   error
-  );
+  try{
 
-  setSync(
-   "error",
-   "Delete failed"
-  );
+    await cloud(
+      "delete",
+      {
+        externalId:
+          id
+      }
+    );
 
-  alert(
-   "The contact was not deleted. Your existing data has been left unchanged."
-  );
- }
+
+    leads =
+      leads.filter(
+        item =>
+          item.id !== id
+      );
+
+
+    selectedLeadId =
+      leads[0]?.id ||
+      null;
+
+
+    saveCache();
+
+
+    renderAll();
+
+
+    setSync(
+      "synced",
+      "Cloud synced"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Delete failed:",
+      error
+    );
+
+
+    setSync(
+      "error",
+      "Delete failed"
+    );
+
+
+    alert(
+      "The contact was not deleted. Your existing data has been left unchanged."
+    );
+  }
 }
+
 
 /* =====================================================
    CALL ASSIST
@@ -2760,24 +5092,27 @@ async function deleteContact(id){
 
 function openCallAssist(){
 
- window.open(
-  CALL_ASSIST_URL,
-  "_blank"
- );
+  window.open(
+    CALL_ASSIST_URL,
+    "_blank"
+  );
 }
+
 
 function openLeadInCallAssist(id){
 
- localStorage.setItem(
-  "excedereSelectedLeadId",
-  id
- );
+  localStorage.setItem(
+    "excedereSelectedLeadId",
+    id
+  );
 
- window.open(
-  CALL_ASSIST_URL,
-  "_blank"
- );
+
+  window.open(
+    CALL_ASSIST_URL,
+    "_blank"
+  );
 }
+
 
 /* =====================================================
    EMAIL
@@ -2785,215 +5120,223 @@ function openLeadInCallAssist(id){
 
 function emailLead(id){
 
- const lead=
-  getLeadById(id);
+  const lead =
+    getLeadById(
+      id
+    );
 
- if(!lead){
-  return;
- }
 
- const query=
-  new URLSearchParams({
-   leadId:
-    lead.id||
-    "",
+  if(!lead){
+    return;
+  }
 
-   name:
-    lead.firstName||
-    "",
 
-   company:
-    lead.company||
-    "",
+  const query =
+    new URLSearchParams(
+      {
 
-   email:
-    lead.email||
-    ""
-  });
+        leadId:
+          lead.id ||
+          "",
 
- window.open(
-  `${CALL_ASSIST_URL}email.html?${query}`,
-  "_blank"
- );
+        name:
+          lead.firstName ||
+          "",
+
+        company:
+          lead.company ||
+          "",
+
+        email:
+          lead.email ||
+          ""
+
+      }
+    );
+
+
+  window.open(
+    `${CALL_ASSIST_URL}email.html?${query}`,
+    "_blank"
+  );
 }
+
 
 /* =====================================================
    SEARCH
 ===================================================== */
 
 document
- .getElementById(
-  "globalSearch"
- )
- .addEventListener(
-  "input",
-  event=>{
+  .getElementById(
+    "globalSearch"
+  )
+  .addEventListener(
+    "input",
+    event => {
 
-   currentSearch=
-    event.target
-     .value
-     .trim();
+      currentSearch =
+        event.target
+          .value
+          .trim();
 
-   renderAll();
-  }
- );
+
+      renderAll();
+
+    }
+  );
+
 
 /* =====================================================
    MODAL BACKDROP
 ===================================================== */
 
 document
- .getElementById(
-  "contactModal"
- )
- .addEventListener(
-  "click",
-  event=>{
-
-   if(
-    event.target.id===
+  .getElementById(
     "contactModal"
-   ){
-    closeContactModal();
-   }
-  }
- );
+  )
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target.id ===
+        "contactModal"
+      ){
+
+        closeContactModal();
+      }
+
+    }
+  );
+
 
 /* =====================================================
-   CALL ASSIST STORAGE CHANGES
+   CALL ASSIST LOCALSTORAGE CHANGES
 ===================================================== */
 
 window.addEventListener(
- "storage",
- event=>{
+  "storage",
+  event => {
 
-  if(
-   event.key!==
-   LEAD_STORAGE_KEY
-  ){
-   return;
+    if(
+      event.key !==
+      LEAD_STORAGE_KEY
+    ){
+      return;
+    }
+
+
+    leads =
+      loadCache();
+
+
+    if(
+      selectedLeadId &&
+      !getLeadById(
+        selectedLeadId
+      )
+    ){
+
+      selectedLeadId =
+        leads[0]?.id ||
+        null;
+    }
+
+
+    renderAll();
+
+
+    scheduleSync();
+
   }
-
-  leads=
-   loadCache();
-
-  if(
-   selectedLeadId &&
-   !getLeadById(
-    selectedLeadId
-   )
-  ){
-   selectedLeadId=
-    leads[0]?.id||
-    null;
-  }
-
-  renderAll();
-
-  scheduleSync();
- }
 );
 
+
 /* =====================================================
-   AUTOMATIC SESSION REFRESH ON RETURN
+   RETURNING FROM IDLE / SLEEP
 ===================================================== */
 
-async function refreshWhenReturning(){
+async function verifySessionWhenReturning(){
 
- /*
-   Do nothing while the page remains hidden.
- */
- if(
-  document.hidden
- ){
-  return;
- }
-
- /*
-   If the token is still comfortably valid,
-   no network request is needed.
- */
- if(
-  !tokenNeedsRefresh()
- ){
-  return;
- }
-
- try{
-
-  await ensureFreshSession();
-
-  /*
-    Verify cloud connectivity after refreshing.
-  */
   if(
-   token()
+    document.hidden
   ){
-   setSync(
-    "synced",
-    "Cloud synced"
-   );
+    return;
   }
 
- }catch(error){
 
-  console.error(
-   "Automatic session refresh failed:",
-   error
-  );
+  try{
 
-  setSync(
-   "error",
-   "Login required"
-  );
- }
+    const session =
+      await getActiveSession();
+
+
+    if(
+      session
+    ){
+
+      setSync(
+        "synced",
+        "Cloud synced"
+      );
+
+    }else{
+
+      setSync(
+        "error",
+        "Login required"
+      );
+    }
+
+
+  }catch(error){
+
+    console.error(
+      "Session check failed:",
+      error
+    );
+
+
+    setSync(
+      "error",
+      "Login required"
+    );
+  }
 }
 
+
 document.addEventListener(
- "visibilitychange",
- ()=>{
-  refreshWhenReturning();
- }
+  "visibilitychange",
+  () => {
+
+    verifySessionWhenReturning();
+
+  }
 );
+
 
 window.addEventListener(
- "focus",
- ()=>{
-  refreshWhenReturning();
- }
-);
+  "focus",
+  () => {
 
-/* =====================================================
-   PERIODIC SESSION CHECK
-===================================================== */
+    verifySessionWhenReturning();
 
-/*
-  Check every five minutes while the CRM is open.
-  No refresh request is made unless the token is
-  actually close to expiry.
-*/
-
-setInterval(
- ()=>{
-  if(
-   !document.hidden
-  ){
-   refreshWhenReturning();
   }
- },
-  5*60*1000
 );
+
 
 /* =====================================================
    START
 ===================================================== */
 
 window.addEventListener(
- "load",
- initialise
+  "load",
+  initialise
 );
 
+
 </script>
+
 
 </body>
 </html>
