@@ -6062,8 +6062,7 @@ function timelineForContact(
   timeline
    .filter(
     item=>
-     item.contactId===
-     contactId
+     item.contactId===contactId
    )
    .map(
     item=>({
@@ -6083,113 +6082,75 @@ function timelineForContact(
 
  const calls=
   (
-   lead.callHistory
-   ||
-   []
+   lead.callHistory || []
   )
-  .map(
-   entry=>({
+   .map(
+    entry=>({
+     id:
+      entry.id ||
+      entry.externalId ||
+      `call-${entry.timestamp}`,
 
-    id:
-     entry.id
-     ||
-     entry.externalId
-     ||
-     `call-${entry.timestamp}`,
-
-    source:
-     "system",
-
-    activityType:
-     "call",
-
-    occurredAt:
-     entry.timestamp,
-
-    title:
-     entry.outcome
-     ||
-     "Call logged",
-
-    body:
-     "",
-
-    outcome:
-     entry.outcome
-     ||
-     "",
-
-    nextAction:
-     entry.nextAction
-     ||
-     "",
-
-    contactId
-   })
-  );
+     source:"system",
+     activityType:"call",
+     occurredAt:entry.timestamp,
+     title:
+      entry.outcome ||
+      "Call logged",
+     body:"",
+     outcome:
+      entry.outcome || "",
+     nextAction:
+      entry.nextAction || "",
+     durationSeconds:
+      Number(
+       entry.durationSeconds ||
+       0
+      ),
+     contactId
+    })
+   );
 
  const emails=
   (
-   lead.emailHistory
-   ||
-   []
+   lead.emailHistory || []
   )
-  .map(
-   entry=>({
+   .map(
+    entry=>({
+     id:
+      entry.id ||
+      entry.externalId ||
+      `email-${entry.timestamp}`,
 
-    id:
-     entry.id
-     ||
-     entry.externalId
-     ||
-     `email-${entry.timestamp}`,
-
-    source:
-     "system",
-
-    activityType:
-     "email",
-
-    occurredAt:
-     entry.timestamp,
-
-    title:
-     entry.subject
-     ||
-     "Email sent",
-
-    body:
-     "",
-
-    outcome:
-     "",
-
-    nextAction:
-     "",
-
-    contactId
-   })
-  );
+     source:"system",
+     activityType:"email",
+     occurredAt:entry.timestamp,
+     title:
+      entry.subject ||
+      "Email sent",
+     body:"",
+     outcome:"",
+     nextAction:"",
+     contactId
+    })
+   );
 
  return[
   ...manual,
   ...calls,
   ...emails
  ]
- .sort(
-  (
-   a,
-   b
-  )=>
-   new Date(
-    b.occurredAt
-   )
-   -
-   new Date(
-    a.occurredAt
-   )
- );
+  .sort(
+   (a,b)=>
+    new Date(
+     b.occurredAt
+    ) -
+    new Date(
+     a.occurredAt
+    )
+  );
 }
+
 
 function timelineForCompany(
  companyId
@@ -6198,24 +6159,20 @@ function timelineForCompany(
  const companyContacts=
   leads.filter(
    lead=>
-    lead.companyId===
-    companyId
+    lead.companyId===companyId
   );
 
  const contactIds=
   new Set(
    companyContacts.map(
-    lead=>
-     lead.id
+    lead=>lead.id
    )
   );
 
  const manual=
   timeline.filter(
    item=>
-    item.companyId===
-    companyId
-    ||
+    item.companyId===companyId ||
     contactIds.has(
      item.contactId
     )
@@ -6227,92 +6184,66 @@ function timelineForCompany(
   lead=>{
 
    (
-    lead.callHistory
-    ||
-    []
+    lead.callHistory || []
    )
-   .forEach(
-    entry=>{
+    .forEach(
+     entry=>{
 
-     system.push({
+      system.push({
+       id:
+        entry.id ||
+        entry.externalId ||
+        `call-${lead.id}-${entry.timestamp}`,
 
-      id:
-       entry.id
-       ||
-       entry.externalId
-       ||
-       `call-${lead.id}-${entry.timestamp}`,
+       source:"system",
+       activityType:"call",
+       occurredAt:entry.timestamp,
+       title:
+        entry.outcome ||
+        "Call logged",
+       outcome:
+        entry.outcome || "",
+       nextAction:
+        entry.nextAction || "",
+       durationSeconds:
+        Number(
+         entry.durationSeconds ||
+         0
+        ),
+       contactId:
+        lead.id,
+       companyId
+      });
 
-      source:
-       "system",
-
-      activityType:
-       "call",
-
-      occurredAt:
-       entry.timestamp,
-
-      title:
-       entry.outcome
-       ||
-       "Call logged",
-
-      outcome:
-       entry.outcome
-       ||
-       "",
-
-      nextAction:
-       entry.nextAction
-       ||
-       "",
-
-      contactId:
-       lead.id,
-
-      companyId
-     });
-    }
-   );
+     }
+    );
 
    (
-    lead.emailHistory
-    ||
-    []
+    lead.emailHistory || []
    )
-   .forEach(
-    entry=>{
+    .forEach(
+     entry=>{
 
-     system.push({
+      system.push({
+       id:
+        entry.id ||
+        entry.externalId ||
+        `email-${lead.id}-${entry.timestamp}`,
 
-      id:
-       entry.id
-       ||
-       entry.externalId
-       ||
-       `email-${lead.id}-${entry.timestamp}`,
+       source:"system",
+       activityType:"email",
+       occurredAt:entry.timestamp,
+       title:
+        entry.subject ||
+        "Email sent",
+       contactId:
+        lead.id,
+       companyId
+      });
 
-      source:
-       "system",
+     }
+    );
 
-      activityType:
-       "email",
-
-      occurredAt:
-       entry.timestamp,
-
-      title:
-       entry.subject
-       ||
-       "Email sent",
-
-      contactId:
-       lead.id,
-
-      companyId
-     });
-    }
-   );
   }
  );
 
@@ -6325,28 +6256,67 @@ function timelineForCompany(
   ),
   ...system
  ]
- .sort(
-  (
-   a,
-   b
-  )=>
-   new Date(
-    b.occurredAt
-   )
-   -
-   new Date(
-    a.occurredAt
-   )
- );
+  .sort(
+   (a,b)=>
+    new Date(
+     b.occurredAt
+    ) -
+    new Date(
+     a.occurredAt
+    )
+  );
 }
 
-function renderTimelineItems(
- items
+
+function formatTimelineDuration(
+ totalSeconds
 ){
 
- if(
-  !items.length
- ){
+ const seconds=
+  Math.max(
+   0,
+   Math.floor(
+    Number(
+     totalSeconds ||
+     0
+    )
+   )
+  );
+
+ const hours=
+  Math.floor(
+   seconds /
+   3600
+  );
+
+ const minutes=
+  Math.floor(
+   (
+    seconds %
+    3600
+   ) /
+   60
+  );
+
+ const remainingSeconds=
+  seconds %
+  60;
+
+ const mmss=
+  `${String(minutes).padStart(2,"0")}:${String(remainingSeconds).padStart(2,"0")}`;
+
+ if(hours>0){
+
+  return`${String(hours).padStart(2,"0")}:${mmss}`;
+ }
+
+ return mmss;
+}
+
+
+function renderTimelineItems(items){
+
+ if(!items.length){
 
   return`
    <div class="history-sub">
@@ -6356,10 +6326,7 @@ function renderTimelineItems(
  }
 
  return items
-  .slice(
-   0,
-   20
-  )
+  .slice(0,20)
   .map(
    item=>{
 
@@ -6370,6 +6337,12 @@ function renderTimelineItems(
         )
       : null;
 
+    const durationSeconds=
+     Number(
+      item.durationSeconds ||
+      0
+     );
+
     return`
 
     <div class="timeline-item">
@@ -6377,32 +6350,20 @@ function renderTimelineItems(
      <div class="timeline-meta">
 
       <div class="timeline-type">
-
-       ${timelineTypeIcon(
-        item.activityType
-       )}
-
-       ${e(
-        timelineTypeLabel(
-         item.activityType
-        )
-       )}
-
+       ${timelineTypeIcon(item.activityType)}
+       ${e(timelineTypeLabel(item.activityType))}
       </div>
 
       <div class="timeline-date">
-
        ${
         e(
          item.occurredAt
           ? new Date(
              item.occurredAt
-            )
-            .toLocaleString()
+            ).toLocaleString()
           : ""
         )
        }
-
       </div>
 
      </div>
@@ -6428,12 +6389,28 @@ function renderTimelineItems(
      }
 
      ${
-      item.outcome
-      ||
+      durationSeconds>0 ||
+      item.outcome ||
       item.nextAction
        ? `
 
        <div class="timeline-extra">
+
+        ${
+         item.activityType==="call" &&
+         durationSeconds>0
+          ? `
+          <div>
+           <strong>Duration:</strong>
+           ${e(
+            formatTimelineDuration(
+             durationSeconds
+            )
+           )}
+          </div>
+          `
+          : ""
+        }
 
         ${
          item.outcome
@@ -6466,19 +6443,14 @@ function renderTimelineItems(
       lead
        ? `
        <div class="timeline-contact">
-        ${e(
-         lead.firstName
-         ||
-         "Contact"
-        )}
+        ${e(lead.firstName || "Contact")}
        </div>
        `
        : ""
      }
 
      ${
-      item.source===
-      "manual"
+      item.source==="manual"
        ? `
        <div class="timeline-controls">
 
@@ -6495,6 +6467,7 @@ function renderTimelineItems(
      }
 
     </div>
+
     `;
    }
   )
